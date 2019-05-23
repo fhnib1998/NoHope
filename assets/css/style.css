@@ -1,0 +1,8 @@
+.card .card-image{
+    width: 75%;
+    margin-left: 38px;
+    border-radius: 200px;
+}
+.radio label {
+    color: rgba(0,0,0,0.8);
+}
