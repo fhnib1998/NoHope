@@ -597,7 +597,7 @@
         select: function(start, end) {
             // on select we show the Sweet Alert modal with an input
             var lop = "<?php echo $row[0]?>";
-            var lichhoc = start.format("dddd MMMM DD YYYY");
+            var lichhoc = start.format("dddd MM/DD/YYYY");
             swal({
                 title:lichhoc,
                 html: '<div class="form-group">' +
@@ -625,14 +625,14 @@
         },
         eventResize:function(event){
             var start = event.start;
-            var lichhoc = start.format("dddd MMMM DD YYYY");
+            var lichhoc = start.format("dddd MM/DD/YYYY");
             var title = event.title;
             var lop = "<?php echo $row[0]?>";
             $.get("modules/lichhoc.php?start="+lichhoc+"&title="+title.toUpperCase()+"&lop="+lop);
         },
         eventDrop:function(event){
             var start = event.start;
-            var lichhoc = start.format("dddd MMMM DD YYYY");
+            var lichhoc = start.format("dddd MM/DD/YYYY");
             var title = event.title;
             var lop = "<?php echo $row[0]?>";
             $.get("modules/lichhoc.php?start="+lichhoc+"&title="+title.toUpperCase()+"&lop="+lop);

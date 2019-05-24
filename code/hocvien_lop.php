@@ -1,14 +1,16 @@
 <?php
-ob_start();
-include("modules/kndatabase.php");
-if(isset($_GET["tenlop"])) {
-    $tenlop = $_GET["tenlop"];
-    $select = "select * from lop where tenlop='$tenlop'";
-    $result = mysqli_query($conn,$select);
-    $row = mysqli_fetch_row($result) or die("Lỗi truy vấn");
-    $selectHocvien = "select * from hocvien where lop='$tenlop'";
-    $resultHocvien = mysqli_query($conn,$selectHocvien)or die("Lỗi truy vấn");
-}
+    ob_start();
+    include("modules/kndatabase.php");
+    if(isset($_GET["tk"])) {
+        $taikhoan = $_GET["tk"];
+        $selectTK = "select * from hocvien where tk = '$taikhoan'";
+        $rowHV = mysqli_fetch_row(mysqli_query($conn,$selectTK));
+        $tenlop = $rowHV[7];
+        $select = "select * from lop where tenlop='$tenlop'";
+        $row = mysqli_fetch_row(mysqli_query($conn,$select));
+        $selectHocvien = "select * from hocvien where lop='$tenlop'";
+        $resultHocvien = mysqli_query($conn,$selectHocvien)or die("Lỗi truy vấn");
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -349,17 +351,34 @@ if(isset($_GET["tenlop"])) {
             }
             else{
                 for($i = 1;$i <= 20;$i++){
-                if($row[$i+6]==null){
-                    $row[$i+6]="03/12/1998";
-                }?>
-                {
-                    title: '<?php echo "Buổi $i"?>',
-                    start: '<?php echo $row[$i + 6]?>',
-                    className: 'event-azure',
-                    allDay: true,
-                    url: "giaovien_diemdanh.php?lop=<?php echo $row[0]?>&&b=<?php echo "b$i"?>"
-                },
-                <?php
+                    if($row[$i+6]==null){
+                        $row[$i+6]="03/12/1998";
+                    }
+                    if($rowHV[$i+7] == 2){?>
+                        {
+                            title: '<?php echo "Buổi $i"?>',
+                            start: '<?php echo $row[$i + 6]?>',
+                            className: 'event-azure',
+                            allDay: true
+                        },
+            <?php
+                    }elseif($rowHV[$i+7] == 1){?>
+                        {
+                            title: '<?php echo "Buổi $i"?>',
+                            start: '<?php echo $row[$i + 6]?>',
+                            className: 'event-green',
+                            allDay: true
+                        },
+            <?php
+                    }else{?>
+                        {
+                            title: '<?php echo "Buổi $i"?>',
+                            start: '<?php echo $row[$i + 6]?>',
+                            className: 'event-red',
+                            allDay: true
+                        },
+            <?php
+                    }
                 }
             }
             ?>

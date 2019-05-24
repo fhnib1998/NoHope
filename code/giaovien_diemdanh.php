@@ -168,7 +168,7 @@
                                             <td>
                                                 <div class="checkbox">
                                                     <label>
-                                                        <input id="<?php echo $row["tk"]?>" type="checkbox" <?php if($row[$b] == 1){echo "checked";} ?> onclick="diemdanh('<?php echo $row["tk"]?>','<?php echo $b?>')">
+                                                        <input id="<?php echo $row["tk"]?>" name="diemdanh" type="checkbox" <?php if($row[$b] == 1){echo "checked";}?>>
                                                     </label>
                                                 </div>
                                             </td>
@@ -178,7 +178,7 @@
                                     ?>
                                     </tbody>
                                 </table>
-                                <button id="diemdanh" type="button" class="btn btn-rose pull-right" onclick="thongbaonghi('<?php echo $lop?>','<?php echo $b?>')">Điểm danh</button>
+                                <button id="diemdanh" type="button" class="btn btn-rose pull-right" onclick="diemdanhlop('<?php echo $lop?>','<?php echo $b?>')">Điểm danh</button>
                             </div>
                         </div>
                     </div>
@@ -239,14 +239,16 @@
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../assets/js/demo.js"></script>
 <script>
-    function diemdanh(tk,b) {
-        if(document.getElementById(tk).checked){
-            $.get("modules/updatedatabase.php",{tkdd1:tk,b:b});
-        }else {
-            $.get("modules/updatedatabase.php",{tkdd0:tk,b:b});
+    function diemdanhlop(lop,b) {
+        var checkbox = document.getElementsByName("diemdanh");
+        for (var i = 0; i < checkbox.length; i++){
+            var tk = checkbox[i].getAttribute("id");
+            if (checkbox[i].checked === true){
+                $.get("modules/updatedatabase.php",{tkdd1:tk,b:b});
+            }else{
+                $.get("modules/updatedatabase.php",{tkdd0:tk,b:b});
+            }
         }
-    }
-    function thongbaonghi(lop,b) {
         $.get("modules/thongbaoph.php",{lop:lop,b:b});
         swal({
             title: "Đã điểm danh!",

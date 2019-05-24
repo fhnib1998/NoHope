@@ -18,7 +18,7 @@
     $sqlSelect = "select * from hocvien where lop = '$lop'";
     $result = mysqli_query($conn,$sqlSelect);
     while ($row = mysqli_fetch_assoc($result)){
-        if($row[$b]!=1){
+        if($row[$b] != 1){
             $nghi = $row["nghi"]+1;
             $taikhoan = $row["tk"];
             $sqlUpdate = "update hocvien set nghi = $nghi where tk = '$taikhoan'";
