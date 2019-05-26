@@ -13,7 +13,7 @@
                     <button type="button" class="btn btn-danger btn-simple fix-broken-card">
                         <i class="material-icons">build</i> Khôi phục ảnh
                     </button>
-                    <button type="button" class="btn btn-default btn-simple" data-placement="bottom" data-toggle="modal" data-target="#thongtingiaovien" title="Chi tiết">
+                    <button type="button" class="btn btn-default btn-simple" data-placement="bottom" data-toggle="modal" data-target="#thongtin<?php echo $row["tk"]?>" title="Chi tiết">
                         <i class="material-icons">art_track</i>
                     </button>
                     <a href="admin_giaovien.php?module=editgiaovien&tk=<?php echo $row["tk"];?>">
@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-        <div class="modal fade" id="thongtingiaovien" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="thongtin<?php echo $row["tk"]?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

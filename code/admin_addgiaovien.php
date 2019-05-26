@@ -353,14 +353,17 @@
         else {
             document.getElementById("loigioitinh").setAttribute("class","");
             document.getElementById("loigioitinh").innerHTML = "&nbsp;Chưa chọn";
+            checktk = 1;
         }
         if (!document.getElementById("avatar").files[0]){
             document.getElementById("loianh").setAttribute("class","");
             document.getElementById("loianh").innerHTML = "&ensp;Chưa chọn avatar";
+            checktk = 1;
         } else {
             var file = document.getElementById("avatar").files[0];
             var avatar_name = file["name"];
             var avatar_tmp = URL.createObjectURL(file);
+            checktk = 0;
         }
         if(tk==="")
         {
@@ -383,7 +386,7 @@
         if(tk!==""&&mk!==""&&hoten!==""&&checktk===0){
             $.get("modules/adddatabase.php",{taikhoangv:tk,matkhau:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar_name:avatar_name,avatar_tmp:avatar_tmp},function () {
                 swal({
-                    title: 'Đã thêm!',
+                    title: 'Thêm thành công!',
                     text: 'Thêm thành công giáo viên',
                     type: 'success',
                     confirmButtonClass: "btn btn-success",
@@ -396,9 +399,11 @@
     }
     function chonnam() {
         document.getElementById("loigioitinh").setAttribute("class","hidden");
+        checktk = 0;
     }
     function chonnu() {
         document.getElementById("loigioitinh").setAttribute("class","hidden");
+        checktk = 0;
     }
     function loadanh() {
         var image = URL.createObjectURL(document.getElementById("avatar").files[0]);

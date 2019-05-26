@@ -8,8 +8,10 @@
         $gioitinh = $_GET["gioitinh"];
         $sdt = $_GET["sdt"];
         $gmail = $_GET["gmail"];
-        $sqlUpdate = "UPDATE `hocvien` SET `tk`='$taikhoan',`mk`='$matkhau',`hoten`='$hoten',`ngaysinh`='$ngaysinh',`gioitinh`='$gioitinh',`sdt`='$sdt',`gmail`='$gmail' WHERE tk = '$taikhoan'";
+        $sqlUpdate = "update hocvien set mk='$matkhau',hoten='$hoten',ngaysinh='$ngaysinh',gioitinh='$gioitinh',sdt='$sdt',gmail='$gmail' where tk = '$taikhoan'";
         mysqli_query($conn,$sqlUpdate);
+        $sqlUpdateTV = "update thanhvien set mk = '$matkhau' where tk = '$taikhoan'";
+        mysqli_query($conn,$sqlUpdateTV);
     }
     if($_GET["tenlop"]){
         $tenlop = $_GET["tenlop"];
@@ -18,10 +20,26 @@
         $cahoc = $_GET["cahoc"];
         $doituong = $_GET["doituong"];
         $giaovien = $_GET["giaovien"];
-        if($giaovien == ""){
-            $sqlUpdate = "UPDATE `lop` SET `khaigiang`='$khaigiang',`phonghoc`='$phonghoc',`cahoc`='$cahoc',`doituong`='$doituong' WHERE tenlop = '$tenlop'";
-        } else{
-            $sqlUpdate = "UPDATE `lop` SET `khaigiang`='$khaigiang',`giaovien`='$giaovien',`phonghoc`='$phonghoc',`cahoc`='$cahoc',`doituong`='$doituong' WHERE tenlop = '$tenlop'";
+        $sqlSelectLop = "select giaovien from lop where tenlop = '$tenlop'";
+        $rowLop = mysqli_fetch_row(mysqli_query($conn,$sqlSelectLop));
+        $giaovienC = $rowLop[0];
+        if($giaovienC == $giaovien|| $giaovien == ""){
+            $sqlUpdate = "update lop set khaigiang='$khaigiang',phonghoc='$phonghoc',cahoc='$cahoc',doituong='$doituong' where tenlop = '$tenlop'";
+        }else{
+            $sqlUpdate = "update lop set khaigiang='$khaigiang',giaovien='$giaovien',phonghoc='$phonghoc',cahoc='$cahoc',doituong='$doituong' where tenlop = '$tenlop'";
+            $sqlSelectGVC = "Select tk,lop from giaovien where hoten = '$giaovienC'";
+            $rowC = mysqli_fetch_row(mysqli_query($conn,$sqlSelectGVC));
+            $taikhoanC = $rowC[0];
+            $lop = $rowC[1];
+            $lopC = str_replace("$tenlop,","","$lop");
+            $sqlUpdateC = "Update giaovien set lop ='$lopC' where tk = '$taikhoanC'";
+            mysqli_query($conn,$sqlUpdateC);
+            $sqlSelectGVM = "Select tk,lop from giaovien where hoten = '$giaovien'";
+            $rowM = mysqli_fetch_row(mysqli_query($conn,$sqlSelectGVM));
+            $taikhoanM = $rowM[0];
+            $lopM = $tenlop.",".$rowM[1];
+            $sqlUpdateM = "Update giaovien set lop ='$lopM' where tk = '$taikhoanM'";
+            mysqli_query($conn,$sqlUpdateM);
         }
         mysqli_query($conn,$sqlUpdate);
     }

@@ -165,7 +165,7 @@
                                             </li>
                                             <li id="tablichhoc" class="active">
                                                 <a href="#lichhoc" role="tab" data-toggle="tab">
-                                                    <i class="material-icons">date_range</i> Lịch học
+                                                    <i class="material-icons">event</i> Lịch học
                                                 </a>
                                             </li>
                                             <li id="tabhocvien">
@@ -358,6 +358,74 @@
                     </div>
                 </div>
             </div>
+            <!-- Form sửa lớp học -->
+            <div class="modal fade" id="sualop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Sửa thông tin lớp học</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="formsualop" method="post">
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Tên lớp</label>
+                                            <input type="text" class="form-control" id="suatenlop" value="Tên lớp" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Khai giảng</label>
+                                            <input type="text" class="form-control datepicker" id="suakhaigiang" value="03/12/1998">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Đối tượng</label>
+                                            <input type="text" class="form-control" id="suadoituong" value="Đối tượng học">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Phòng học</label>
+                                            <input type="text" class="form-control" id="suaphonghoc" value="Phòng học">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Ca học</label>
+                                            <input type="text" class="form-control" id="suacahoc" value="Ca học">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <select id="suagiaovien" class="selectpicker" data-style="btn btn-primary btn-round" title="Single Select">
+                                            <option disabled selected>Chọn giáo viên</option>
+                                            <?php
+                                            while ($rowGiaovien = mysqli_fetch_assoc($resultGiaovien)){?>
+                                                <option><?php echo $rowGiaovien["hoten"]?></option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-rose" data-dismiss="modal" onclick="sualop()">Sửa lớp học</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Form sửa học viên -->
             <div class="modal fade" id="suahocvien" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -437,74 +505,6 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
                             <button type="button" class="btn btn-rose" data-dismiss="modal" onclick="suahocvien()">Sửa học viên</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Form sửa lớp học -->
-            <div class="modal fade" id="sualop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Sửa thông tin học viên</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form id="formsualop" method="post">
-                                <div class="row">
-                                    <div class="col-sm-5">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Tên lớp</label>
-                                            <input type="text" class="form-control" id="suatenlop" value="Tên lớp" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Khai giảng</label>
-                                            <input type="text" class="form-control datepicker" id="suakhaigiang" value="03/12/1998">
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-sm-5">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Đối tượng</label>
-                                            <input type="text" class="form-control" id="suadoituong" value="Đối tượng học">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Phòng học</label>
-                                            <input type="text" class="form-control" id="suaphonghoc" value="Phòng học">
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-sm-5">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Ca học</label>
-                                            <input type="text" class="form-control" id="suacahoc" value="Ca học">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <select id="suagiaovien" class="selectpicker" data-style="btn btn-primary btn-round" title="Single Select">
-                                            <option disabled selected>Chọn giáo viên</option>
-                                            <?php
-                                            while ($rowGiaovien = mysqli_fetch_assoc($resultGiaovien)){?>
-                                                <option><?php echo $rowGiaovien["hoten"]?></option>
-                                                <?php
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-rose" data-dismiss="modal" onclick="sualop()">Sửa lớp học</button>
                         </div>
                     </div>
                 </div>

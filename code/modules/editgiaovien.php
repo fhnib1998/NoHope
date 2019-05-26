@@ -29,6 +29,8 @@
         }
         $sqlUpdate = "UPDATE giaovien SET mk='$matkhau',hoten='$hoten',ngaysinh='$ngaysinh',gioitinh='$gioitinh',sdt='$sodienthoai',trinhdo='$trinhdo',avatar='$avatar' WHERE tk='$taikhoan'";
         mysqli_query($conn,$sqlUpdate) or die("Lỗi truy vấn");
+        $sqlUpdateTV = "update thanhvien set mk = '$matkhau' where tk = '$taikhoan'";
+        mysqli_query($conn,$sqlUpdateTV);
         header("location:admin_giaovien.php");
     }
 ?>
@@ -50,7 +52,7 @@
                     <div class="col-md-5">
                         <div class="form-group label-floating">
                             <label class="control-label">Mật khẩu</label>
-                            <input type="password" class="form-control" value="<?php echo $row[1]?>" name="matkhau">
+                            <input type="password" class="form-control" value="123456789" name="matkhau">
                         </div>
                     </div>
                 </div>
@@ -116,7 +118,6 @@
         </div>
     </div>
 </div>
-
 <script>
     function loadanh() {
         var image = URL.createObjectURL(document.getElementById("avatar").files[0]);

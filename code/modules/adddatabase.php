@@ -12,8 +12,10 @@
         $avatar_tmp=$_GET["avatar_tmp"];
         $avatar = "../uploads/".$avatar_name;
         move_uploaded_file($avatar_tmp,$avatar);
-        $sqlInsert = "Insert into giaovien(`tk`, `mk`, `hoten`, `ngaysinh`, `gioitinh`, `sdt`, `trinhdo`, `avatar`) values('$taikhoan','$matkhau','$hoten','$ngaysinh','$gioitinh','$sodienthoai','$trinhdo','$avatar')";
-        mysqli_query($conn, $sqlInsert) or die("Lỗi truy vẫn");
+        $sqlInsert = "Insert into giaovien(tk,mk,hoten,ngaysinh,gioitinh,sdt,trinhdo,avatar) values('$taikhoan','$matkhau','$hoten','$ngaysinh','$gioitinh','$sodienthoai','$trinhdo','$avatar')";
+        mysqli_query($conn, $sqlInsert);
+        $sqlInsertTV = "insert into thanhvien(tk,mk,quyen) values('$taikhoan','$matkhau','gv') ";
+        mysqli_query($conn,$sqlInsertTV);
     }
     if(isset($_GET["taikhoanhv"])){
         $taikhoan = $_GET["taikhoanhv"];
@@ -24,14 +26,16 @@
         $sodienthoai = $_GET["sodienthoai"];
         $lop = $_GET["lop"];
         $gmail = $_GET["gmail"];
-        $sqlSelect = "Select * from lop where tenlop = '$lop'";
+        $sqlSelect = "Select siso from lop where tenlop = '$lop'";
         $result = mysqli_query($conn,$sqlSelect);
         $row = mysqli_fetch_row($result);
-        $siso = $row[5]+1;
-        $sqlUpdate = "Update lop set siso ='$siso' where tenlop = '$lop'";
+        $siso = $row[0]+1;
+        $sqlUpdate = "update lop set siso ='$siso' where tenlop = '$lop'";
         mysqli_query($conn,$sqlUpdate);
-        $sqlInsert = "Insert into hocvien(`tk`, `mk`, `hoten`, `ngaysinh`, `gioitinh`, `sdt`, `gmail`, `lop`) values('$taikhoan','$matkhau','$hoten','$ngaysinh','$gioitinh','$sodienthoai','$gmail','$lop')";
+        $sqlInsert = "insert into hocvien(tk,mk,hoten,ngaysinh,gioitinh,sdt,gmail,lop) values('$taikhoan','$matkhau','$hoten','$ngaysinh','$gioitinh','$sodienthoai','$gmail','$lop')";
         mysqli_query($conn, $sqlInsert) or die("Lỗi truy vẫn");
+        $sqlInsertTV = "insert into thanhvien(tk,mk,quyen) values('$taikhoan','$matkhau','hv') ";
+        mysqli_query($conn,$sqlInsertTV);
     }
     if (isset($_GET["tenlop"])){
         $tenlop = $_GET["tenlop"];
@@ -41,13 +45,13 @@
         $cahoc = $_GET["cahoc"];
         $giaovien = $_GET["giaovien"];
         $siso = 0;
-        $sqlInsert = "Insert into lop(`tenlop`, `giaovien`, `phonghoc`, `khaigiang`, `doituong`, `cahoc`, `siso`) values('$tenlop','$giaovien','$phonghoc','$khaigiang','$doituong','$cahoc',$siso)";
+        $sqlInsert = "Insert into lop(tenlop, giaovien, phonghoc, khaigiang, doituong, cahoc, siso) values('$tenlop','$giaovien','$phonghoc','$khaigiang','$doituong','$cahoc',$siso)";
         mysqli_query($conn,$sqlInsert);
-        $sqlSelect = "Select * from giaovien where hoten = '$giaovien'";
+        $sqlSelect = "Select tk,lop from giaovien where hoten = '$giaovien'";
         $result = mysqli_query($conn,$sqlSelect);
         $row = mysqli_fetch_row($result);
         $taikhoan = $row[0];
-        $lop = $tenlop.",".$row[8];
+        $lop = $tenlop.",".$row[1];
         $sqlUpdate = "Update giaovien set lop ='$lop' where tk = '$taikhoan'";
         mysqli_query($conn,$sqlUpdate);
     }

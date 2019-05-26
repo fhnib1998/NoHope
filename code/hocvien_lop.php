@@ -165,7 +165,7 @@
                                             </li>
                                             <li id="tablichhoc" class="active">
                                                 <a href="#lichhoc" role="tab" data-toggle="tab">
-                                                    <i class="material-icons">date_range</i> Lịch học
+                                                    <i class="material-icons">event</i> Lịch học
                                                 </a>
                                             </li>
                                             <li id="tabhocvien">
