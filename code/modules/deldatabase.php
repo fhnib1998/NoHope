@@ -3,15 +3,16 @@
     if(isset($_GET["tkgv"])){
         $taikhoan = $_GET["tkgv"];
         $sqlDelete = "delete from giaovien where tk = '$taikhoan'";
-        mysqli_query($conn, $sqlDelete);
+        mysqli_query($conn,$sqlDelete);
         $sqlDeleteTV = "delete from thanhvien where tk = '$taikhoan'";
-        mysqli_query($conn, $sqlDeleteTV);
-        header("location:admin_giaovien.php");
+        mysqli_query($conn,$sqlDeleteTV);
     }
     if(isset($_GET["tkhv"])){
         $taikhoan = $_GET["tkhv"];
         $sqlDelete = "delete from hocvien where tk = '$taikhoan'";
-        mysqli_query($conn, $sqlDelete);
+        mysqli_query($conn,$sqlDelete);
+        $sqlDeleteTV = "delete from thanhvien where tk = '$taikhoan'";
+        mysqli_query($conn,$sqlDeleteTV);
     }
     if(isset($_GET["tenlop"])){
         $tenlop = $_GET["tenlop"];

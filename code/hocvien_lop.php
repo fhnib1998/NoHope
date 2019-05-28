@@ -1,10 +1,20 @@
 <?php
     ob_start();
+    session_start();
     include("modules/kndatabase.php");
     if(isset($_GET["tk"])) {
         $taikhoan = $_GET["tk"];
         $selectTK = "select * from hocvien where tk = '$taikhoan'";
         $rowHV = mysqli_fetch_row(mysqli_query($conn,$selectTK));
+        $_SESSION['tk']= $rowHV[0];
+        $_SESSION['mk']= $rowHV[1];
+        $_SESSION['hoten']= $rowHV[2];
+        $_SESSION['ngaysinh']= $rowHV[3];
+        $_SESSION['gioitinh']= $rowHV[4];
+        $_SESSION['sdt']= $rowHV[5];
+        $_SESSION['gmail']= $rowHV[6];
+        $_SESSION['lop']= $rowHV[7];
+        $_SESSION['avatar']= $rowHV[29];
         $tenlop = $rowHV[7];
         $select = "select * from lop where tenlop='$tenlop'";
         $row = mysqli_fetch_row(mysqli_query($conn,$select));
@@ -17,7 +27,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Quản lí lớp</title>
+    <title>Lớp học</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <!-- Bootstrap core CSS     -->
@@ -33,7 +43,7 @@
 
 <body>
 <div class="wrapper">
-    <div class="sidebar" data-active-color="blue" data-background-color="black" data-image="../assets/img/sidebar-6.jpg">
+    <div class="sidebar" data-active-color="blue" data-background-color="black" data-image="../assets/img/sidebar-5.jpg">
         <!--
     Tip 1: You can change the color of active element of the sidebar using: data-active-color="purple | blue | green | orange | red | rose"
     Tip 2: you can also add an image using data-image tag
@@ -41,34 +51,34 @@
 -->
         <div class="logo">
             <a href="#" class="simple-text">
-                No Hope Admin
+                No Hope Center
             </a>
         </div>
         <div class="logo logo-mini">
-            <a href="http://www.creative-tim.com/" class="simple-text">
-                NHA
+            <a class="simple-text">
+                NHC
             </a>
         </div>
         <div class="sidebar-wrapper">
             <div class="user">
                 <div class="photo">
-                    <img src="../assets/img/anime3.jpg" />
+                    <img src="<?php if($_SESSION['avatar']==null){echo "../assets/img/anime3.jpg";}else{echo $_SESSION['avatar'];} ?>" />
                 </div>
                 <div class="info">
-                    <a data-toggle="collapse" href="#collapseExample" class="collapsed">
-                        Hoàng Thanh Bình
+                    <a data-toggle="collapse" href="#quanlitk" class="collapsed">
+                        <?php echo $_SESSION['hoten']?>
                         <b class="caret"></b>
                     </a>
-                    <div class="collapse" id="collapseExample">
+                    <div class="collapse" id="quanlitk">
                         <ul class="nav">
                             <li>
-                                <a href="#">
+                                <a href="thongtinHV.php">
                                     <b class="material-icons">account_box</b>
                                     Thông tin
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="login.php">
                                     <b class="material-icons">power_settings_new</b>
                                     Đăng xuất
                                 </a>
@@ -84,43 +94,12 @@
                         <p>Trang chủ</p>
                     </a>
                 </li>
-                <li>
-                    <a data-toggle="collapse" href="#pagesExamples">
-                        <i class="material-icons">school</i>
-                        <p>Quản lí giáo viên
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="pagesExamples">
-                        <ul class="nav">
-                            <li>
-                                <a href="admin_giaovien.php">Danh sách giáo viên</a>
-                            </li>
-                            <li>
-                                <a href="admin_addgiaovien.php">Thêm giáo viên</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
                 <li class="active">
-                    <a data-toggle="collapse" href="#componentsExamples">
+                    <a href="hocvien_lop.php">
                         <i class="material-icons">class</i>
-                        <p>Quản lí lớp học
-                            <b class="caret"></b>
-                        </p>
+                        <p>Lớp học</p>
                     </a>
-                    <div class="collapse in" id="componentsExamples">
-                        <ul class="nav">
-                            <li class="active">
-                                <a href="admin_lop.php">Danh sách lớp học</a>
-                            </li>
-                            <li>
-                                <a href="admin_addlop.php">Thêm lớp học</a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
-
             </ul>
         </div>
     </div>

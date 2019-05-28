@@ -31,12 +31,12 @@
     -->
             <div class="logo">
                 <a href="#" class="simple-text">
-                    No Hope Admin
+                    No Hope Center
                 </a>
             </div>
             <div class="logo logo-mini">
-                <a href="http://www.creative-tim.com/" class="simple-text">
-                    NHA
+                <a class="simple-text">
+                    NHC
                 </a>
             </div>
             <div class="sidebar-wrapper">
@@ -45,11 +45,11 @@
                         <img src="../assets/img/anime3.jpg" />
                     </div>
                     <div class="info">
-                        <a data-toggle="collapse" href="#collapseExample" class="collapsed">
+                        <a data-toggle="collapse" href="#quanlitk" class="collapsed">
                             Hoàng Thanh Bình
                             <b class="caret"></b>
                         </a>
-                        <div class="collapse" id="collapseExample">
+                        <div class="collapse" id="quanlitk">
                             <ul class="nav">
                                 <li>
                                     <a href="#">
@@ -58,7 +58,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="login.php">
                                         <b class="material-icons">power_settings_new</b>
                                         Đăng xuất
                                     </a>
@@ -74,38 +74,38 @@
                             <p>Trang chủ</p>
                         </a>
                     </li>
-                    <li class="active">
-                        <a data-toggle="collapse" href="#pagesExamples">
-                            <i class="material-icons">school</i>
-                            <p>Quản lí giáo viên
-                                <b class="caret"></b>
-                            </p>
-                        </a>
-                        <div class="collapse in" id="pagesExamples">
-                            <ul class="nav">
-                                <li class="active">
-                                    <a href="admin_giaovien.php">Danh sách giáo viên</a>
-                                </li>
-                                <li>
-                                    <a href="admin_addgiaovien.php">Thêm giáo viên</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
                     <li>
-                        <a data-toggle="collapse" href="#componentsExamples">
+                        <a data-toggle="collapse" href="#quanlilophoc">
                             <i class="material-icons">class</i>
                             <p>Quản lí lớp học
                                 <b class="caret"></b>
                             </p>
                         </a>
-                        <div class="collapse" id="componentsExamples">
+                        <div class="collapse" id="quanlilophoc">
                             <ul class="nav">
                                 <li>
                                     <a href="admin_lop.php">Danh sách lớp học</a>
                                 </li>
                                 <li>
                                     <a href="admin_addlop.php">Thêm lớp học</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="collapse" href="#quanligiaovien">
+                            <i class="material-icons">school</i>
+                            <p>Quản lí giáo viên
+                                <b class="caret"></b>
+                            </p>
+                        </a>
+                        <div class="collapse in" id="quanligiaovien">
+                            <ul class="nav">
+                                <li class="active">
+                                    <a href="admin_giaovien.php">Danh sách giáo viên</a>
+                                </li>
+                                <li>
+                                    <a href="admin_addgiaovien.php">Thêm giáo viên</a>
                                 </li>
                             </ul>
                         </div>
@@ -139,13 +139,90 @@
                 <div class="container-fluid">
                     <div class="row">
                         <?php
-                            if(isset($_GET["module"])){
-                                $module = $_GET["module"];
-                                include("modules/".$module.".php");
-                            }
-                            else{
-                                include("modules/dsgiaovien.php");
-                            }
+                        $sqlSelect = "select * from giaovien";
+                        $result = mysqli_query($conn,$sqlSelect) or die("Lỗi câu truy vấn");
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            ?>
+                            <div class="col-md-4">
+                                <div class="card card-product">
+                                    <div class="card-image" data-header-animation="true">
+                                        <img class="img" src= <?php echo $row["avatar"];?>>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="card-actions">
+                                            <button type="button" class="btn btn-danger btn-simple fix-broken-card">
+                                                <i class="material-icons">build</i> Khôi phục ảnh
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-simple" data-placement="bottom" data-toggle="modal" data-target="#thongtin<?php echo $row["tk"]?>" title="Chi tiết">
+                                                <i class="material-icons">art_track</i>
+                                            </button>
+                                            <a href="admin_suagiaovien.php?tk=<?php echo $row["tk"];?>">
+                                                <button type="button" class="btn btn-success btn-simple" data-placement="bottom" title="Chỉnh sửa">
+                                                    <i class="material-icons">edit</i>
+                                                </button>
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-simple" data-placement="bottom" title="Xóa" onclick="xacnhanxoa('<?php echo $row["tk"] ?>')">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </div>
+                                        <h3 class="card-title">
+                                            <?php echo $row["hoten"]; ?>
+                                        </h3>
+                                        <h4 class="card-description">
+                                            Ngày sinh: <?php echo $row["ngaysinh"];?><br>
+                                            Giới tính: <?php echo $row["gioitinh"];?><br>
+                                            SĐT: <?php echo $row["sdt"];?><br>
+                                            Trình độ: <?php echo $row["trinhdo"];?>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="thongtin<?php echo $row["tk"]?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" "><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <span class="modal-title" style="font-size: 18px;color: #e91e63" id="myModalLabel">Thông tin giáo viên</span>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead class="text-primary">
+                                                    <th>Họ tên</th>
+                                                    <th><?php echo $row["hoten"]?></th>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Ngày sinh</td>
+                                                        <td><?php echo $row["ngaysinh"]?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Giới tính</td>
+                                                        <td><?php echo $row["gioitinh"]?></td>
+                                                    <tr>
+                                                        <td>Số điện thoại</td>
+                                                        <td><?php echo $row["sdt"]?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Trình độ</td>
+                                                        <td><?php echo $row["trinhdo"]?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lớp đang dạy</td>
+                                                        <td><?php echo $row["lop"]?></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-rose" data-dismiss="modal">Đóng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php
+                        }
                         ?>
                     </div>
                 </div>
@@ -219,15 +296,17 @@
             cancelButtonClass: "btn btn-danger",
             buttonsStyling: false
         }).then(function() {
-            swal({
-                title: 'Đã xóa!',
-                text: 'Mất tiêu luôn.',
-                type: 'success',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
-            }).then(function () {
-                window.location.href = "admin_giaovien.php?module=deldatabase&tkgv="+tk;
-            })
+            $.get("modules/deldatabase.php",{tkgv:tk},function () {
+                swal({
+                    title: 'Đã xóa!',
+                    text: 'Mất tiêu luôn.',
+                    type: 'success',
+                    confirmButtonClass: "btn btn-success",
+                    buttonsStyling: false
+                }).then(function () {
+                    location.reload();
+                })
+            });
         })
     }
 </script>

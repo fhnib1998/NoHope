@@ -30,12 +30,12 @@
 -->
         <div class="logo">
             <a href="#" class="simple-text">
-                No Hope Admin
+                No Hope Center
             </a>
         </div>
         <div class="logo logo-mini">
-            <a href="http://www.creative-tim.com/" class="simple-text">
-                NHA
+            <a class="simple-text">
+                NHC
             </a>
         </div>
         <div class="sidebar-wrapper">
@@ -44,11 +44,11 @@
                     <img src="../assets/img/anime3.jpg" />
                 </div>
                 <div class="info">
-                    <a data-toggle="collapse" href="#collapseExample" class="collapsed">
+                    <a data-toggle="collapse" href="#quanlitk" class="collapsed">
                         Hoàng Thanh Bình
                         <b class="caret"></b>
                     </a>
-                    <div class="collapse" id="collapseExample">
+                    <div class="collapse" id="quanlitk">
                         <ul class="nav">
                             <li>
                                 <a href="#">
@@ -57,7 +57,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="login.php">
                                     <b class="material-icons">power_settings_new</b>
                                     Đăng xuất
                                 </a>
@@ -73,38 +73,38 @@
                         <p>Trang chủ</p>
                     </a>
                 </li>
-                <li class="active">
-                    <a data-toggle="collapse" href="#pagesExamples">
-                        <i class="material-icons">school</i>
-                        <p>Quản lí giáo viên
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse in" id="pagesExamples">
-                        <ul class="nav">
-                            <li>
-                                <a href="admin_giaovien.php">Danh sách giáo viên</a>
-                            </li>
-                            <li class="active">
-                                <a href="admin_addgiaovien.php">Thêm giáo viên</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
                 <li>
-                    <a data-toggle="collapse" href="#componentsExamples">
+                    <a data-toggle="collapse" href="#quanlilophoc">
                         <i class="material-icons">class</i>
                         <p>Quản lí lớp học
                             <b class="caret"></b>
                         </p>
                     </a>
-                    <div class="collapse" id="componentsExamples">
+                    <div class="collapse" id="quanlilophoc">
                         <ul class="nav">
                             <li>
                                 <a href="admin_lop.php">Danh sách lớp học</a>
                             </li>
                             <li>
                                 <a href="admin_addlop.php">Thêm lớp học</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="active">
+                    <a data-toggle="collapse" href="#quanligiaovien">
+                        <i class="material-icons">school</i>
+                        <p>Quản lí giáo viên
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse in" id="quanligiaovien">
+                        <ul class="nav">
+                            <li>
+                                <a href="admin_giaovien.php">Danh sách giáo viên</a>
+                            </li>
+                            <li class="active">
+                                <a href="admin_addgiaovien.php">Thêm giáo viên</a>
                             </li>
                         </ul>
                     </div>
@@ -220,7 +220,7 @@
                                 </div>
                             </form>
                             <br>
-                            <div class="col-md-1 col-md-offset-9">
+                            <div class="pull-right">
                                 <button type="submit" class="btn btn-rose" onclick="themgiaovien()" name="them">Thêm giáo viên</button>
                             </div>
                         </div>
@@ -296,7 +296,7 @@
                 checktk=1;
             }
             else {
-                $.get("modules/checkgv.php",{tk:tk},function (data) {
+                $.get("modules/checktk.php",{tk:tk},function (data) {
                     if(data==1){
                         document.getElementById("checktaikhoan").setAttribute("class","form-group label-floating has-error");
                         document.getElementById("loitaikhoan").setAttribute("class","");
