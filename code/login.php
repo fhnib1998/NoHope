@@ -21,12 +21,12 @@
     <nav class="navbar navbar-primary navbar-transparent navbar-absolute">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand">No Hope Center</a>
+                <a href="index.php" class="navbar-brand">No Hope Center</a>
             </div>
         </div>
     </nav>
     <div class="wrapper wrapper-full-page">
-        <div class="full-page-background" style="background-image: url('../assets/img/31437.jpg') ">
+        <div class="full-page-background" style="background-image: url('../assetsKIT/img/101.png') ">
         <div class="full-page login-page" filter-color="black">
             <div class="content">
                 <div class="container">
