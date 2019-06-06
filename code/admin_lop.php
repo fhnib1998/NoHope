@@ -1,6 +1,11 @@
 <?php
     ob_start();
+    session_start();
     include("modules/kndatabase.php");
+    if(isset($_GET['tk'])){
+        $_SESSION['tk'] = $_GET['tk'];
+        $_SESSION['quyen'] = "admin";
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -42,11 +47,11 @@
         <div class="sidebar-wrapper">
             <div class="user">
                 <div class="photo">
-                    <img src="../assets/img/anime3.jpg" />
+                    <img src="../assets/img/logo.png" />
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#quanlitk" class="collapsed">
-                        Hoàng Thanh Bình
+                        Admin
                         <b class="caret"></b>
                     </a>
                     <div class="collapse" id="quanlitk">
@@ -69,7 +74,7 @@
             </div>
             <ul class="nav">
                 <li>
-                    <a href="dashboard.html">
+                    <a href="index.php">
                         <i class="material-icons">home</i>
                         <p>Trang chủ</p>
                     </a>

@@ -15,6 +15,7 @@
         $_SESSION['trinhdo']= $giaovien[6];
         $_SESSION['avatar']= $giaovien[7];
         $_SESSION['lop']= $giaovien[8];
+        $_SESSION['quyen'] = "gv";
     }
 ?>
 <!doctype html>
@@ -84,7 +85,7 @@
             </div>
             <ul class="nav">
                 <li>
-                    <a href="dashboard.html">
+                    <a href="index.php">
                         <i class="material-icons">home</i>
                         <p>Trang chủ</p>
                     </a>

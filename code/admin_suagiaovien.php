@@ -75,7 +75,7 @@
             </div>
             <ul class="nav">
                 <li>
-                    <a href="dashboard.html">
+                    <a href="index.php">
                         <i class="material-icons">home</i>
                         <p>Trang chủ</p>
                     </a>

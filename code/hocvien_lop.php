@@ -15,12 +15,16 @@
         $_SESSION['gmail']= $rowHV[6];
         $_SESSION['lop']= $rowHV[7];
         $_SESSION['avatar']= $rowHV[29];
-        $tenlop = $rowHV[7];
-        $select = "select * from lop where tenlop='$tenlop'";
-        $row = mysqli_fetch_row(mysqli_query($conn,$select));
-        $selectHocvien = "select * from hocvien where lop='$tenlop'";
-        $resultHocvien = mysqli_query($conn,$selectHocvien)or die("Lỗi truy vấn");
+        $_SESSION['quyen'] = "hv";
     }
+    $taikhoan = $_SESSION['tk'];
+    $selectTK = "select * from hocvien where tk = '$taikhoan'";
+    $rowHV = mysqli_fetch_row(mysqli_query($conn,$selectTK));
+    $tenlop = $_SESSION['lop'];
+    $select = "select * from lop where tenlop='$tenlop'";
+    $row = mysqli_fetch_row(mysqli_query($conn,$select));
+    $selectHocvien = "select * from hocvien where lop='$tenlop'";
+    $resultHocvien = mysqli_query($conn,$selectHocvien)or die("Lỗi truy vấn");
 ?>
 <!doctype html>
 <html lang="en">
@@ -89,7 +93,7 @@
             </div>
             <ul class="nav">
                 <li>
-                    <a href="dashboard.html">
+                    <a href="index.php">
                         <i class="material-icons">home</i>
                         <p>Trang chủ</p>
                     </a>
