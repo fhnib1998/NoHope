@@ -116,6 +116,12 @@
                         </ul>
                     </div>
                 </li>
+                <li>
+                    <a href="admin_editweb.php">
+                        <i class="material-icons">dashboard</i>
+                        <p>Quảng cáo khóa học</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -189,13 +195,13 @@
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Trình độ</label>
-                                                <input type="text" class="form-control" value="<?php echo $row[6]?>" id="trinhdo">
+                                                <textarea class="form-control" id="trinhdo"><?php echo $row[6]?></textarea>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <div class="radio">
                                                 <label class="radio">
                                                     <input type="radio" name="gioitinh" id="nam" value="Nam" <?php if($row[4]=="Nam"){ echo "checked";}?>>
@@ -209,15 +215,21 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <img id="image" class="img-rounded" src="<?php echo $row[7]?>">
-                                            <div class="btn btn-primary btn-round btn-file">
-                                                <div class="fileinput-new">
-                                                    <i class="material-icons">image</i>
-                                                    Sửa ảnh
+                                        <div class="col-md-4">
+                                            <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                                                <div class="fileinput-new thumbnail img-circle">
+                                                    <img src="<?php echo $row[7]?>">
                                                 </div>
-                                                <input type="file" id="avatar" name="avatar" onchange="loadanh()">
+                                                <div class="fileinput-preview fileinput-exists thumbnail img-circle"></div>
+                                                <div>
+                                                    <span class="btn btn-round btn-primary btn-file">
+                                                        <span class="fileinput-new">Chọn ảnh</span>
+                                                        <span class="fileinput-exists">Thay đổi</span>
+                                                        <input type="file" id="avatar" />
+                                                    </span>
+                                                </div>
                                             </div>
+                                            <code class="hidden" id="loianh"></code>
                                         </div>
                                     </div>
                                     <br>
@@ -311,10 +323,6 @@
             })
         })
     }
-    function loadanh() {
-        var image = URL.createObjectURL(document.getElementById("avatar").files[0]);
-        document.getElementById("image").setAttribute('src', image);
-    }
     function suagiaovien() {
         var tk = $('#taikhoan').val();
         var mk = $('#matkhau').val();
@@ -329,14 +337,18 @@
         else if(document.getElementById("nu").checked){
             gioitinh = "Nữ";
         }
-        var avatar_name = "";
+        var avatar = "";
         if (document.getElementById("avatar").files[0]) {
             var file = document.getElementById("avatar").files[0];
-            var avatar_name = file["name"];
-            var avatar_tmp = URL.createObjectURL(file);
+            var avatar = file["name"];
+            var fd = new FormData();
+            fd.append('file',file);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'upfile.php', true);
+            xhr.send(fd);
         }
-        if(avatar_name != ""){
-            $.get("modules/updatedatabase.php",{tkgvad:tk,mk:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar_name:avatar_name,avatar_tmp:avatar_tmp},function () {
+        if(avatar != ""){
+            $.get("modules/updatedatabase.php",{tkgvad:tk,mk:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar:avatar},function () {
                 swal({
                     title: 'Sửa thành công!',
                     text: 'Đã sửa thông tin giáo viên',
@@ -348,7 +360,7 @@
                 })
             })
         }else {
-            $.get("modules/updatedatabase.php",{tkgvad:tk,mk:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar_name:"",avatar_tmp:""},function () {
+            $.get("modules/updatedatabase.php",{tkgvad:tk,mk:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar:""},function () {
                 swal({
                     title: 'Sửa thành công!',
                     text: 'Đã sửa thông tin giáo viên',

@@ -109,6 +109,12 @@
                         </ul>
                     </div>
                 </li>
+                <li>
+                    <a href="admin_editweb.php">
+                        <i class="material-icons">dashboard</i>
+                        <p>Quảng cáo khóa học</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -175,7 +181,7 @@
                                             <code class="hidden" id="loingaysinh"></code>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div id="checksodienthoai" class="form-group label-floating">
                                             <label class="control-label">Số điện thoại</label>
                                             <input type="text" class="form-control" id="sodienthoai" name="sodienthoai">
@@ -185,13 +191,13 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Trình độ</label>
-                                            <input type="text" class="form-control" id="trinhdo" name="trinhdo">
+                                            <textarea rows="2" class="form-control" id="trinhdo" name="trinhdo"></textarea>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="radio" >
                                             <label>
                                                 <input type="radio" name="gioitinh" id="nam" value="Nam" onclick="chonnam()">
@@ -206,14 +212,19 @@
                                         </div>
                                         <code class="hidden" id="loigioitinh"></code>
                                     </div>
-                                    <div class="col-md-3">
-                                        <img id="image" class="img-rounded" src="../assets/img/image_placeholder.jpg">
-                                        <div type="submit" class="btn btn-primary btn-round btn-file">
-                                            <div class="fileinput-new">
-                                                <i class="material-icons">image</i>
-                                                Chọn ảnh
+                                    <div class="col-md-4">
+                                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail img-circle">
+                                                <img src="../assets/img/placeholder.jpg">
                                             </div>
-                                            <input type="file" id="avatar" name="avatar" onchange="loadanh()">
+                                            <div class="fileinput-preview fileinput-exists thumbnail img-circle"></div>
+                                            <div>
+                                                <span class="btn btn-round btn-primary btn-file">
+                                                    <span class="fileinput-new">Chọn ảnh</span>
+                                                    <span class="fileinput-exists">Thay đổi</span>
+                                                    <input type="file" id="avatar" />
+                                                </span>
+                                            </div>
                                         </div>
                                         <code class="hidden" id="loianh"></code>
                                     </div>
@@ -361,9 +372,12 @@
             checktk = 1;
         } else {
             var file = document.getElementById("avatar").files[0];
-            var avatar_name = file["name"];
-            var avatar_tmp = URL.createObjectURL(file);
-            checktk = 0;
+            var avatar = file["name"];
+            var fd = new FormData();
+            fd.append('file',file);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'upfile.php', true);
+            xhr.send(fd);
         }
         if(tk==="")
         {
@@ -384,7 +398,7 @@
             document.getElementById("loihoten").innerHTML = "Họ tên không được để trống";
         }
         if(tk!==""&&mk!==""&&hoten!==""&&checktk===0){
-            $.get("modules/adddatabase.php",{taikhoangv:tk,matkhau:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar_name:avatar_name,avatar_tmp:avatar_tmp},function () {
+            $.get("modules/adddatabase.php",{taikhoangv:tk,matkhau:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar:avatar},function () {
                 swal({
                     title: 'Thêm thành công!',
                     text: 'Thêm thành công giáo viên',
@@ -404,11 +418,6 @@
     function chonnu() {
         document.getElementById("loigioitinh").setAttribute("class","hidden");
         checktk = 0;
-    }
-    function loadanh() {
-        var image = URL.createObjectURL(document.getElementById("avatar").files[0]);
-        document.getElementById("image").setAttribute('src', image);
-        document.getElementById("loianh").setAttribute("class","hidden");
     }
 </script>
 </html>

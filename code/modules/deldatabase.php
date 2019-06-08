@@ -26,4 +26,9 @@
         $sqlDelete = "delete from lop where tenlop = '$tenlop'";
         mysqli_query($conn, $sqlDelete);
     }
+    if(isset($_GET["anh"])){
+        $anh = $_GET["anh"];
+        $sqlDelete = "delete from khoahoc where image = '$anh'";
+        mysqli_query($conn, $sqlDelete);
+    }
 ?>

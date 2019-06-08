@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include ("kndatabase.php");
     if(isset($_GET["tk"])){
         $taikhoan = $_GET["tk"];
@@ -17,10 +18,14 @@
         $gioitinh = $_GET["gioitinh"];
         $sodienthoai = $_GET["sodienthoai"];
         $trinhdo = $_GET["trinhdo"];
-        $avatar_name=$_GET["avatar_name"];
-        $avatar_tmp=$_GET["avatar_tmp"];
+        $avatar_name = $_GET["avatar"];
         $avatar = "../uploads/".$avatar_name;
-        move_uploaded_file($avatar_tmp,$avatar);
+        $_SESSION['hoten']= $hoten;
+        $_SESSION['ngaysinh']= $ngaysinh;
+        $_SESSION['gioitinh']= $gioitinh;
+        $_SESSION['sdt']= $sodienthoai;
+        $_SESSION['trinhdo']= $trinhdo;
+        $_SESSION['avatar']= $avatar;
         if($avatar_name != ""){
             $sqlUpdate = "UPDATE giaovien SET hoten='$hoten',ngaysinh='$ngaysinh',gioitinh='$gioitinh',sdt='$sodienthoai',trinhdo='$trinhdo',avatar='$avatar' WHERE tk='$taikhoan'";
             mysqli_query($conn,$sqlUpdate) or die("Lỗi truy vấn");
@@ -37,10 +42,8 @@
         $gioitinh = $_GET["gioitinh"];
         $sodienthoai = $_GET["sodienthoai"];
         $trinhdo = $_GET["trinhdo"];
-        $avatar_name=$_GET["avatar_name"];
-        $avatar_tmp=$_GET["avatar_tmp"];
+        $avatar_name = $_GET["avatar"];
         $avatar = "../uploads/".$avatar_name;
-        move_uploaded_file($avatar_tmp,$avatar);
         if($avatar_name != ""){
             $sqlUpdate = "UPDATE giaovien SET mk = '$matkhau',hoten='$hoten',ngaysinh='$ngaysinh',gioitinh='$gioitinh',sdt='$sodienthoai',trinhdo='$trinhdo',avatar='$avatar' WHERE tk='$taikhoan'";
             mysqli_query($conn,$sqlUpdate) or die("Lỗi truy vấn");
@@ -58,10 +61,14 @@
         $gioitinh = $_GET["gioitinh"];
         $sdt = $_GET["sdt"];
         $gmail = $_GET["gmail"];
-        $avatar_name=$_GET["avatar_name"];
-        $avatar_tmp=$_GET["avatar_tmp"];
+        $avatar_name = $_GET["avatar"];
         $avatar = "../uploads/".$avatar_name;
-        move_uploaded_file($avatar_tmp,$avatar);
+        $_SESSION['hoten']= $hoten;
+        $_SESSION['ngaysinh']= $ngaysinh;
+        $_SESSION['gioitinh']= $gioitinh;
+        $_SESSION['sdt']= $sdt;
+        $_SESSION['gmail']= $gmail;
+        $_SESSION['avatar']= $avatar;
         if($avatar_name != ""){
             $sqlUpdate = "update hocvien set hoten='$hoten',ngaysinh='$ngaysinh',gioitinh='$gioitinh',sdt='$sdt',gmail='$gmail',avatar='$avatar' where tk = '$taikhoan'";
             mysqli_query($conn,$sqlUpdate);

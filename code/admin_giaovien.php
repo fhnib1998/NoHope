@@ -110,6 +110,12 @@
                             </ul>
                         </div>
                     </li>
+                    <li>
+                        <a href="admin_editweb.php">
+                            <i class="material-icons">dashboard</i>
+                            <p>Quảng cáo khóa học</p>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

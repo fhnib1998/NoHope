@@ -8,10 +8,8 @@
         $gioitinh = $_GET["gioitinh"];
         $sodienthoai = $_GET["sodienthoai"];
         $trinhdo = $_GET["trinhdo"];
-        $avatar_name=$_GET["avatar_name"];
-        $avatar_tmp=$_GET["avatar_tmp"];
+        $avatar_name = $_GET["avatar"];
         $avatar = "../uploads/".$avatar_name;
-        move_uploaded_file($avatar_tmp,$avatar);
         $sqlInsert = "Insert into giaovien(tk,mk,hoten,ngaysinh,gioitinh,sdt,trinhdo,avatar) values('$taikhoan','$matkhau','$hoten','$ngaysinh','$gioitinh','$sodienthoai','$trinhdo','$avatar')";
         mysqli_query($conn, $sqlInsert);
         $sqlInsertTV = "insert into thanhvien(tk,mk,quyen) values('$taikhoan','$matkhau','gv') ";
@@ -54,6 +52,12 @@
         $lop = $tenlop.",".$row[1];
         $sqlUpdate = "Update giaovien set lop ='$lop' where tk = '$taikhoan'";
         mysqli_query($conn,$sqlUpdate);
+    }
+    if (isset($_GET["anh"])){
+        $image_name = $_GET['anh'];
+        $image = "../uploads/".$image_name;
+        $sqlInsert = "insert into khoahoc(image) values ('$image')";
+        mysqli_query($conn,$sqlInsert);
     }
 ?>
 

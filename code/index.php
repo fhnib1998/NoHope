@@ -181,14 +181,18 @@
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img class="d-block w-100" src="../assetsKIT/img/bg2.jpg">
+                                <img class="d-block w-100" src="../assetsKIT/img/traihe.jpg">
                             </div>
-                            <div class="carousel-item">
-                                <img class="d-block w-100" src="../assetsKIT/img/bg3.jpg">
-                            </div>
-                            <div class="carousel-item">
-                                <img class="d-block w-100" src="../assetsKIT/img/bg.jpg">
-                            </div>
+                            <?php
+                                $sqlSelect = "select * from khoahoc";
+                                $result = mysqli_query($conn,$sqlSelect);
+                                while ($row = mysqli_fetch_assoc($result)){?>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="<?php echo $row['image']?>">
+                                    </div>
+                            <?php
+                                }
+                            ?>
                         </div>
                         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -389,20 +393,6 @@
 <script src="../assetsKIT/js/core/jquery.min.js"></script>
 <script src="../assetsKIT/js/core/popper.min.js"></script>
 <script src="../assetsKIT/js/bootstrap-material-design.js"></script>
-<!--  Google Maps Plugin  -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-<!--  Plugin for Date Time Picker and Full Calendar Plugin  -->
-<script src="../assetsKIT/js/plugins/moment.min.js"></script>
-<!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
-<script src="../assetsKIT/js/plugins/bootstrap-datetimepicker.min.js"></script>
-<!--	Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-<script src="../assetsKIT/js/plugins/nouislider.min.js"></script>
-<!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
-<script src="../assetsKIT/js/plugins/bootstrap-selectpicker.js"></script>
-<!--	Plugin for Tags, full documentation here: http://xoxco.com/projects/code/tagsinput/  -->
-<script src="../assetsKIT/js/plugins/bootstrap-tagsinput.js"></script>
-<!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
-<script src="../assetsKIT/js/plugins/jasny-bootstrap.min.js"></script>
 <!-- Sweet Alert 2 plugin -->
 <script src="../assets/js/sweetalert2.js"></script>
 <!-- Plugins for presentation and navigation  -->
