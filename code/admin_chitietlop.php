@@ -159,17 +159,17 @@
                                     <div class="col-md-2">
                                         <ul class="nav nav-pills nav-pills-icons nav-pills-rose nav-stacked" role="tablist">
                                             <li id="tabthongtin">
-                                                <a href="#thongtin" role="tab" data-toggle="tab">
+                                                <a href="#tthongtin" role="tab" data-toggle="tab">
                                                     <i class="material-icons">info</i> Thông tin
                                                 </a>
                                             </li>
                                             <li id="tablichhoc" class="active">
-                                                <a href="#lichhoc" role="tab" data-toggle="tab">
+                                                <a href="#tlichhoc" role="tab" data-toggle="tab">
                                                     <i class="material-icons">event</i> Lịch học
                                                 </a>
                                             </li>
                                             <li id="tabhocvien">
-                                                <a href="#hocvien" role="tab" data-toggle="tab">
+                                                <a href="#thocvien" role="tab" data-toggle="tab">
                                                     <i class="material-icons">person</i> Học viên
                                                 </a>
                                             </li>
@@ -177,7 +177,7 @@
                                     </div>
                                     <div class="col-md-8 col-md-offset-1">
                                         <div class="tab-content">
-                                            <div class="tab-pane" id="thongtin">
+                                            <div class="tab-pane" id="tthongtin">
                                                 <div class="table-responsive">
                                                     <table class="table">
                                                         <thead class="text-primary">
@@ -210,7 +210,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td colspan="2">
-                                                                <button type="button" class="btn btn-rose pull-right" data-toggle="modal" data-target="#sualop" onclick="loadlop('<?php echo $row[0]?>','<?php echo $row[3]?>','<?php echo $row[4]?>','<?php echo $row[2]?>','<?php echo $row[6]?>','<?php echo $row[1]?>')">Chỉnh sửa</button>
+                                                                <button type="button" class="btn btn-rose pull-right" data-toggle="modal" data-target="#sualop">Chỉnh sửa</button>
                                                                 <button type="button" class="btn btn-primary" onclick="xoalop('<?php echo $row[0]?>')">Xóa lớp</button>
                                                             </td>
                                                         </tr>
@@ -218,14 +218,14 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane active" id="lichhoc">
+                                            <div class="tab-pane active" id="tlichhoc">
                                                 <div class="card card-calendar">
                                                     <div class="card-content" class="ps-child">
                                                         <div id="fullCalendar"></div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane" id="hocvien">
+                                            <div class="tab-pane" id="thocvien">
                                                 <div class="table-responsive">
                                                     <table id="tablehocvien" class="table">
                                                         <thead class="text-primary">
@@ -353,7 +353,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-rose" data-dismiss="modal" onclick="themhocvien()">Thêm học viên</button>
+                            <button type="button" class="btn btn-rose" onclick="themhocvien()">Thêm học viên</button>
                         </div>
                     </div>
                 </div>
@@ -372,13 +372,13 @@
                                     <div class="col-sm-5">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Tên lớp</label>
-                                            <input type="text" class="form-control" id="suatenlop" value="Tên lớp" disabled>
+                                            <input type="text" class="form-control" id="suatenlop" value="<?php echo $row[0]?>" disabled>
                                         </div>
                                     </div>
                                     <div class="col-sm-5">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Khai giảng</label>
-                                            <input type="text" class="form-control datepicker" id="suakhaigiang" value="03/12/1998">
+                                            <input type="text" class="form-control datepicker" id="suakhaigiang" value="<?php echo $row[3]?>">
                                         </div>
                                     </div>
                                 </div>
@@ -387,13 +387,13 @@
                                     <div class="col-sm-5">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Đối tượng</label>
-                                            <input type="text" class="form-control" id="suadoituong" value="Đối tượng học">
+                                            <input type="text" class="form-control" id="suadoituong" value="<?php echo $row[4]?>">
                                         </div>
                                     </div>
                                     <div class="col-sm-5">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Phòng học</label>
-                                            <input type="text" class="form-control" id="suaphonghoc" value="Phòng học">
+                                            <input type="text" class="form-control" id="suaphonghoc" value="<?php echo $row[2]?>">
                                         </div>
                                     </div>
                                 </div>
@@ -402,7 +402,7 @@
                                     <div class="col-sm-5">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Ca học</label>
-                                            <input type="text" class="form-control" id="suacahoc" value="Ca học">
+                                            <input type="text" class="form-control" id="suacahoc" value="<?php echo $row[6]?>">
                                         </div>
                                     </div>
                                     <div class="col-sm-5">
@@ -530,6 +530,16 @@
 <script src="../assets/js/moment.min.js"></script>
 <!-- DateTimePicker Plugin -->
 <script src="../assets/js/bootstrap-datetimepicker.js"></script>
+<!-- Vector Map plugin -->
+<script src="../assets/js/jquery-jvectormap.js"></script>
+<!-- Sliders Plugin -->
+<script src="../assets/js/nouislider.min.js"></script>
+<!--  Google Maps Plugin    -->
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<!-- Select Plugin -->
+<script src="../assets/js/jquery.select-bootstrap.js"></script>
+<!--  DataTables.net Plugin    -->
+<script src="../assets/js/jquery.datatables.js"></script>
 <!-- Sweet Alert 2 plugin -->
 <script src="../assets/js/sweetalert2.js"></script>
 <!--  Full Calendar Plugin    -->
@@ -764,13 +774,6 @@
         else{
             document.getElementById("suanu").checked = true;
         }
-    }
-    function loadlop(tenlop,khaigiang,doituong,phonghoc,cahoc) {
-        document.getElementById("suatenlop").setAttribute("value",tenlop);
-        document.getElementById("suakhaigiang").setAttribute("value",khaigiang);
-        document.getElementById("suadoituong").setAttribute("value",doituong);
-        document.getElementById("suaphonghoc").setAttribute("value",phonghoc);
-        document.getElementById("suacahoc").setAttribute("value",cahoc);
     }
     function suahocvien() {
         var tk = $("#suataikhoan").val();
