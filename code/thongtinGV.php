@@ -25,7 +25,7 @@
 
 <body>
 <div class="wrapper">
-    <div class="sidebar" data-active-color="blue" data-background-color="black" data-image="../assets/img/background6.jpg">
+    <div class="sidebar" data-active-color="blue" data-background-color="black" data-image="../assets/img/30904.jpg">
         <div class="logo">
             <a href="#" class="simple-text">
                 No Hope Center

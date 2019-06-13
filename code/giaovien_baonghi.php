@@ -24,7 +24,7 @@
 
 <body>
 <div class="wrapper">
-    <div class="sidebar" data-active-color="blue" data-background-color="black" data-image="../assets/img/background6.jpg">
+    <div class="sidebar" data-active-color="blue" data-background-color="black" data-image="../assets/img/30904.jpg">
         <div class="logo">
             <a href="#" class="simple-text">
                 No Hope Center
@@ -192,6 +192,8 @@
 <script src="../assets/js/bootstrap-datetimepicker.js"></script>
 <!-- Sweet Alert 2 plugin -->
 <script src="../assets/js/sweetalert2.js"></script>
+<!-- Select Plugin -->
+<script src="../assets/js/jquery.select-bootstrap.js"></script>
 <!--  Full Calendar Plugin    -->
 <script src="../assets/js/fullcalendar.min.js"></script>
 <!--	Plugin for Fileupload -->
