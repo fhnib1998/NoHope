@@ -61,7 +61,7 @@
         <div class="sidebar-wrapper">
             <div class="user">
                 <div class="photo">
-                    <img src="<?php if($_SESSION['avatar']==null){echo "../assets/img/anime3.jpg";}else{echo $_SESSION['avatar'];} ?>" />
+                    <img src="<?php if($_SESSION['avatar']==null){echo "../assets/img/logo.png";}else{echo $_SESSION['avatar'];} ?>" />
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#quanlitk" class="collapsed">
