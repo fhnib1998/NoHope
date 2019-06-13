@@ -83,7 +83,7 @@
                     </a>
                     <div class="collapse" id="quanlilophoc">
                         <ul class="nav">
-                            <li class="active">
+                            <li>
                                 <a href="admin_lop.php">Danh sách lớp học</a>
                             </li>
                             <li>

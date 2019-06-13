@@ -37,7 +37,7 @@
             <div class="sidebar-wrapper">
                 <div class="user">
                     <div class="photo">
-                        <img src="../assets/img/anime3.jpg" />
+                        <img src="../assets/img/logo.png" />
                     </div>
                     <div class="info">
                         <a data-toggle="collapse" href="#quanlitk" class="collapsed">
