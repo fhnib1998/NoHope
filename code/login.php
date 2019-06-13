@@ -83,8 +83,6 @@
 <script src="../assets/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="../assets/js/material.min.js" type="text/javascript"></script>
 <script src="../assets/js/perfect-scrollbar.jquery.min.js" type="text/javascript"></script>
-<!-- Forms Validations Plugin -->
-<script src="../assets/js/jquery.validate.min.js"></script>
 <!-- Sweet Alert 2 plugin -->
 <script src="../assets/js/sweetalert2.js"></script>
 <!-- Material Dashboard javascript methods -->

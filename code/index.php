@@ -10,9 +10,6 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" href="../assets/img/apple-icon.png">
-    <link rel="icon" href="../assets/img/favicon.png">
     <title>
         No Hope Center
     </title>
@@ -245,71 +242,7 @@
             </div>
         </div>
     </div>
-    <div class="blogs-1" id="blogs-1">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-10 ml-auto mr-auto">
-                    <h2 class="title">Các khóa học</h2>
-                    <br>
-                    <div class="card card-plain card-blog">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div class="card-header card-header-image">
-                                    <a href="#pablito">
-                                        <img class="img" src="../assetsKIT/img/examples/card-blog4.jpg">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-7">
-                                <h6 class="card-category text-info">Enterprise</h6>
-                                <h3 class="card-title">
-                                    <a href="#pablo">Autodesk looks to future of 3D printing with Project Escher</a>
-                                </h3>
-                                <p class="card-description">
-                                    Like so many organizations these days, Autodesk is a company in transition. It was until recently a traditional boxed software company selling licenses. Today, it’s moving to a subscription model. Yet its own business model disruption is only part of the story — and…
-                                    <a href="#pablo"> Read More </a>
-                                </p>
-                                <p class="author">
-                                    by
-                                    <a href="#pablo">
-                                        <b>Mike Butcher</b>
-                                    </a>, 2 days ago
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card card-plain card-blog">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <h6 class="card-category text-danger">
-                                    <i class="material-icons">trending_up</i> Trending
-                                </h6>
-                                <h3 class="card-title">
-                                    <a href="#pablo">6 insights into the French Fashion landscape</a>
-                                </h3>
-                                <p class="card-description">
-                                    Like so many organizations these days, Autodesk is a company in transition. It was until recently a traditional boxed software company selling licenses. Today, it’s moving to a subscription model. Yet its own business model disruption is only part of the story — and…
-                                    <a href="#pablo"> Read More </a>
-                                </p>
-                                <p class="author">
-                                    by
-                                    <a href="#pablo">
-                                        <b>Mike Butcher</b>
-                                    </a>, 2 days ago
-                                </p>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="card-header card-header-image">
-                                    <img class="img img-raised" src="../assetsKIT/img/office2.jpg">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="contactus-1 section-image" style="background-image: url('../assetsKIT/img/examples/city.jpg')">
+    <div class="contactus-1 section-image" style="background-image: url('../assetsKIT/img/city.jpg')">
         <div class="container">
             <div class="row">
                 <div class="col-md-5">
