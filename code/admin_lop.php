@@ -6,6 +6,9 @@
         $_SESSION['tk'] = $_GET['tk'];
         $_SESSION['quyen'] = "admin";
     }
+    if(isset($_POST["tenlop"])){
+        header("Location: admin_lop.php?tenlop=".$_POST["tenlop"]);
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -116,6 +119,12 @@
                         <p>Quảng cáo khóa học</p>
                     </a>
                 </li>
+                <li>
+                    <a href="admin_doanhthu.php">
+                        <i class="material-icons">toys</i>
+                        <p>Doanh thu</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -137,6 +146,14 @@
                     </button>
                     <a class="navbar-brand">Danh sách lớp học</a>
                 </div>
+                <form class="navbar-form navbar-right" style="margin-right: 100px">
+                    <div class="form-group form-search is-empty">
+                        <input name="tenlop" type="text" class="form-control" placeholder="Nhập tên lớp">
+                    </div>
+                    <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                    </button>
+                </form>
             </div>
         </nav>
 
@@ -145,8 +162,14 @@
             <div class="container-fluid">
                 <div class="row">
                     <?php
-                    $sqlSelect = "select * from lop";
-                    $result = mysqli_query($conn,$sqlSelect) or die("Lỗi câu truy vấn");
+                    if(isset($_GET["tenlop"])){
+                        $tenlop = $_GET["tenlop"];
+                        $sqlSelect = "select * from lop where tenlop = '$tenlop'";
+                        $result = mysqli_query($conn,$sqlSelect);
+                    }else{
+                        $sqlSelect = "select * from lop";
+                        $result = mysqli_query($conn,$sqlSelect);
+                    }
                     while ($row = mysqli_fetch_assoc($result)) {
                         ?>
                         <div class="col-md-6">

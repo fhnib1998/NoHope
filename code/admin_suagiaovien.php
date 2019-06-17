@@ -117,6 +117,12 @@
                         <p>Quảng cáo khóa học</p>
                     </a>
                 </li>
+                <li>
+                    <a href="admin_doanhthu.php">
+                        <i class="material-icons">toys</i>
+                        <p>Doanh thu</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -154,27 +160,27 @@
                                 <h4 class="card-title">Sửa thông tin giáo viên</h4>
                                 <form method="post" enctype="multipart/form-data">
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Tài khoản</label>
                                                 <input type="text" class="form-control" value="<?php echo $row[0]?>" id="taikhoan" disabled>
                                             </div>
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Mật khẩu</label>
                                                 <input type="password" class="form-control" value="<?php echo $row[1]?>" id="matkhau">
                                             </div>
                                         </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Họ tên</label>
                                                 <input type="text" class="form-control" value="<?php echo $row[2]?>" id="hoten">
                                             </div>
                                         </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Ngày sinh</label>
@@ -185,6 +191,12 @@
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Số điện thoại</label>
                                                 <input type="text" class="form-control" value="<?php echo $row[5]?>" id="sodienthoai">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Số tài khoản</label>
+                                                <input type="text" class="form-control" value="<?php echo $row[10]?>" id="sotk">
                                             </div>
                                         </div>
                                     </div>
@@ -303,6 +315,7 @@
         var ngaysinh = $("#ngaysinh").val();
         var sodienthoai = $("#sodienthoai").val();
         var trinhdo = $("#trinhdo").val();
+        var sotk = $("#sotk").val();
         var gioitinh;
         if(document.getElementById("nam").checked){
             gioitinh = "Nam";
@@ -321,7 +334,7 @@
             xhr.send(fd);
         }
         if(avatar != ""){
-            $.get("modules/updatedatabase.php",{tkgvad:tk,mk:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar:avatar},function () {
+            $.get("modules/updatedatabase.php",{tkgvad:tk,mk:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar:avatar,sotk:sotk},function () {
                 swal({
                     title: 'Sửa thành công!',
                     text: 'Đã sửa thông tin giáo viên',
@@ -333,7 +346,7 @@
                 })
             })
         }else {
-            $.get("modules/updatedatabase.php",{tkgvad:tk,mk:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar:""},function () {
+            $.get("modules/updatedatabase.php",{tkgvad:tk,mk:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,sotk:sotk,avatar:""},function () {
                 swal({
                     title: 'Sửa thành công!',
                     text: 'Đã sửa thông tin giáo viên',

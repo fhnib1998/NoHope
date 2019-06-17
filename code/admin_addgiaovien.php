@@ -40,7 +40,7 @@
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#quanlitk" class="collapsed">
-                        Hoàng Thanh Bình
+                        Admin
                         <b class="caret"></b>
                     </a>
                     <div class="collapse" id="quanlitk">
@@ -110,6 +110,12 @@
                         <p>Quảng cáo khóa học</p>
                     </a>
                 </li>
+                <li>
+                    <a href="admin_doanhthu.php">
+                        <i class="material-icons">toys</i>
+                        <p>Doanh thu</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -145,23 +151,20 @@
                             <h4 class="card-title">Thêm giáo viên</h4>
                             <form id="themgiaovien" method="post" enctype="multipart/form-data">
                                 <div class="row">
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <div id="checktaikhoan" class="form-group label-floating">
                                             <label class="control-label">Tài khoản</label>
                                             <input type="text" class="form-control" id="taikhoan" name="taikhoan">
                                             <code class="hidden" id="loitaikhoan"></code>
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <div id="checkmatkhau" class="form-group label-floating">
                                             <label class="control-label">Mật khẩu</label>
                                             <input type="password" class="form-control" id="matkhau" name="matkhau">
                                             <code class="hidden" id="loimatkhau"></code>
                                         </div>
                                     </div>
-                                </div>
-                                <br>
-                                <div class="row">
                                     <div class="col-md-4">
                                         <div id="checkhoten" class="form-group label-floating">
                                             <label class="control-label">Họ tên</label>
@@ -169,6 +172,9 @@
                                             <code class="hidden" id="loihoten"></code>
                                         </div>
                                     </div>
+                                </div>
+                                <br>
+                                <div class="row">
                                     <div class="col-md-4">
                                         <div id="checkngaysinh" class="form-group label-floating">
                                             <label class="control-label">Ngày sinh</label>
@@ -176,11 +182,17 @@
                                             <code class="hidden" id="loingaysinh"></code>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div id="checksodienthoai" class="form-group label-floating">
                                             <label class="control-label">Số điện thoại</label>
                                             <input type="text" class="form-control" id="sodienthoai" name="sodienthoai">
                                             <code class="hidden" id="loisodienthoai"></code>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Số tài khoản</label>
+                                            <input type="text" class="form-control" id="sotk" name="sotk">
                                         </div>
                                     </div>
                                 </div>
@@ -327,6 +339,7 @@
         var ngaysinh = $("#ngaysinh").val();
         var sodienthoai = $("#sodienthoai").val();
         var trinhdo = $("#trinhdo").val();
+        var sotk = $("#sotk").val();
         var gioitinh;
         if(document.getElementById("nam").checked){
             gioitinh = "Nam";
@@ -371,7 +384,7 @@
             document.getElementById("loihoten").innerHTML = "Họ tên không được để trống";
         }
         if(tk!==""&&mk!==""&&hoten!==""&&checktk===0){
-            $.get("modules/adddatabase.php",{taikhoangv:tk,matkhau:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar:avatar},function () {
+            $.get("modules/adddatabase.php",{taikhoangv:tk,matkhau:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar:avatar,sotk:sotk},function () {
                 swal({
                     title: 'Thêm thành công!',
                     text: 'Thêm thành công giáo viên',

@@ -5,14 +5,22 @@
     if(isset($_GET['tk'])){
         $_SESSION['tk'] = $_GET['tk'];
         $_SESSION['quyen'] = "admin";
-}
+    }
+    if(isset($_GET["nam"])){
+        $nam = $_GET["nam"];
+    }else{
+        $nam = date("Y");
+    }
+    if(isset($_POST["nam"])){
+        header("Location: admin_doanhthu.php?nam=".$_POST["nam"]);
+    }
 ?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Quảng cáo khóa học</title>
+    <title>Quản lí lớp</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <!-- Bootstrap core CSS     -->
@@ -110,13 +118,13 @@
                         </ul>
                     </div>
                 </li>
-                <li class="active">
+                <li>
                     <a href="admin_editweb.php">
                         <i class="material-icons">dashboard</i>
                         <p>Quảng cáo khóa học</p>
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="admin_doanhthu.php">
                         <i class="material-icons">toys</i>
                         <p>Doanh thu</p>
@@ -141,52 +149,117 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand">Quảng cáo khóa học</a>
+                    <a class="navbar-brand">Danh sách lớp học</a>
                 </div>
+                <form class="navbar-form navbar-right" style="margin-right: 100px">
+                    <div class="form-group form-search is-empty">
+                        <input name="nam" type="text" class="form-control" placeholder="Nhập năm">
+                    </div>
+                    <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                    </button>
+                </form>
             </div>
         </nav>
 
         <!-- Nội Dung -->
         <div class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <?php
-                        $sqlSelect = "select * from khoahoc";
-                        $result = mysqli_query($conn,$sqlSelect);
-                        while ($row = mysqli_fetch_assoc($result)){ ?>
-                            <div class="col-md-4 col-sm-4">
-                                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                                    <div class="fileinput-new thumbnail">
-                                        <img class="img-rounded" src="<?php echo $row["image"]?>">
-                                    </div>
-                                    <div>
-                                        <button type="button" class="btn btn-danger btn-round fileinput-new" onclick="xoaanh('<?php echo $row["image"]?>')">Xóa</button>
-                                    </div>
-                                </div>
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="card">
+                        <div class="card-header card-header-icon" data-background-color="rose">
+                            <b class="material-icons">toys</b>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="card-title">Doanh thu năm <?php echo $nam?></h4>
+                            <div class="table-responsive">
+                                <table id="tablehocvien" class="table">
+                                    <thead class="text-primary">
+                                    <tr>
+                                        <th class="text-center">Tháng</th>
+                                        <th class="text-center">Thu</th>
+                                        <th class="text-center">Chi</th>
+                                        <th class="text-center">Doanh thu</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    $sqlSelect = "select * from doanhthu where thang like '%$nam%'";
+                                    $result = mysqli_query($conn,$sqlSelect);
+                                    while ($row = mysqli_fetch_assoc($result)){ ?>
+                                        <tr>
+                                            <td class="text-center"><?php echo substr($row["thang"],0,2)?></td>
+                                            <td class="text-center"><?php echo $row["thu"]?>đ</td>
+                                            <td class="text-center"><?php echo $row["chi"]?>đ</td>
+                                            <td class="text-center"><?php echo $row["thu"]-$row["chi"]?>đ</td>
+                                            <td class="td-actions">
+                                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#<?php echo substr($row["thang"],0,2)?>">
+                                                    Chi tiết
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    } ?>
+                                    </tbody>
+                                </table>
                             </div>
-                    <?php
-                        }
-                    ?>
-                    <div class="col-md-4 col-sm-4">
-                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                            <div class="fileinput-new thumbnail">
-                                <img class="img-rounded" src="../assets/img/image_placeholder.jpg">
-                            </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                            <br>
-                            <span>
-                                <span class="btn btn-rose btn-round btn-file">
-                                    <span class="fileinput-new">Thêm ảnh</span>
-                                    <span class="fileinput-exists">Thay đổi</span>
-                                    <input type="file" id="anhmoi"/>
-                                </span>
-                                <button type="button" class="btn btn-success btn-round fileinput-exists" onclick="uploadQC()">Cập nhật</button>
-                            </span>
                         </div>
                     </div>
                 </div>
-
             </div>
+            <!-- Form chi tiết doanh thu -->
+            <?php
+            $sqlSelect = "select * from doanhthu where thang like '%$nam%'";
+            $result = mysqli_query($conn,$sqlSelect);
+            while ($row = mysqli_fetch_assoc($result)) { ?>
+                <div class="modal fade" id="<?php echo substr($row["thang"],0,2)?>" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                        class="sr-only">Close</span></button>
+                                <span class="modal-title" style="font-size: 18px;color: #e91e63" id="myModalLabel">Chi tiết doanh thu tháng <?php echo $row["thang"]?></span>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table id="tablehocvien" class="table">
+                                            <thead class="text-primary">
+                                            <tr>
+                                                <th>Ngày</th>
+                                                <th>Nội dung</th>
+                                                <th>Số tiền</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php
+                                            $thang = $row["thang"];
+                                            $sqlSelectCT = "select * from thongke where thang = '$thang'";
+                                            $resultCT = mysqli_query($conn,$sqlSelectCT);
+                                            while ($rowCT = mysqli_fetch_assoc($resultCT)){ ?>
+                                                <tr>
+                                                    <td><?php echo $rowCT["ngay"]?></td>
+                                                    <td><?php echo $rowCT["noidung"]?></td>
+                                                    <td><?php echo $rowCT["tien"]?>đ</td>
+                                                </tr>
+                                                <?php
+                                            } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
         </div> <!-- /Nội Dung -->
 
         <footer class="footer">
@@ -222,54 +295,6 @@
 <script src="../assets/js/material-dashboard.js"></script>
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../assets/js/demo.js"></script>
-<script>
-    function uploadQC() {
-        var file = document.getElementById("anhmoi").files[0];
-        var image = file['name'];
-        var fd = new FormData();
-        fd.append('file',file);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'upfile.php', true);
-        xhr.send(fd);
-        $.get("modules/adddatabase.php",{anh:image},function () {
-            swal({
-                title: 'Thêm thành công!',
-                text: 'Đã thêm khóa học vào danh sách quảng cáo',
-                type: 'success',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
-            }).then(function () {
-                location.reload();
-            })
-        });
-    }
-    function xoaanh(anh) {
-        swal({
-            title: 'Xóa thật không?',
-            text: 'Có không giữ mất đừng tìm nhé!',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Hỏi làm gì.Xóa đi',
-            cancelButtonText: 'Không',
-            confirmButtonClass: "btn btn-success",
-            cancelButtonClass: "btn btn-danger",
-            buttonsStyling: false
-        }).then(function() {
-            $.get("modules/deldatabase.php",{anh:anh},function () {
-                swal({
-                    title: 'Đã xóa!',
-                    text: 'Mất tiêu luôn.',
-                    type: 'success',
-                    confirmButtonClass: "btn btn-success",
-                    buttonsStyling: false
-                }).then(function () {
-                    location.reload();
-                })
-            });
-        })
-    }
 
-</script>
 </html>
-
 

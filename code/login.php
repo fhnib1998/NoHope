@@ -39,24 +39,26 @@
                                         <i class="material-icons">fingerprint</i>
                                     </div>
                                     <div class="card-content">
-                                        <div class="input-group">
+                                        <form id="formlogin">
+                                            <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="material-icons">face</i>
                                                     </span>
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Tài khoản</label>
-                                                <input type="text" class="form-control" id="taikhoan">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Tài khoản</label>
+                                                    <input type="text" class="form-control" id="taikhoan">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="input-group">
+                                            <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="material-icons">lock_outline</i>
                                                     </span>
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Mật khẩu</label>
-                                                <input type="password" class="form-control" id="matkhau">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Mật khẩu</label>
+                                                    <input type="password" class="form-control" id="matkhau">
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                     <div class="footer text-center">
                                         <button type="button" class="btn btn-rose btn-simple btn-wd btn-lg" onclick="login()">Let's go</button>
@@ -132,7 +134,7 @@
                     confirmButtonClass: "btn btn-success",
                     buttonsStyling: false
                 }).then(function () {
-                    location.reload();
+                    $("#formlogin")[0].reset();
                 })
             }
         })

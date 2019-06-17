@@ -52,7 +52,7 @@
                     <div class="collapse" id="quanlitk">
                         <ul class="nav">
                             <li>
-                                <a href="#">
+                                <a href="thongtinGV.php">
                                     <b class="material-icons">account_box</b>
                                     Thông tin
                                 </a>
@@ -192,6 +192,7 @@
 <script src="../assets/js/demo.js"></script>
 <script>
     function diemdanhlop(lop,b) {
+        $("#diemdanh").html("Đang điểm danh ...");
         var checkbox = document.getElementsByName("diemdanh");
         for (var i = 0; i < checkbox.length; i++){
             var tk = checkbox[i].getAttribute("id");
@@ -201,10 +202,9 @@
                 $.get("modules/updatedatabase.php",{tkdd0:tk,b:b});
             }
         }
-        $.get("modules/thongbaoph.php",{lop:lop,b:b});
         swal({
-            title: "Đã điểm danh!",
-            text: "Đã gửi mail đến phụ huynh học viên nghỉ học",
+            title: "Đang điểm danh!",
+            text: "Chờ xíu nhé.Một tý thôi.",
             buttonsStyling: false,
             confirmButtonClass: "btn btn-success",
             type: "success"

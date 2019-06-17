@@ -48,7 +48,7 @@
                     <div class="collapse" id="quanlitk">
                         <ul class="nav">
                             <li>
-                                <a href="#">
+                                <a href="thongtinGV.php">
                                     <b class="material-icons">account_box</b>
                                     Thông tin
                                 </a>

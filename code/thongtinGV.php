@@ -142,10 +142,10 @@
                                     </div>
                                     <br><br>
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Trình độ</label>
-                                                <textarea rows="2" class="form-control" id="trinhdo"><?php echo $_SESSION['trinhdo']?></textarea>
+                                                <label class="control-label">Số tài khoản</label>
+                                                <input type="text" class="form-control" value="<?php echo $_SESSION['sotk']?>" id="sotk">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -332,7 +332,7 @@
         var hoten = $("#hoten").val();
         var ngaysinh = $("#ngaysinh").val();
         var sodienthoai = $("#sodienthoai").val();
-        var trinhdo = $("#trinhdo").val();
+        var sotk = $("#sotk").val();
         var gioitinh;
         if(document.getElementById("nam").checked){
             gioitinh = "Nam";
@@ -351,7 +351,7 @@
             xhr.send(fd);
         }
         if(avatar != ""){
-            $.get("modules/updatedatabase.php",{tkgv:tk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar:avatar},function () {
+            $.get("modules/updatedatabase.php",{tkgv:tk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,sotk:sotk,gioitinh:gioitinh,avatar:avatar},function () {
                 swal({
                     title: 'Sửa thành công!',
                     text: 'Đã sửa thông tin giáo viên',
@@ -363,7 +363,7 @@
                 })
             })
         }else {
-            $.get("modules/updatedatabase.php",{tkgv:tk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar:""},function () {
+            $.get("modules/updatedatabase.php",{tkgv:tk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,sotk:sotk,gioitinh:gioitinh,avatar:""},function () {
                 swal({
                     title: 'Sửa thành công!',
                     text: 'Đã sửa thông tin giáo viên',

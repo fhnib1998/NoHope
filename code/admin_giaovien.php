@@ -41,7 +41,7 @@
                     </div>
                     <div class="info">
                         <a data-toggle="collapse" href="#quanlitk" class="collapsed">
-                            Hoàng Thanh Bình
+                            Admin
                             <b class="caret"></b>
                         </a>
                         <div class="collapse" id="quanlitk">
@@ -111,6 +111,12 @@
                             <p>Quảng cáo khóa học</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="admin_doanhthu.php">
+                            <i class="material-icons">toys</i>
+                            <p>Doanh thu</p>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -178,6 +184,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Form thông tin giáo viên -->
                             <div class="modal fade" id="thongtin<?php echo $row["tk"]?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -212,12 +219,17 @@
                                                         <td>Lớp đang dạy</td>
                                                         <td><?php echo $row["lop"]?></td>
                                                     </tr>
+                                                    <tr>
+                                                        <td>Số tiền chưa trả</td>
+                                                        <td><?php echo $row["chuatra"]?>đ</td>
+                                                    </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-rose" data-dismiss="modal">Đóng</button>
+                                            <button type="button" class="btn btn-rose" onclick="thanhtoangv('<?php echo $row["tk"]?>','<?php echo $row["hoten"]?>','<?php echo $row["sotk"]?>','<?php echo $row["chuatra"]?>')">Thanh toán</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
                                         </div>
                                     </div>
                                 </div>
@@ -287,6 +299,9 @@
                 })
             });
         })
+    }
+    function thanhtoangv(tk,hoten,sotk,chuatra) {
+        window.location.href = "admin_thanhtoan.php?hoten="+hoten+"&sotk="+sotk+"&chuatra="+chuatra+"&tk="+tk;
     }
 </script>
 </html>

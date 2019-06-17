@@ -56,7 +56,7 @@
                     <div class="collapse" id="quanlitk">
                         <ul class="nav">
                             <li>
-                                <a href="#">
+                                <a href="thongtinGV.php">
                                     <b class="material-icons">account_box</b>
                                     Thông tin
                                 </a>
@@ -193,19 +193,21 @@
                                                     <table id="tablehocvien" class="table">
                                                         <thead class="text-primary">
                                                         <tr>
-                                                            <th>Họ tên</th>
-                                                            <th>Ngày sinh</th>
-                                                            <th>Giới tính</th>
-                                                            <th>Số điện thoại</th>
+                                                            <th class="text-center">Họ tên</th>
+                                                            <th class="text-center">Ngày sinh</th>
+                                                            <th class="text-center">Số điện thoại</th>
+                                                            <th class="text-center">Đã học</th>
+                                                            <th class="text-center">Nghỉ</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
                                                         <?php while ($rowHocvien = mysqli_fetch_assoc($resultHocvien)){ ?>
                                                             <tr id="<?php echo $rowHocvien["tk"]?>">
-                                                                <td><?php echo $rowHocvien["hoten"]?></td>
-                                                                <td><?php echo $rowHocvien["ngaysinh"]?></td>
-                                                                <td><?php echo $rowHocvien["gioitinh"]?></td>
-                                                                <td><?php echo $rowHocvien["sdt"]?></td>
+                                                                <td class="text-center"><?php echo $rowHocvien["hoten"]?></td>
+                                                                <td class="text-center"><?php echo $rowHocvien["ngaysinh"]?></td>
+                                                                <td class="text-center"><?php echo $rowHocvien["sdt"]?></td>
+                                                                <td class="text-center"><?php echo $rowHocvien["hoc"]?></td>
+                                                                <td class="text-center"><?php echo $rowHocvien["nghi"]?></td>
                                                             </tr>
                                                             <?php
                                                         } ?>

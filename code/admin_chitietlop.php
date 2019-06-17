@@ -6,9 +6,9 @@
         $select = "select * from lop where tenlop='$tenlop'";
         $result = mysqli_query($conn,$select);
         $row = mysqli_fetch_row($result) or die("Lỗi truy vấn");
-        $selectHocvien = "select * from hocvien where lop='$tenlop'";
+        $selectHocvien = "select tk,hoten,hoc,nghi,nop,chuanop from hocvien where lop='$tenlop'";
         $resultHocvien = mysqli_query($conn,$selectHocvien)or die("Lỗi truy vấn");
-        $selectGiaovien = "select * from giaovien";
+        $selectGiaovien = "select hoten from giaovien";
         $resultGiaovien = mysqli_query($conn,$selectGiaovien)or die("Lỗi truy vấn");
 }
 ?>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#quanlitk" class="collapsed">
-                        Hoàng Thanh Bình
+                        Admin
                         <b class="caret"></b>
                     </a>
                     <div class="collapse" id="quanlitk">
@@ -119,6 +119,12 @@
                     <a href="admin_editweb.php">
                         <i class="material-icons">dashboard</i>
                         <p>Quảng cáo khóa học</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin_doanhthu.php">
+                        <i class="material-icons">toys</i>
+                        <p>Doanh thu</p>
                     </a>
                 </li>
             </ul>
@@ -205,6 +211,10 @@
                                                             <td><?php echo $row[4]?></td>
                                                         </tr>
                                                         <tr>
+                                                            <td>Học phí</td>
+                                                            <td><?php echo $row[27]?></td>
+                                                        </tr>
+                                                        <tr>
                                                             <td>Sĩ số</td>
                                                             <td><?php echo $row[5]?></td>
                                                         </tr>
@@ -230,20 +240,22 @@
                                                     <table id="tablehocvien" class="table">
                                                         <thead class="text-primary">
                                                         <tr>
-                                                            <th>Họ tên</th>
-                                                            <th>Ngày sinh</th>
-                                                            <th>Giới tính</th>
-                                                            <th>Số điện thoại</th>
+                                                            <th class="text-center">Họ tên</th>
+                                                            <th class="text-center">Đã học</th>
+                                                            <th class="text-center">Nghỉ</th>
+                                                            <th class="text-center">Đã đóng</th>
+                                                            <th class="text-center">Chưa đóng</th>
                                                             <th></th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
                                                         <?php while ($rowHocvien = mysqli_fetch_assoc($resultHocvien)){ ?>
                                                             <tr id="<?php echo $rowHocvien["tk"]?>">
-                                                                <td><?php echo $rowHocvien["hoten"]?></td>
-                                                                <td><?php echo $rowHocvien["ngaysinh"]?></td>
-                                                                <td><?php echo $rowHocvien["gioitinh"]?></td>
-                                                                <td><?php echo $rowHocvien["sdt"]?></td>
+                                                                <td class="text-center"><?php echo $rowHocvien["hoten"]?></td>
+                                                                <td class="text-center"><?php echo $rowHocvien["hoc"]?> buổi</td>
+                                                                <td class="text-center"><?php echo $rowHocvien["nghi"]?> buổi</td>
+                                                                <td class="text-center"><?php echo $rowHocvien["nop"]?>đ</td>
+                                                                <td class="text-center"><?php echo $rowHocvien["chuanop"]?>đ</td>
                                                                 <td class="td-actions">
                                                                     <button type="button" class="btn btn-info btn-round" data-toggle="modal" data-target="#suahocvien" onclick="loadhocvien('<?php echo $rowHocvien["tk"]?>','<?php echo $rowHocvien["mk"]?>','<?php echo $rowHocvien["hoten"]?>','<?php echo $rowHocvien["ngaysinh"]?>','<?php echo $rowHocvien["gioitinh"]?>','<?php echo $rowHocvien["sdt"]?>','<?php echo $rowHocvien["gmail"]?>')">
                                                                         <i class="material-icons">edit</i>
@@ -257,6 +269,7 @@
                                                         } ?>
                                                         </tbody>
                                                     </table>
+                                                    <button type="button" class="btn btn-primary pull-left" onclick="diemdanhgv('<?php echo $row[1]?>','<?php echo $row[28]?>')">Điểm danh giáo viên</button>
                                                     <button type="button" class="btn btn-rose pull-right" data-toggle="modal" data-target="#themhocvien">Thêm học viên</button>
                                                 </div>
                                             </div>
@@ -384,16 +397,22 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-sm-5">
+                                    <div class="col-sm-4">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Đối tượng</label>
                                             <input type="text" class="form-control" id="suadoituong" value="<?php echo $row[4]?>">
                                         </div>
                                     </div>
-                                    <div class="col-sm-5">
+                                    <div class="col-sm-4">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Phòng học</label>
                                             <input type="text" class="form-control" id="suaphonghoc" value="<?php echo $row[2]?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Học phí</label>
+                                            <input type="text" class="form-control" id="suahocphi" value="<?php echo $row[27]?>">
                                         </div>
                                     </div>
                                 </div>
@@ -715,6 +734,7 @@
         var sodienthoai = $("#sodienthoai").val();
         var gmail = $("#gmail").val();
         var lop = $("#lop").val();
+        var hocphi = <?php echo $row[27]?>;
         var gioitinh;
         if(document.getElementById("nam").checked){
             gioitinh = "Nam";
@@ -744,7 +764,7 @@
             document.getElementById("loihoten").innerHTML = "Họ tên không được để trống";
         }
         if(tk!==""&&mk!==""&&hoten!==""&&checktk===0){
-            $.get("modules/adddatabase.php",{taikhoanhv:tk,matkhau:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,gmail:gmail,gioitinh:gioitinh,lop:lop},function () {
+            $.get("modules/adddatabase.php",{taikhoanhv:tk,matkhau:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,gmail:gmail,gioitinh:gioitinh,lop:lop,hocphi:hocphi},function () {
                 swal({
                     title: 'Đã thêm!',
                     text: 'Thêm thành công học viên',
@@ -754,7 +774,7 @@
                 }).then(function () {
                     var tkhv="'"+tk+"'";
                     var thongtin = "'"+tk+"',"+"'"+mk+"',"+"'"+hoten+"',"+"'"+ngaysinh+"',"+"'"+gioitinh+"',"+"'"+sodienthoai+"',"+"'"+gmail+"'";
-                    var row = '<tr id="'+tk+'"><td>'+hoten+'</td><td>'+ngaysinh+'</td><td>'+gioitinh+'</td><td>'+sodienthoai+'</td><td class="td-actions"><button type="button" class="btn btn-info btn-round" data-toggle="modal" data-target="#suahocvien" onclick="loadhocvien('+thongtin+')"><i class="material-icons">edit</i></button><button type="button" rel="tooltip" class="btn btn-success btn-round" onclick="xacnhanxoa('+tkhv+')"><i class="material-icons">close</i></button></td></tr>';
+                    var row = '<tr id="'+tk+'"><td class="text-center">'+hoten+'</td><td class="text-center">0 buổi</td><td class="text-center">0 buổi</td><td class="text-center">0đ</td><td class="text-center">0đ</td><td class="td-actions"><button type="button" class="btn btn-info btn-round" data-toggle="modal" data-target="#suahocvien" onclick="loadhocvien('+thongtin+')"><i class="material-icons">edit</i></button><button type="button" rel="tooltip" class="btn btn-success btn-round" onclick="xacnhanxoa('+tkhv+')"><i class="material-icons">close</i></button></td></tr>';
                     $("#tablehocvien").append(row);
                     $("#formthemhocvien")[0].reset();
                 })
@@ -799,13 +819,6 @@
                 type: 'success',
                 confirmButtonClass: "btn btn-success",
                 buttonsStyling: false
-            }).then(function () {
-                var tkhv="'"+tk+"'";
-                var thongtin = "'"+tk+"',"+"'"+mk+"',"+"'"+hoten+"',"+"'"+ngaysinh+"',"+"'"+gioitinh+"',"+"'"+sodienthoai+"',"+"'"+gmail+"'";
-                var row = '<tr id="'+tk+'"><td>'+hoten+'</td><td>'+ngaysinh+'</td><td>'+gioitinh+'</td><td>'+sodienthoai+'</td><td class="td-actions"><button type="button" class="btn btn-info btn-round" data-toggle="modal" data-target="#suahocvien" onclick="loadhocvien('+thongtin+')"><i class="material-icons">edit</i></button><button type="button" rel="tooltip" class="btn btn-success btn-round" onclick="xacnhanxoa('+tkhv+')"><i class="material-icons">close</i></button></td></tr>';
-                var child = document.getElementById(tk);
-                child.parentNode.removeChild(child);
-                $("#tablehocvien").append(row);
             })
         })
     }
@@ -816,7 +829,8 @@
         var phonghoc = $("#suaphonghoc").val();
         var cahoc = $("#suacahoc").val();
         var giaovien = $("#suagiaovien").val();
-        $.get("modules/updatedatabase.php",{tenlop:tenlop,khaigiang:khaigiang,doituong:doituong,phonghoc:phonghoc,cahoc:cahoc,giaovien:giaovien},function () {
+        var hocphi = $("#suahocphi").val();
+        $.get("modules/updatedatabase.php",{tenlop:tenlop,khaigiang:khaigiang,doituong:doituong,phonghoc:phonghoc,cahoc:cahoc,giaovien:giaovien,hocphi:hocphi},function () {
             swal({
                 title: 'Đã sửa!',
                 text: 'Sửa thành công lớp học',
@@ -876,6 +890,19 @@
                 $.get("modules/deldatabase.php?tenlop="+tenlop,function () {
                     window.location.href = "admin_lop.php";
                 });
+            })
+        })
+    }
+    function diemdanhgv(giaovien,luong) {
+        $.get("modules/updatedatabase.php",{giaovien:giaovien,luong:luong},function () {
+            swal({
+                title: 'Điểm danh thành công!',
+                text: 'Đã điểm danh giáo viên',
+                type: 'success',
+                confirmButtonClass: "btn btn-success",
+                buttonsStyling: false
+            }).then(function () {
+                window.location.href = "admin_lop.php?tk=admin";
             })
         })
     }

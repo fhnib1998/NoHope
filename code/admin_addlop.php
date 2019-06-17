@@ -43,7 +43,7 @@
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#quanlitk" class="collapsed">
-                        Hoàng Thanh Bình
+                        Admin
                         <b class="caret"></b>
                     </a>
                     <div class="collapse" id="quanlitk">
@@ -111,6 +111,12 @@
                     <a href="admin_editweb.php">
                         <i class="material-icons">dashboard</i>
                         <p>Quảng cáo khóa học</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin_doanhthu.php">
+                        <i class="material-icons">toys</i>
+                        <p>Doanh thu</p>
                     </a>
                 </li>
             </ul>
@@ -182,6 +188,23 @@
                                 <br>
                                 <div class="row col-sm-offset-1">
                                     <div class="col-sm-5">
+                                        <div id="checkhocphi" class="form-group label-floating">
+                                            <label class="control-label">Học phí (đ)</label>
+                                            <input type="text" class="form-control" id="hocphi" >
+                                            <code class="hidden" id="loihocphi"></code>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div id="checkluong" class="form-group label-floating">
+                                            <label class="control-label">Lương giáo viên (đ)</label>
+                                            <input type="text" class="form-control" id="luong" >
+                                            <code class="hidden" id="loiluong"></code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row col-sm-offset-1">
+                                    <div class="col-sm-5">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Ca học</label>
                                             <input type="text" class="form-control" id="cahoc" >
@@ -224,38 +247,12 @@
 <script src="../assets/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="../assets/js/material.min.js" type="text/javascript"></script>
 <script src="../assets/js/perfect-scrollbar.jquery.min.js" type="text/javascript"></script>
-<!-- Forms Validations Plugin -->
-<script src="../assets/js/jquery.validate.min.js"></script>
-<!--  Plugin for Date Time Picker and Full Calendar Plugin-->
-<script src="../assets/js/moment.min.js"></script>
-<!--  Charts Plugin -->
-<script src="../assets/js/chartist.min.js"></script>
-<!--  Plugin for the Wizard -->
-<script src="../assets/js/jquery.bootstrap-wizard.js"></script>
-<!--  Notifications Plugin    -->
-<script src="../assets/js/bootstrap-notify.js"></script>
-<!--   Sharrre Library    -->
-<script src="../assets/js/jquery.sharrre.js"></script>
 <!-- DateTimePicker Plugin -->
 <script src="../assets/js/bootstrap-datetimepicker.js"></script>
-<!-- Vector Map plugin -->
-<script src="../assets/js/jquery-jvectormap.js"></script>
-<!-- Sliders Plugin -->
-<script src="../assets/js/nouislider.min.js"></script>
-<!--  Google Maps Plugin    -->
-<script src="https://maps.googleapis.com/maps/api/js"></script>
 <!-- Select Plugin -->
 <script src="../assets/js/jquery.select-bootstrap.js"></script>
-<!--  DataTables.net Plugin    -->
-<script src="../assets/js/jquery.datatables.js"></script>
 <!-- Sweet Alert 2 plugin -->
 <script src="../assets/js/sweetalert2.js"></script>
-<!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
-<script src="../assets/js/jasny-bootstrap.min.js"></script>
-<!--  Full Calendar Plugin    -->
-<script src="../assets/js/fullcalendar.min.js"></script>
-<!-- TagsInput Plugin -->
-<script src="../assets/js/jquery.tagsinput.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
@@ -302,6 +299,30 @@
                 document.getElementById("loikhaigiang").setAttribute("class", "hidden");
             }
         });
+        $("#hocphi").blur(function () {
+            var hocphi = $(this).val();
+            if(hocphi===""){
+                document.getElementById("checkhocphi").setAttribute("class","form-group label-floating has-error");
+                document.getElementById("loihocphi").setAttribute("class","");
+                document.getElementById("loihocphi").innerHTML = "Học phí không được trống";
+            }
+            else {
+                document.getElementById("checkhocphi").setAttribute("class", "form-group label-floating");
+                document.getElementById("loihocphi").setAttribute("class", "hidden");
+            }
+        });
+        $("#luong").blur(function () {
+            var luong = $(this).val();
+            if(luong===""){
+                document.getElementById("checkluong").setAttribute("class","form-group label-floating has-error");
+                document.getElementById("loiluong").setAttribute("class","");
+                document.getElementById("loiluong").innerHTML = "Lương GV không được trống";
+            }
+            else {
+                document.getElementById("checkluong").setAttribute("class", "form-group label-floating");
+                document.getElementById("loiluong").setAttribute("class", "hidden");
+            }
+        });
     });
     function themlop() {
         var tenlop = $("#tenlop").val();
@@ -310,6 +331,8 @@
         var phonghoc = $("#phonghoc").val();
         var cahoc = $("#cahoc").val();
         var giaovien = $("#giaovien").val();
+        var hocphi = $("#hocphi").val();
+        var luong = $("#luong").val();
         if(tenlop==="")
         {
             document.getElementById("checktenlop").setAttribute("class","form-group label-floating has-error");
@@ -322,8 +345,18 @@
             document.getElementById("loikhaigiang").setAttribute("class","");
             document.getElementById("loikhaigiang").innerHTML = "Chưa chọn ngày khai giảng";
         }
-        if(tenlop!==""&&khaigiang!==""&&checklop===0){
-            $.get("modules/adddatabase.php",{tenlop:tenlop,khaigiang:khaigiang,doituong:doituong,phonghoc:phonghoc,cahoc:cahoc,giaovien:giaovien},function () {
+        if(hocphi===""){
+            document.getElementById("checkhocphi").setAttribute("class","form-group label-floating has-error");
+            document.getElementById("loihocphi").setAttribute("class","");
+            document.getElementById("loihocphi").innerHTML = "Học phí không được trống";
+        }
+        if(luong===""){
+            document.getElementById("checkluong").setAttribute("class","form-group label-floating has-error");
+            document.getElementById("loiluong").setAttribute("class","");
+            document.getElementById("loiluong").innerHTML = "Lương GV không được trống";
+        }
+        if(tenlop!==""&&khaigiang!==""&&hocphi!==""&&luong!==""&&checklop===0){
+            $.get("modules/adddatabase.php",{tenlop:tenlop,khaigiang:khaigiang,doituong:doituong,phonghoc:phonghoc,cahoc:cahoc,giaovien:giaovien,hocphi:hocphi,luong:luong},function () {
                 swal({
                     title: 'Đã thêm!',
                     text: 'Thêm thành công học viên',

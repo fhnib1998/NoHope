@@ -23,8 +23,6 @@
     $tenlop = $_SESSION['lop'];
     $select = "select * from lop where tenlop='$tenlop'";
     $row = mysqli_fetch_row(mysqli_query($conn,$select));
-    $selectHocvien = "select * from hocvien where lop='$tenlop'";
-    $resultHocvien = mysqli_query($conn,$selectHocvien)or die("Lỗi truy vấn");
 ?>
 <!doctype html>
 <html lang="en">
@@ -99,6 +97,12 @@
                         <p>Lớp học</p>
                     </a>
                 </li>
+                <li>
+                    <a href="hocvien_thanhtoan.php">
+                        <i class="material-icons">style</i>
+                        <p>Thanh toán online</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -146,9 +150,9 @@
                                                     <i class="material-icons">event</i> Lịch học
                                                 </a>
                                             </li>
-                                            <li id="tabhocvien">
-                                                <a href="#hocvien" role="tab" data-toggle="tab">
-                                                    <i class="material-icons">person</i> Học viên
+                                            <li id="tabhocphi">
+                                                <a href="#hocphi" role="tab" data-toggle="tab">
+                                                    <i class="material-icons">toys</i> Học phí
                                                 </a>
                                             </li>
                                         </ul>
@@ -183,6 +187,10 @@
                                                             <td><?php echo $row[4]?></td>
                                                         </tr>
                                                         <tr>
+                                                            <td>Học phí</td>
+                                                            <td><?php echo $row[27]?>đ</td>
+                                                        </tr>
+                                                        <tr>
                                                             <td>Sĩ số</td>
                                                             <td><?php echo $row[5]?></td>
                                                         </tr>
@@ -197,27 +205,29 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane" id="hocvien">
+                                            <div class="tab-pane" id="hocphi">
                                                 <div class="table-responsive">
-                                                    <table id="tablehocvien" class="table">
+                                                    <table class="table">
                                                         <thead class="text-primary">
-                                                        <tr>
-                                                            <th>Họ tên</th>
-                                                            <th>Ngày sinh</th>
-                                                            <th>Giới tính</th>
-                                                            <th>Số điện thoại</th>
-                                                        </tr>
+                                                            <th class="text-center">Học viên</th>
+                                                            <th class="text-center"><?php echo $rowHV[2]?></th>
                                                         </thead>
                                                         <tbody>
-                                                        <?php while ($rowHocvien = mysqli_fetch_assoc($resultHocvien)){ ?>
-                                                            <tr id="<?php echo $rowHocvien["tk"]?>">
-                                                                <td><?php echo $rowHocvien["hoten"]?></td>
-                                                                <td><?php echo $rowHocvien["ngaysinh"]?></td>
-                                                                <td><?php echo $rowHocvien["gioitinh"]?></td>
-                                                                <td><?php echo $rowHocvien["sdt"]?></td>
+                                                            <tr>
+                                                                <td class="text-center">Đã học</td>
+                                                                <td class="text-center"><?php echo $rowHV[30]?> buổi</td>
                                                             </tr>
-                                                            <?php
-                                                        } ?>
+                                                            <tr>
+                                                                <td class="text-center">Nghỉ</td>
+                                                                <td class="text-center"><?php echo $rowHV[28]?> buổi</td>
+                                                            <tr>
+                                                                <td class="text-center">Đã nộp</td>
+                                                                <td class="text-center"><?php echo $rowHV[32]?>đ</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">Chưa nộp</td>
+                                                                <td class="text-center"><?php echo $rowHV[33]?>đ</td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -263,6 +273,7 @@
 <script src="../assets/js/demo.js"></script>
 
 <script type="text/javascript">
+
     //Lịch
     $calendar = $('#fullCalendar');
 
@@ -341,6 +352,7 @@
         ]
     });
 </script>
+
 <style type="text/css">
     .card-calendar table td{
         text-align: center;

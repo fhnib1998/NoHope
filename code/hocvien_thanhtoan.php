@@ -2,17 +2,16 @@
     ob_start();
     session_start();
     include("modules/kndatabase.php");
-    if(isset($_GET['tk'])){
-        $_SESSION['tk'] = $_GET['tk'];
-        $_SESSION['quyen'] = "admin";
-}
+    $taikhoan = $_SESSION['tk'];
+    $selectTK = "select tk from hocvien where tk = '$taikhoan'";
+    $rowHV = mysqli_fetch_row(mysqli_query($conn,$selectTK));
 ?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Quảng cáo khóa học</title>
+    <title>Lớp học</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <!-- Bootstrap core CSS     -->
@@ -42,17 +41,17 @@
         <div class="sidebar-wrapper">
             <div class="user">
                 <div class="photo">
-                    <img src="../assets/img/logo.png" />
+                    <img src="<?php if($_SESSION['avatar']==null){echo "../assets/img/logo.png";}else{echo $_SESSION['avatar'];} ?>" />
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#quanlitk" class="collapsed">
-                        Admin
+                        <?php echo $_SESSION['hoten']?>
                         <b class="caret"></b>
                     </a>
                     <div class="collapse" id="quanlitk">
                         <ul class="nav">
                             <li>
-                                <a href="#">
+                                <a href="thongtinHV.php">
                                     <b class="material-icons">account_box</b>
                                     Thông tin
                                 </a>
@@ -75,51 +74,15 @@
                     </a>
                 </li>
                 <li>
-                    <a data-toggle="collapse" href="#quanlilophoc">
+                    <a href="hocvien_lop.php">
                         <i class="material-icons">class</i>
-                        <p>Quản lí lớp học
-                            <b class="caret"></b>
-                        </p>
+                        <p>Lớp học</p>
                     </a>
-                    <div class="collapse" id="quanlilophoc">
-                        <ul class="nav">
-                            <li>
-                                <a href="admin_lop.php">Danh sách lớp học</a>
-                            </li>
-                            <li>
-                                <a href="admin_addlop.php">Thêm lớp học</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a data-toggle="collapse" href="#quanligiaovien">
-                        <i class="material-icons">school</i>
-                        <p>Quản lí giáo viên
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="quanligiaovien">
-                        <ul class="nav">
-                            <li>
-                                <a href="admin_giaovien.php">Danh sách giáo viên</a>
-                            </li>
-                            <li>
-                                <a href="admin_addgiaovien.php">Thêm giáo viên</a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
                 <li class="active">
-                    <a href="admin_editweb.php">
-                        <i class="material-icons">dashboard</i>
-                        <p>Quảng cáo khóa học</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="admin_doanhthu.php">
-                        <i class="material-icons">toys</i>
-                        <p>Doanh thu</p>
+                    <a href="hocvien_thanhtoan.php">
+                        <i class="material-icons">style</i>
+                        <p>Thanh toán online</p>
                     </a>
                 </li>
             </ul>
@@ -141,59 +104,57 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand">Quảng cáo khóa học</a>
+                    <a class="navbar-brand">Thanh toán online</a>
                 </div>
             </div>
         </nav>
-
         <!-- Nội Dung -->
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <?php
-                        $sqlSelect = "select * from khoahoc";
-                        $result = mysqli_query($conn,$sqlSelect);
-                        while ($row = mysqli_fetch_assoc($result)){ ?>
-                            <div class="col-md-4 col-sm-4">
-                                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                                    <div class="fileinput-new thumbnail">
-                                        <img class="img-rounded" src="<?php echo $row["image"]?>">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="card">
+                            <div class="card-header card-header-icon" data-background-color="rose">
+                                <i class="material-icons">style</i>
+                            </div>
+                            <div class="card-content">
+                                <h4 class="card-title">Thanh toán online</h4>
+                                <br>
+                                <div class="row col-md-8 col-md-offset-2">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Tên chủ tài khoản</label>
+                                        <input type="text" class="form-control" id="tenchutk" value="HOÀNG THANH BÌNH" disabled>
                                     </div>
-                                    <div>
-                                        <button type="button" class="btn btn-danger btn-round fileinput-new" onclick="xoaanh('<?php echo $row["image"]?>')">Xóa</button>
+                                    <br>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Số tài khoản</label>
+                                        <input type="text" class="form-control" id="sotk" value="12031998" disabled>
                                     </div>
+                                    <br>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Số tiền</label>
+                                        <input type="text" class="form-control" id="tien">
+                                    </div>
+                                    <br>
+                                    <select class="selectpicker col-md-6" data-style="btn btn-primary btn-round" title="Single Select">
+                                        <option disabled selected>Chọn ngân hàng</option>
+                                        <option>MB Bank</option>
+                                        <option>Vietcombank</option>
+                                        <option>Vietinbank</option>
+                                        <option>TP Bank</option>
+                                        <option>BIDV</option>
+                                    </select>
+                                    <br>
                                 </div>
+                                <button type="button" class="btn btn-rose pull-right" onclick="thanhtoan()">Thanh toán</button>
                             </div>
-                    <?php
-                        }
-                    ?>
-                    <div class="col-md-4 col-sm-4">
-                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                            <div class="fileinput-new thumbnail">
-                                <img class="img-rounded" src="../assets/img/image_placeholder.jpg">
-                            </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                            <br>
-                            <span>
-                                <span class="btn btn-rose btn-round btn-file">
-                                    <span class="fileinput-new">Thêm ảnh</span>
-                                    <span class="fileinput-exists">Thay đổi</span>
-                                    <input type="file" id="anhmoi"/>
-                                </span>
-                                <button type="button" class="btn btn-success btn-round fileinput-exists" onclick="uploadQC()">Cập nhật</button>
-                            </span>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div> <!-- /Nội Dung -->
-
         <footer class="footer">
             <div class="container-fluid">
-                <nav class="pull-left">
-
-                </nav>
                 <p class="copyright pull-right">
                     &copy;2019 No Hope, Study and Succeed afterward
                 </p>
@@ -214,6 +175,8 @@
 <script src="../assets/js/bootstrap-datetimepicker.js"></script>
 <!-- Sweet Alert 2 plugin -->
 <script src="../assets/js/sweetalert2.js"></script>
+<!-- Select Plugin -->
+<script src="../assets/js/jquery.select-bootstrap.js"></script>
 <!--  Full Calendar Plugin    -->
 <script src="../assets/js/fullcalendar.min.js"></script>
 <!--	Plugin for Fileupload -->
@@ -222,54 +185,37 @@
 <script src="../assets/js/material-dashboard.js"></script>
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../assets/js/demo.js"></script>
-<script>
-    function uploadQC() {
-        var file = document.getElementById("anhmoi").files[0];
-        var image = file['name'];
-        var fd = new FormData();
-        fd.append('file',file);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'upfile.php', true);
-        xhr.send(fd);
-        $.get("modules/adddatabase.php",{anh:image},function () {
-            swal({
-                title: 'Thêm thành công!',
-                text: 'Đã thêm khóa học vào danh sách quảng cáo',
-                type: 'success',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
-            }).then(function () {
-                location.reload();
-            })
-        });
-    }
-    function xoaanh(anh) {
+
+<script type="text/javascript">
+    //Thanh toán
+    function thanhtoan(){
+        var tien = $("#tien").val();
+        var tk = "<?php echo $rowHV[0]?>";
+        $.get("modules/doanhthu.php",{tkhv:tk,tien:tien});
         swal({
-            title: 'Xóa thật không?',
-            text: 'Có không giữ mất đừng tìm nhé!',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Hỏi làm gì.Xóa đi',
-            cancelButtonText: 'Không',
+            title: 'Thanh toán thành công!',
+            text: 'Đã nộp học phí',
+            type: 'success',
             confirmButtonClass: "btn btn-success",
-            cancelButtonClass: "btn btn-danger",
             buttonsStyling: false
-        }).then(function() {
-            $.get("modules/deldatabase.php",{anh:anh},function () {
-                swal({
-                    title: 'Đã xóa!',
-                    text: 'Mất tiêu luôn.',
-                    type: 'success',
-                    confirmButtonClass: "btn btn-success",
-                    buttonsStyling: false
-                }).then(function () {
-                    location.reload();
-                })
-            });
+        }).then(function () {
+            location.reload();
         })
     }
-
 </script>
+
+<style type="text/css">
+    .card-calendar table td{
+        text-align: center;
+    }
+    .fc-event{
+        font-size: 12px;
+        line-height: 1.5;
+    }
+    .fc-unthemed .fc-today{
+        background: #a7ffeb;
+    }
+</style>
 </html>
 
 
