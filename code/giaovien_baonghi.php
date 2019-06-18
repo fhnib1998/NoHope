@@ -200,11 +200,24 @@
 <script src="../assets/js/jasny-bootstrap.min.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../assets/js/demo.js"></script>
+
 <script>
     $(document).ready(function () {
-        demo.initFormExtendedDatetimepickers();
+        $('.datepicker').datetimepicker({
+            format: 'MM/DD/YYYY',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+                inline: true
+            }
+        });
         $("#tenbuoinghi").blur(function () {
             var tenbuoinghi = $(this).val();
             if(tenbuoinghi===""){

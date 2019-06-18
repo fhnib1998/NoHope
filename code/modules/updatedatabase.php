@@ -86,7 +86,8 @@
         $gioitinh = $_GET["gioitinh"];
         $sdt = $_GET["sdt"];
         $gmail = $_GET["gmail"];
-        $sqlUpdate = "update hocvien set mk='$matkhau',hoten='$hoten',ngaysinh='$ngaysinh',gioitinh='$gioitinh',sdt='$sdt',gmail='$gmail' where tk = '$taikhoan'";
+        $giamgia = $_GET["giamgia"];
+        $sqlUpdate = "update hocvien set mk='$matkhau',hoten='$hoten',ngaysinh='$ngaysinh',gioitinh='$gioitinh',sdt='$sdt',gmail='$gmail',giamgia=$giamgia where tk = '$taikhoan'";
         mysqli_query($conn,$sqlUpdate);
         $sqlUpdateTV = "update thanhvien set mk ='$matkhau' where tk = '$taikhoan'";
         mysqli_query($conn,$sqlUpdateTV);
@@ -98,14 +99,15 @@
         $cahoc = $_GET["cahoc"];
         $doituong = $_GET["doituong"];
         $hocphi = $_GET["hocphi"];
+        $luong = $_GET["luong"];
         $giaovien = $_GET["giaovien"];
         $sqlSelectLop = "select giaovien from lop where tenlop = '$tenlop'";
         $rowLop = mysqli_fetch_row(mysqli_query($conn,$sqlSelectLop));
         $giaovienC = $rowLop[0];
         if($giaovienC == $giaovien|| $giaovien == ""){
-            $sqlUpdate = "update lop set khaigiang='$khaigiang',phonghoc='$phonghoc',cahoc='$cahoc',doituong='$doituong',hocphi = $hocphi where tenlop = '$tenlop'";
+            $sqlUpdate = "update lop set khaigiang='$khaigiang',phonghoc='$phonghoc',cahoc='$cahoc',doituong='$doituong',hocphi = $hocphi,luong=$luong where tenlop = '$tenlop'";
         }else{
-            $sqlUpdate = "update lop set khaigiang='$khaigiang',giaovien='$giaovien',phonghoc='$phonghoc',cahoc='$cahoc',doituong='$doituong',hocphi = $hocphi where tenlop = '$tenlop'";
+            $sqlUpdate = "update lop set khaigiang='$khaigiang',giaovien='$giaovien',phonghoc='$phonghoc',cahoc='$cahoc',doituong='$doituong',hocphi = $hocphi,luong=$luong where tenlop = '$tenlop'";
             $sqlSelectGVC = "Select tk,lop from giaovien where hoten = '$giaovienC'";
             $rowC = mysqli_fetch_row(mysqli_query($conn,$sqlSelectGVC));
             $taikhoanC = $rowC[0];
@@ -125,10 +127,10 @@
     if(isset($_GET["tkdd1"])){
         $taikhoan = $_GET["tkdd1"];
         $b = $_GET["b"];
-        $sqlSelect = "select hoc,hocphi,chuanop from hocvien where tk = '$taikhoan'";
+        $sqlSelect = "select hoc,hocphi,chuanop,giamgia from hocvien where tk = '$taikhoan'";
         $row = mysqli_fetch_row(mysqli_query($conn,$sqlSelect));
         $hoc = $row[0] + 1;
-        $chuanop = $row[2]+ $row[1];
+        $chuanop = $row[2]+ $row[1] - $row[1]*$row[3]/100;
         $sqlUpdate = "update hocvien set $b = 1,hoc = $hoc,chuanop = $chuanop where tk = '$taikhoan'";
         mysqli_query($conn,$sqlUpdate);
     }

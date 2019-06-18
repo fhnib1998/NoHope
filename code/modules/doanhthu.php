@@ -9,30 +9,26 @@
         $hocvien = $rowHV[0];
         $lop = $rowHV[1];
         $nop = $rowHV[4] + $tien;
-        if($rowHV[5]>=0){
-            $chuanop = $rowHV[5]-$tien;
-        }else{
-            $chuanop = $rowHV[5]+$tien;
-        }
+        $chuanop = $rowHV[5] - $tien;
         $sqlUpdateHV = "update hocvien set nop = $nop,chuanop = $chuanop where tk = '$tk'";
         mysqli_query($conn,$sqlUpdateHV);
-        $ngay = date("d/m/Y");
+        $ngay = date("m/d/Y");
         $thang = date("m/Y");
-        $sqlSelect = "select * from doanhthu where thang = '$thang'";
+        $sqlSelect = "select thu from doanhthu where thang = '$thang'";
         $result = mysqli_query($conn,$sqlSelect);
         if($row = mysqli_fetch_row($result)){
-            $thu = $row[1] + $tien;
+            $thu = $row[0] + $tien;
             $sqlUpdate = "update doanhthu set thu = $thu where thang = '$thang'";
             mysqli_query($conn,$sqlUpdate);
             $noidung = "Học viên ".$hocvien." lớp ".$lop." nộp";
-            $sqlInsert = "insert into thongke(thang,ngay,noidung,tien) values('$thang','$ngay','$noidung',$tien)";
+            $sqlInsert = "insert into thongke(thang,ngay,noidung,tien,trangthai) values('$thang','$ngay','$noidung',$tien,'Thu')";
             mysqli_query($conn,$sqlInsert);
         }
         else{
             $sqlInsert = "insert into doanhthu(thang,thu) values('$thang',$tien)";
             mysqli_query($conn,$sqlInsert);
             $noidung = "Học viên ".$hocvien." lớp ".$lop." nộp";
-            $sqlInsert = "insert into thongke(thang,ngay,noidung,tien) values('$thang','$ngay','$noidung',$tien)";
+            $sqlInsert = "insert into thongke(thang,ngay,noidung,tien,trangthai) values('$thang','$ngay','$noidung',$tien,'Thu')";
             mysqli_query($conn,$sqlInsert);
         }
         $mail = new PHPMailer();
@@ -54,29 +50,29 @@
     if(isset($_GET["tkgv"])){
         $tk = $_GET["tkgv"];
         $tien = $_GET["tien"];
-        $sqlSelectHV = "select hoten,chuatra from giaovien where tk='$tk'";
+        $sqlSelectHV = "select hoten from giaovien where tk='$tk'";
         $rowGV = mysqli_fetch_row(mysqli_query($conn,$sqlSelectHV));
         $giaovien = $rowGV[0];
         $chuatra = 0;
         $sqlUpdateGV = "update giaovien set chuatra = $chuatra where tk = '$tk'";
-        mysqli_query($conn,$sqlUpdateHV);
-        $ngay = date("d/m/Y");
+        mysqli_query($conn,$sqlUpdateGV);
+        $ngay = date("m/d/Y");
         $thang = date("m/Y");
-        $sqlSelect = "select * from doanhthu where thang = '$thang'";
+        $sqlSelect = "select chi from doanhthu where thang = '$thang'";
         $result = mysqli_query($conn,$sqlSelect);
         if($row = mysqli_fetch_row($result)){
-            $chi = $row[2] + $tien;
+            $chi = $row[0] + $tien;
             $sqlUpdate = "update doanhthu set chi = $chi where thang = '$thang'";
             mysqli_query($conn,$sqlUpdate);
             $noidung = "Trả lương giáo viên ".$giaovien;
-            $sqlInsert = "insert into thongke(thang,ngay,noidung,tien) values('$thang','$ngay','$noidung',$tien)";
+            $sqlInsert = "insert into thongke(thang,ngay,noidung,tien,trangthai) values('$thang','$ngay','$noidung',$tien,'Chi')";
             mysqli_query($conn,$sqlInsert);
         }
         else{
             $sqlInsert = "insert into doanhthu(thang,chi) values('$thang',$tien)";
             mysqli_query($conn,$sqlInsert);
             $noidung = "Trả lương giáo viên ".$giaovien;
-            $sqlInsert = "insert into thongke(thang,ngay,noidung,tien) values('$thang','$ngay','$noidung',$tien)";
+            $sqlInsert = "insert into thongke(thang,ngay,noidung,tien,trangthai) values('$thang','$ngay','$noidung',$tien,'Chi')";
             mysqli_query($conn,$sqlInsert);
         }
     }

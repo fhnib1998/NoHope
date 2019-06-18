@@ -222,11 +222,11 @@
                                                                 <td class="text-center"><?php echo $rowHV[28]?> buổi</td>
                                                             <tr>
                                                                 <td class="text-center">Đã nộp</td>
-                                                                <td class="text-center"><?php echo $rowHV[32]?>đ</td>
+                                                                <td class="text-center"><?php $nop = number_format($rowHV[32]); echo $nop?> đ</td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="text-center">Chưa nộp</td>
-                                                                <td class="text-center"><?php echo $rowHV[33]?>đ</td>
+                                                                <td class="text-center"><?php $chuanop = number_format($rowHV[33]); echo $chuanop?>đ</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -269,8 +269,7 @@
 <script src="../assets/js/jasny-bootstrap.min.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../assets/js/demo.js"></script>
+
 
 <script type="text/javascript">
 

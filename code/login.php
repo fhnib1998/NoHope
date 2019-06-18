@@ -89,8 +89,7 @@
 <script src="../assets/js/sweetalert2.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../assets/js/demo.js"></script>
+
 <script type="text/javascript">
     function login() {
         var tk = $('#taikhoan').val();

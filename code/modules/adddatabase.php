@@ -26,13 +26,14 @@
         $lop = $_GET["lop"];
         $gmail = $_GET["gmail"];
         $hocphi = $_GET["hocphi"];
+        $giamgia = $_GET["giamgia"];
         $sqlSelect = "Select siso from lop where tenlop = '$lop'";
         $result = mysqli_query($conn,$sqlSelect);
         $row = mysqli_fetch_row($result);
         $siso = $row[0]+1;
         $sqlUpdate = "update lop set siso ='$siso' where tenlop = '$lop'";
         mysqli_query($conn,$sqlUpdate);
-        $sqlInsert = "insert into hocvien(tk,mk,hoten,ngaysinh,gioitinh,sdt,gmail,lop,hocphi) values('$taikhoan','$matkhau','$hoten','$ngaysinh','$gioitinh','$sodienthoai','$gmail','$lop',$hocphi)";
+        $sqlInsert = "insert into hocvien(tk,mk,hoten,ngaysinh,gioitinh,sdt,gmail,lop,hocphi,giamgia) values('$taikhoan','$matkhau','$hoten','$ngaysinh','$gioitinh','$sodienthoai','$gmail','$lop',$hocphi,$giamgia)";
         mysqli_query($conn, $sqlInsert) or die("Lỗi truy vẫn");
         $sqlInsertTV = "insert into thanhvien(tk,mk,quyen) values('$taikhoan','$matkhau','hv') ";
         mysqli_query($conn,$sqlInsertTV);

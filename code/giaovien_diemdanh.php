@@ -6,6 +6,7 @@
     $b = $_GET["b"];
     $sqlSelect = "select * from hocvien where lop = '$lop'";
     $result = mysqli_query($conn,$sqlSelect);
+    $checkdiemdanh = 0;
 ?>
 <!doctype html>
 <html lang="en">
@@ -140,7 +141,7 @@
                                             <td>
                                                 <div class="checkbox">
                                                     <label>
-                                                        <input id="<?php echo $row["tk"]?>" name="diemdanh" type="checkbox" <?php if($row[$b] == 1){echo "checked";}?>>
+                                                        <input id="<?php echo $row["tk"]?>" name="diemdanh" type="checkbox" <?php if($row[$b] == 1){echo "checked"; $checkdiemdanh++;}?>>
                                                     </label>
                                                 </div>
                                             </td>
@@ -150,7 +151,15 @@
                                     ?>
                                     </tbody>
                                 </table>
-                                <button id="diemdanh" type="button" class="btn btn-rose pull-right" onclick="diemdanhlop('<?php echo $lop?>','<?php echo $b?>')">Điểm danh</button>
+                                <?php
+                                    if($checkdiemdanh == 0){?>
+                                        <button id="diemdanh" type="button" class="btn btn-rose pull-right" onclick="diemdanhlop('<?php echo $lop?>','<?php echo $b?>')">Điểm danh</button>
+                                <?php
+                                    }else{?>
+                                        <button type="button" class="btn btn-rose pull-right" onclick="quaylai('<?php echo $lop?>')">Quay lại</button>
+                                <?php
+                                    }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -188,8 +197,7 @@
 <script src="../assets/js/jasny-bootstrap.min.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../assets/js/demo.js"></script>
+
 <script>
     function diemdanhlop(lop,b) {
         $("#diemdanh").html("Đang điểm danh ...");
@@ -211,6 +219,9 @@
         }).then(function () {
             window.location.href = "giaovien_chitietlop.php?tenlop="+lop;
         });
+    }
+    function quaylai(lop) {
+        window.location.href = "giaovien_chitietlop.php?tenlop="+lop;
     }
 </script>
 </html>

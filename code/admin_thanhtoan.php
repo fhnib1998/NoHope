@@ -170,7 +170,7 @@
                                     <br>
                                     <div class="form-group label-floating">
                                         <label class="control-label">Số tiền</label>
-                                        <input type="text" class="form-control" value="<?php echo $chuatra?>" id="tien" disabled>
+                                        <input type="text" class="form-control" value="<?php $tien = number_format($chuatra); echo $tien?>" id="tien" disabled>
                                     </div>
                                     <br>
                                     <select class="selectpicker col-md-6" data-style="btn btn-primary btn-round" title="Single Select">
@@ -225,12 +225,10 @@
 <script src="../assets/js/jasny-bootstrap.min.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../assets/js/demo.js"></script>
 <script type="text/javascript">
     //Thanh toán
     function thanhtoan(){
-        var tien = $("#tien").val();
+        var tien = <?php echo $chuatra?>;
         var tk = "<?php echo $tk?>";
         $.get("modules/doanhthu.php",{tkgv:tk,tien:tien});
         swal({

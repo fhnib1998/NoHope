@@ -252,8 +252,6 @@
 <script src="../assets/js/jasny-bootstrap.min.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../assets/js/demo.js"></script>
 
 <script type="text/javascript">
     //Lịch
@@ -308,7 +306,7 @@
                     start: '<?php echo $row[$i + 6]?>',
                     className: 'event-azure',
                     allDay: true,
-                    url: "giaovien_diemdanh.php?lop=<?php echo $row[0]?>&&b=<?php echo "b$i"?>"
+                    url: "giaovien_diemdanh.php?lop=<?php echo $row[0]?>&b=<?php echo "b$i"?>&"
                 },
                 <?php
                 }

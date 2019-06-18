@@ -165,7 +165,7 @@
                                     <div class="col-sm-5">
                                         <div id="checkkhaigiang" class="form-group label-floating">
                                             <label class="control-label">Khai giảng</label>
-                                            <input type="text" class="form-control datepicker" id="khaigiang">
+                                            <input type="text" class="form-control datepicker" value="" id="khaigiang">
                                             <code class="hidden" id="loikhaigiang"></code>
                                         </div>
                                     </div>
@@ -247,6 +247,8 @@
 <script src="../assets/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="../assets/js/material.min.js" type="text/javascript"></script>
 <script src="../assets/js/perfect-scrollbar.jquery.min.js" type="text/javascript"></script>
+<!--  Plugin for Date Time Picker and Full Calendar Plugin-->
+<script src="../assets/js/moment.min.js"></script>
 <!-- DateTimePicker Plugin -->
 <script src="../assets/js/bootstrap-datetimepicker.js"></script>
 <!-- Select Plugin -->
@@ -255,14 +257,27 @@
 <script src="../assets/js/sweetalert2.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../assets/js/demo.js"></script>
+
 
 <script type="text/javascript">
 
     var checklop = 0;
     $(document).ready(function () {
-        demo.initFormExtendedDatetimepickers();
+        $('.datepicker').datetimepicker({
+            format: 'MM/DD/YYYY',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+                inline: true
+            }
+        });
         $("#tenlop").blur(function () {
             var tenlop = $(this).val();
             if(tenlop==="") {

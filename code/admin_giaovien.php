@@ -221,7 +221,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Số tiền chưa trả</td>
-                                                        <td><?php echo $row["chuatra"]?>đ</td>
+                                                        <td><?php $chuatra = number_format($row["chuatra"]); echo $chuatra?> đ</td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
@@ -272,8 +272,7 @@
 <script src="../assets/js/jasny-bootstrap.min.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../assets/js/demo.js"></script>
+
 <script type="text/javascript">
     function xacnhanxoa(tk) {
         swal({
