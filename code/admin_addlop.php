@@ -1,7 +1,7 @@
 <?php
     ob_start();
     include("modules/kndatabase.php");
-    $selectGiaovien = "select * from giaovien";
+    $selectGiaovien = "select hoten from giaovien";
     $resultGiaovien = mysqli_query($conn,$selectGiaovien)or die("Lỗi truy vấn");
 ?>
 <!doctype html>
@@ -19,6 +19,7 @@
     <!--     Fonts and icons     -->
     <link href="../assets/css/all.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../assets/css/icon.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <!-- Style of me -->
     <link href="../assets/css/style.css" rel="stylesheet" />
 </head>
@@ -81,7 +82,10 @@
                     <div class="collapse in" id="quanlilophoc">
                         <ul class="nav">
                             <li>
-                                <a href="admin_lop.php">Danh sách lớp học</a>
+                                <a href="admin_lop.php">Các lớp đang mở</a>
+                            </li>
+                            <li>
+                                <a href="admin_lopdong.php">Các lớp đang đóng</a>
                             </li>
                             <li class="active">
                                 <a href="admin_addlop.php">Thêm lớp học</a>
@@ -103,6 +107,24 @@
                             </li>
                             <li>
                                 <a href="admin_addgiaovien.php">Thêm giáo viên</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a data-toggle="collapse" href="#quanlihocvien">
+                        <i class="material-icons">assignment</i>
+                        <p>Quản lí học viên
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="quanlihocvien">
+                        <ul class="nav">
+                            <li>
+                                <a href="admin_hocvien.php">Danh sách học viên</a>
+                            </li>
+                            <li>
+                                <a href="admin_baonghi.php">Báo nghỉ</a>
                             </li>
                         </ul>
                     </div>
@@ -255,6 +277,8 @@
 <script src="../assets/js/jquery.select-bootstrap.js"></script>
 <!-- Sweet Alert 2 plugin -->
 <script src="../assets/js/sweetalert2.js"></script>
+<!-- Auto format money -->
+<script src="../assets/js/simple.money.format.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
 
@@ -263,6 +287,8 @@
 
     var checklop = 0;
     $(document).ready(function () {
+        $('#hocphi').simpleMoneyFormat();
+        $('#luong').simpleMoneyFormat();
         $('.datepicker').datetimepicker({
             format: 'MM/DD/YYYY',
             icons: {
@@ -373,8 +399,8 @@
         if(tenlop!==""&&khaigiang!==""&&hocphi!==""&&luong!==""&&checklop===0){
             $.get("modules/adddatabase.php",{tenlop:tenlop,khaigiang:khaigiang,doituong:doituong,phonghoc:phonghoc,cahoc:cahoc,giaovien:giaovien,hocphi:hocphi,luong:luong},function () {
                 swal({
-                    title: 'Đã thêm!',
-                    text: 'Thêm thành công học viên',
+                    title: 'Thêm lớp thành công!',
+                    text: 'Đã thêm lớp học',
                     type: 'success',
                     confirmButtonClass: "btn btn-success",
                     buttonsStyling: false
@@ -385,18 +411,7 @@
         }
     }
 </script>
-<style type="text/css">
-    .card-calendar table td{
-        text-align: center;
-    }
-    .fc-event{
-        font-size: 12px;
-        line-height: 1.5;
-    }
-    .fc-unthemed .fc-today{
-        background: #a7ffeb;
-    }
-</style>
+
 </html>
 
 

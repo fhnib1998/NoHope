@@ -208,6 +208,71 @@
             </div>
         </div>
     </div>
+    <div class="section-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="title">
+                        <h2 class="title text-center">Các khóa học</h2>
+                        <h4 class="text-center">Tuỳ trình độ và nhu cầu của học viên, No Hope luôn có những khoá học phù hợp nhất để học viên lựa chọn.</h4>
+                        <br>
+                    </div>
+                    <div>
+                        <img class="d-block w-100" src="">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card card-blog">
+                        <div class="card-header card-header-image">
+                            <a href="#pablo">
+                                <img src="../assetsKIT/img/vusquangtrung-73.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-category text-warning">Dynamic Shadows</h6>
+                            <h4 class="card-title">
+                                <a href="#pablo">The image from this card is getting a yellow shadow</a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-blog">
+                        <div class="card-header card-header-image">
+                            <a href="#pablo">
+                                <img src="../assetsKIT/img/vusquangtrung-60.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-category text-rose">Dynamic Shadows</h6>
+                            <h4 class="card-title">
+                                <a href="#pablo">The image from this card is getting a pink shadow</a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-blog">
+                        <div class="card-header card-header-image">
+                            <a href="#pablo">
+                                <img src="../assetsKIT/img/vusquangtrung-19.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="card-body ">
+                            <h6 class="card-category text-info">Dynamic Shadows</h6>
+                            <h4 class="card-title">
+                                <a href="#pablo">The image from this card is getting a blue shadow</a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+            </div>
+            <br><br><br>
+        </div>
+    </div>
     <div class="section section-image" style="background-image: url('../assetsKIT/img/lophocbe1.jpg');">
         <div class="container">
             <h2 class="title text-center">Đội ngũ giáo viên</h2>
@@ -296,8 +361,13 @@
                                     <span class="material-input"></span>
                                 </div>
                                 <div class="form-group label-floating is-empty">
+                                    <label class="bmd-label-floating">Lớp muốn đăng kí</label>
+                                    <input type="text" id="lop" class="form-control">
+                                    <span class="material-input"></span>
+                                </div>
+                                <div class="form-group label-floating is-empty">
                                     <label for="exampleMessage1" class="bmd-label-floating">Lời nhắn</label>
-                                    <textarea class="form-control" id="loinhan" rows="4"></textarea>
+                                    <textarea class="form-control" id="loinhan" rows="3"></textarea>
                                     <span class="material-input"></span>
                                 </div>
                             </div>
@@ -311,6 +381,7 @@
         </div>
     </div>
 </div>
+</body>
 <footer class="footer ">
     <div class="container">
         <div class="copyright pull-right">
@@ -321,28 +392,26 @@
         </div>
     </div>
 </footer>
+
+
 <!--   Core JS Files   -->
 <script src="../assetsKIT/js/core/jquery.min.js"></script>
 <script src="../assetsKIT/js/core/popper.min.js"></script>
 <script src="../assetsKIT/js/bootstrap-material-design.js"></script>
-<!-- Sweet Alert 2 plugin -->
-<script src="../assets/js/sweetalert2.js"></script>
 <!-- Plugins for presentation and navigation  -->
 <script src="../assetsKIT/js/modernizr.js"></script>
 <script src="../assetsKIT/js/vertical-nav.js"></script>
 <!-- Material Kit Core initialisations of plugins and Bootstrap Material Design Library -->
 <script src="../assetsKIT/js/material-kit.js?v=2.0.3"></script>
-<!-- Fixed Sidebar Nav - js With initialisations For Demo Purpose, Don't Include it in your project -->
-<script src="../assetsKIT/js/material-kit-demo.js"></script>
 <script>
     function dangkituvan() {
         var hoten = $('#hoten').val();
         var sdt = $('#sdt').val();
         var email = $('#email').val();
+        var lop = $('#lop').val();
         var loinhan = $('#loinhan').val();
-        $.get("modules/dangkituvan.php",{hoten:hoten,sdt:sdt,email:email,loinhan:loinhan});
+        $.get("modules/dangkituvan.php",{hoten:hoten,sdt:sdt,email:email,lop:lop,loinhan:loinhan});
+        $('#dangkituvan')[0].reset();
     }
 </script>
-</body>
-
 </html>

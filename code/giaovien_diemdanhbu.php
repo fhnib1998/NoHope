@@ -3,16 +3,14 @@
     session_start();
     include("modules/kndatabase.php");
     $lop = $_GET["lop"];
-    $taikhoan = $_SESSION['tk'];
-    $selectTK = "select tk from hocvien where tk = '$taikhoan'";
-    $rowHV = mysqli_fetch_row(mysqli_query($conn,$selectTK));
+    $b = $_GET["b"];
 ?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Lớp học</title>
+    <title>Quản lí lớp</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <!-- Bootstrap core CSS     -->
@@ -43,7 +41,7 @@
         <div class="sidebar-wrapper">
             <div class="user">
                 <div class="photo">
-                    <img src="<?php if($_SESSION['avatar']==null){echo "../assets/img/logo.png";}else{echo $_SESSION['avatar'];} ?>" />
+                    <img src="<?php echo $_SESSION['avatar']?>" />
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#quanlitk" class="collapsed">
@@ -53,7 +51,7 @@
                     <div class="collapse" id="quanlitk">
                         <ul class="nav">
                             <li>
-                                <a href="thongtinHV.php">
+                                <a href="thongtinGV.php">
                                     <b class="material-icons">account_box</b>
                                     Thông tin
                                 </a>
@@ -76,9 +74,15 @@
                     </a>
                 </li>
                 <li class="active">
-                    <a href="hocvien_lop.php">
+                    <a href="giaovien_lop.php">
                         <i class="material-icons">class</i>
-                        <p>Lớp học</p>
+                        <p>Danh sách lớp dạy</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="giaovien_baonghi.php">
+                        <i class="material-icons">work_off</i>
+                        <p>Báo nghỉ</p>
                     </a>
                 </li>
             </ul>
@@ -100,54 +104,54 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand">Thanh toán online</a>
+                    <a class="navbar-brand">Danh sách lớp học</a>
                 </div>
             </div>
         </nav>
+
         <!-- Nội Dung -->
         <div class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-2">
-                        <div class="card">
-                            <div class="card-header card-header-icon" data-background-color="rose">
-                                <i class="material-icons">style</i>
-                            </div>
-                            <div class="card-content">
-                                <h4 class="card-title">Thanh toán online</h4>
-                                <br>
-                                <div class="row col-md-8 col-md-offset-2">
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Lớp</label>
-                                        <input type="text" class="form-control" id="lop" value="<?php echo $lop?>" disabled>
-                                    </div>
-                                    <br>
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Tên chủ tài khoản</label>
-                                        <input type="text" class="form-control" id="tenchutk" value="HOÀNG THANH BÌNH" disabled>
-                                    </div>
-                                    <br>
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Số tài khoản</label>
-                                        <input type="text" class="form-control" id="sotk" value="12031998" disabled>
-                                    </div>
-                                    <br>
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Số tiền</label>
-                                        <input type="text" class="form-control" id="tien">
-                                    </div>
-                                    <br>
-                                    <select class="selectpicker col-md-6" data-style="btn btn-primary btn-round" title="Single Select">
-                                        <option disabled selected>Chọn ngân hàng</option>
-                                        <option>MB Bank</option>
-                                        <option>Vietcombank</option>
-                                        <option>Vietinbank</option>
-                                        <option>TP Bank</option>
-                                        <option>BIDV</option>
-                                    </select>
-                                    <br>
-                                </div>
-                                <button type="button" class="btn btn-rose pull-right" onclick="thanhtoan()">Thanh toán</button>
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="card">
+                        <div class="card-header card-header-icon" data-background-color="rose">
+                            <i class="material-icons">assignment_turned_in</i>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="card-title">Điểm danh lại lớp<?php echo $lop;?> buổi <?php echo $b?></h4>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="text-primary">
+                                    <tr>
+                                        <th>Họ tên</th>
+                                        <th>Ngày sinh</th>
+                                        <th>Giới tính</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    $sqlSelect = "select tk,hoten,ngaysinh,gioitinh from hocvien where lop like '%$lop%'";
+                                    $result = mysqli_query($conn,$sqlSelect);
+                                    while ($row = mysqli_fetch_assoc($result)){ ?>
+                                        <tr>
+                                            <td><?php echo $row["hoten"]?></td>
+                                            <td><?php echo $row["ngaysinh"]?></td>
+                                            <td><?php echo $row["gioitinh"]?></td>
+                                            <td>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input id="<?php echo $row["tk"]?>" onchange="diemdanhbu('<?php echo $row["tk"]?>','<?php echo $lop?>','<?php echo $b?>')" name="diemdanh" type="checkbox" <?php $tk = $row["tk"]; $sqlSelectD = "select dd from diemdanh where tk = '$tk' and lop = '$lop' and buoi = '$b'";$resultD = mysqli_query($conn,$sqlSelectD);$rowD = mysqli_fetch_row($resultD); if($rowD[0] == 1){echo "checked";}?>>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                                <button type="button" class="btn btn-rose pull-right" onclick="quaylai('<?php echo $lop?>')">Sửa điểm danh</button>
                             </div>
                         </div>
                     </div>
@@ -156,6 +160,9 @@
         </div> <!-- /Nội Dung -->
         <footer class="footer">
             <div class="container-fluid">
+                <nav class="pull-left">
+
+                </nav>
                 <p class="copyright pull-right">
                     &copy;2019 No Hope, Study and Succeed afterward
                 </p>
@@ -176,61 +183,34 @@
 <script src="../assets/js/bootstrap-datetimepicker.js"></script>
 <!-- Sweet Alert 2 plugin -->
 <script src="../assets/js/sweetalert2.js"></script>
-<!-- Select Plugin -->
-<script src="../assets/js/jquery.select-bootstrap.js"></script>
 <!--  Full Calendar Plugin    -->
 <script src="../assets/js/fullcalendar.min.js"></script>
 <!--	Plugin for Fileupload -->
 <script src="../assets/js/jasny-bootstrap.min.js"></script>
-<!-- Auto format money -->
-<script src="../assets/js/simple.money.format.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
 
-<script type="text/javascript">
-    $('#tien').simpleMoneyFormat();
-    //Thanh toán
-    function thanhtoan(){
-        var tk = "<?php echo $rowHV[0]?>";
-        var lop = "<?php echo $lop?>";
-        var tien = $("#tien").val();
-        if(/^[0-9,]*$/.test(tien)==true){
-            $.get("modules/doanhthu.php",{tkhv:tk,tien:tien,lop:lop});
-            swal({
-                title: 'Thanh toán thành công!',
-                text: 'Đã nộp học phí',
-                type: 'success',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
-            }).then(function () {
-                location.reload();
-            })
+<script>
+    function diemdanhbu(tk,lop,b) {
+        if(document.getElementById(tk).checked === true){
+            $.get("modules/updatedatabase.php",{tkdd1b:tk,b:b,lop:lop});
         }else {
-            swal({
-                title: 'Thanh toán không thành công!',
-                text: 'Số tiền nhập không hợp lệ',
-                type: 'error',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
-            }).then(function () {
-                location.reload();
-            })
+            $.get("modules/updatedatabase.php",{tkdd0b:tk,b:b,lop:lop});
         }
     }
+    function quaylai(lop) {
+        swal({
+            title: "Điểm danh thành công!!",
+            text: "Đã điểm danh lại",
+            buttonsStyling: false,
+            confirmButtonClass: "btn btn-success",
+            type: "success"
+        }).then(function () {
+            window.location.href = "giaovien_chitietlop.php?tenlop="+lop;
+        });
+    }
 </script>
-
-<style type="text/css">
-    .card-calendar table td{
-        text-align: center;
-    }
-    .fc-event{
-        font-size: 12px;
-        line-height: 1.5;
-    }
-    .fc-unthemed .fc-today{
-        background: #a7ffeb;
-    }
-</style>
 </html>
+
 
 

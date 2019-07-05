@@ -1,4 +1,9 @@
-
+<?php
+    session_start();
+    if(isset($_SESSION["tk"])){
+        session_destroy();
+    }
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,6 +19,7 @@
     <!-- Fonts and icons -->
     <link href="../assets/css/all.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../assets/css/icon.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <!-- Style of me -->
     <link href="../assets/css/style.css" rel="stylesheet" />
 </head>

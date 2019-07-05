@@ -3,10 +3,20 @@
     session_start();
     include("modules/kndatabase.php");
     $lop = $_GET["lop"];
+    $sqlSelectL = "select giaovien,luong from lop where tenlop = '$lop'";
+    $rowL = mysqli_fetch_row(mysqli_query($conn,$sqlSelectL));
     $b = $_GET["b"];
-    $sqlSelect = "select * from hocvien where lop = '$lop'";
-    $result = mysqli_query($conn,$sqlSelect);
-    $checkdiemdanh = 0;
+    $ngay = strtotime($_GET["ngay"]);
+    $homnay = strtotime(date("m/d/Y"));
+    $sqlSelectD = "select dd from diemdanh where lop = '$lop' and buoi = '$b'";
+    $resultD = mysqli_query($conn,$sqlSelectD);
+    $diemdanh = 0;
+    if($rowD = mysqli_fetch_row($resultD)){
+        $diemdanh = 1;
+    }
+    if($ngay == $homnay && $diemdanh == 1){
+        header("location: giaovien_diemdanhbu.php?lop=$lop&b=$b");
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -23,6 +33,7 @@
     <!--     Fonts and icons     -->
     <link href="../assets/css/all.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../assets/css/icon.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <!-- Style of me -->
     <link href="../assets/css/style.css" rel="stylesheet" />
 </head>
@@ -120,7 +131,7 @@
                             <i class="material-icons">assignment_turned_in</i>
                         </div>
                         <div class="card-content">
-                            <h4 class="card-title">Điểm danh lớp <?php echo $lop;?>&ensp;<?php echo strtoupper($b)?></h4>
+                            <h4 class="card-title">Điểm danh lớp <?php echo $lop;?> buổi <?php echo $b?></h4>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead class="text-primary">
@@ -133,6 +144,8 @@
                                     </thead>
                                     <tbody>
                                     <?php
+                                    $sqlSelect = "select tk,hoten,ngaysinh,gioitinh from hocvien where lop like '%$lop%'";
+                                    $result = mysqli_query($conn,$sqlSelect);
                                     while ($row = mysqli_fetch_assoc($result)){ ?>
                                         <tr>
                                             <td><?php echo $row["hoten"]?></td>
@@ -141,7 +154,7 @@
                                             <td>
                                                 <div class="checkbox">
                                                     <label>
-                                                        <input id="<?php echo $row["tk"]?>" name="diemdanh" type="checkbox" <?php if($row[$b] == 1){echo "checked"; $checkdiemdanh++;}?>>
+                                                        <input id="<?php echo $row["tk"]?>" name="diemdanh" type="checkbox" <?php $tk = $row["tk"]; $sqlSelectD = "select dd from diemdanh where tk = '$tk' and lop = '$lop' and buoi = '$b'";$resultD = mysqli_query($conn,$sqlSelectD);$rowD = mysqli_fetch_row($resultD); if($rowD[0] == 1){echo "checked";}?>>
                                                     </label>
                                                 </div>
                                             </td>
@@ -152,11 +165,12 @@
                                     </tbody>
                                 </table>
                                 <?php
-                                    if($checkdiemdanh == 0){?>
-                                        <button id="diemdanh" type="button" class="btn btn-rose pull-right" onclick="diemdanhlop('<?php echo $lop?>','<?php echo $b?>')">Điểm danh</button>
+                                    if($diemdanh == 0){?>
+                                        <button id="diemdanh" type="button" class="btn btn-rose pull-right" onclick="diemdanhlop('<?php echo $lop?>','<?php echo $b?>','<?php echo $rowL[0]?>','<?php echo $rowL[1]?>')">Điểm danh</button>
+                                        <button type="button" class="btn btn-default pull-right" onclick="quaylai('<?php echo $lop?>')">Quay lại</button>
                                 <?php
                                     }else{?>
-                                        <button type="button" class="btn btn-rose pull-right" onclick="quaylai('<?php echo $lop?>')">Quay lại</button>
+                                        <button type="button" class="btn btn-default pull-right" onclick="quaylai('<?php echo $lop?>')">Quay lại</button>
                                 <?php
                                     }
                                 ?>
@@ -199,15 +213,16 @@
 <script src="../assets/js/material-dashboard.js"></script>
 
 <script>
-    function diemdanhlop(lop,b) {
+    function diemdanhlop(lop,b,giaovien,luong) {
         $("#diemdanh").html("Đang điểm danh ...");
+        $.get("modules/updatedatabase.php",{giaovien:giaovien,luong:luong});
         var checkbox = document.getElementsByName("diemdanh");
         for (var i = 0; i < checkbox.length; i++){
             var tk = checkbox[i].getAttribute("id");
             if (checkbox[i].checked === true){
-                $.get("modules/updatedatabase.php",{tkdd1:tk,b:b});
+                $.get("modules/updatedatabase.php",{tkdd1:tk,b:b,lop:lop});
             }else{
-                $.get("modules/updatedatabase.php",{tkdd0:tk,b:b});
+                $.get("modules/updatedatabase.php",{tkdd0:tk,b:b,lop:lop});
             }
         }
         swal({

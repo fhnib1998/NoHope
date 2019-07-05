@@ -14,15 +14,9 @@
         $_SESSION['sdt']= $rowHV[5];
         $_SESSION['gmail']= $rowHV[6];
         $_SESSION['lop']= $rowHV[7];
-        $_SESSION['avatar']= $rowHV[29];
+        $_SESSION['avatar']= $rowHV[9];
         $_SESSION['quyen'] = "hv";
     }
-    $taikhoan = $_SESSION['tk'];
-    $selectTK = "select * from hocvien where tk = '$taikhoan'";
-    $rowHV = mysqli_fetch_row(mysqli_query($conn,$selectTK));
-    $tenlop = $_SESSION['lop'];
-    $select = "select * from lop where tenlop='$tenlop'";
-    $row = mysqli_fetch_row(mysqli_query($conn,$select));
 ?>
 <!doctype html>
 <html lang="en">
@@ -39,6 +33,7 @@
     <!--     Fonts and icons     -->
     <link href="../assets/css/all.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../assets/css/icon.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <!-- Style of me -->
     <link href="../assets/css/style.css" rel="stylesheet" />
 </head>
@@ -97,12 +92,6 @@
                         <p>Lớp học</p>
                     </a>
                 </li>
-                <li>
-                    <a href="hocvien_thanhtoan.php">
-                        <i class="material-icons">style</i>
-                        <p>Thanh toán online</p>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>
@@ -130,114 +119,54 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-10 col-md-offset-1">
-                        <div class="card">
-                            <div class="card-header card-header-icon" data-background-color="rose">
-                                <i class="material-icons">class</i>
-                            </div>
-                            <div class="card-content">
-                                <h4 class="card-title">Thông tin lớp <?php echo $row[0] ?></h4>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <ul class="nav nav-pills nav-pills-icons nav-pills-rose nav-stacked" role="tablist">
-                                            <li id="tabthongtin">
-                                                <a href="#thongtin" role="tab" data-toggle="tab">
-                                                    <i class="material-icons">info</i> Thông tin
-                                                </a>
-                                            </li>
-                                            <li id="tablichhoc" class="active">
-                                                <a href="#lichhoc" role="tab" data-toggle="tab">
-                                                    <i class="material-icons">event</i> Lịch học
-                                                </a>
-                                            </li>
-                                            <li id="tabhocphi">
-                                                <a href="#hocphi" role="tab" data-toggle="tab">
-                                                    <i class="material-icons">toys</i> Học phí
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-8 col-md-offset-1">
-                                        <div class="tab-content">
-                                            <div class="tab-pane" id="thongtin">
-                                                <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead class="text-primary">
-                                                        <th>Lớp</th>
-                                                        <th><?php echo $row[0]?></th>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>Khai giảng</td>
-                                                            <td><?php echo $row[3]?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Giáo viên</td>
-                                                            <td><?php echo $row[1]?></td>
-                                                        <tr>
-                                                            <td>Phòng học</td>
-                                                            <td><?php echo $row[2]?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Ca học</td>
-                                                            <td><?php echo $row[6]?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Đối tượng</td>
-                                                            <td><?php echo $row[4]?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Học phí</td>
-                                                            <td><?php echo $row[27]?>đ</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Sĩ số</td>
-                                                            <td><?php echo $row[5]?></td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane active" id="lichhoc">
-                                                <div class="card card-calendar">
-                                                    <div class="card-content" class="ps-child">
-                                                        <div id="fullCalendar"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane" id="hocphi">
-                                                <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead class="text-primary">
-                                                            <th class="text-center">Học viên</th>
-                                                            <th class="text-center"><?php echo $rowHV[2]?></th>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="text-center">Đã học</td>
-                                                                <td class="text-center"><?php echo $rowHV[30]?> buổi</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-center">Nghỉ</td>
-                                                                <td class="text-center"><?php echo $rowHV[28]?> buổi</td>
-                                                            <tr>
-                                                                <td class="text-center">Đã nộp</td>
-                                                                <td class="text-center"><?php $nop = number_format($rowHV[32]); echo $nop?> đ</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-center">Chưa nộp</td>
-                                                                <td class="text-center"><?php $chuanop = number_format($rowHV[33]); echo $chuanop?>đ</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
+                    <?php
+                    $taikhoan = $_SESSION["tk"];
+                    $sqlSelect = "select lop from hocvienlop where tk = '$taikhoan'";
+                    $result = mysqli_query($conn,$sqlSelect);
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $tenlop = $row["lop"];
+                        $sqlSelectL = "select tenlop,khaigiang,doituong from lop where tenlop = '$tenlop'";
+                        $resultL = mysqli_query($conn,$sqlSelectL);
+                        $rowL = mysqli_fetch_row($resultL);
+                        ?>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header card-header-icon" data-background-color="rose">
+                                    <b class="material-icons">class</b>
+                                    <h4 class="card-title"><?php echo $rowL[0];?></h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead class="text-primary">
+                                            <th>Lớp</th>
+                                            <th><?php echo $rowL[0];?></th>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>Khai giảng</td>
+                                                <td><?php echo $rowL[1];?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Đối tượng</td>
+                                                <td><?php echo $rowL[2];?></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <a href="hocvien_chitietlop.php?lop=<?php echo $rowL[0]?>">
+                                                        <button type="button" class="btn btn-rose pull-right">Chi tiết</button>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div> <!-- /Nội Dung -->
@@ -270,88 +199,6 @@
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
 
-
-<script type="text/javascript">
-
-    //Lịch
-    $calendar = $('#fullCalendar');
-
-    today = new Date();
-    y = today.getFullYear();
-    m = today.getMonth();
-    d = today.getDate();
-
-    $calendar.fullCalendar({
-        viewRender: function(view, element) {
-            // We make sure that we activate the perfect scrollbar when the view isn't on Month
-            if (view.name != 'month'){
-                $(element).find('.fc-scroller').perfectScrollbar();
-            }
-        },
-        header: {
-            left: 'title',
-            right: 'prev,next,today'
-        },
-        defaultDate: today,
-        selectable: true,
-        selectHelper: true,
-        views: {
-            month: { // name of view
-                titleFormat: 'MMMM YYYY'
-                // other view-specific options here
-            }
-        },
-        editable: true,
-        eventLimit: true, // allow "more" link when too many events
-        // color classes: [ event-blue | event-azure | event-green | event-orange | event-red ]
-        events: [
-            <?php
-            if($row[7]==null){?>
-            {
-                title: 'Khai giảng',
-                start: '<?php echo $row[3]?>',
-                className: 'event-azure',
-                allDay: true
-            },
-            <?php
-            }
-            else{
-                for($i = 1;$i <= 20;$i++){
-                    if($row[$i+6]==null){
-                        $row[$i+6]="03/12/1998";
-                    }
-                    if($rowHV[$i+7] == 2){?>
-                        {
-                            title: '<?php echo "Buổi $i"?>',
-                            start: '<?php echo $row[$i + 6]?>',
-                            className: 'event-azure',
-                            allDay: true
-                        },
-            <?php
-                    }elseif($rowHV[$i+7] == 1){?>
-                        {
-                            title: '<?php echo "Buổi $i"?>',
-                            start: '<?php echo $row[$i + 6]?>',
-                            className: 'event-green',
-                            allDay: true
-                        },
-            <?php
-                    }else{?>
-                        {
-                            title: '<?php echo "Buổi $i"?>',
-                            start: '<?php echo $row[$i + 6]?>',
-                            className: 'event-red',
-                            allDay: true
-                        },
-            <?php
-                    }
-                }
-            }
-            ?>
-        ]
-    });
-</script>
-
 <style type="text/css">
     .card-calendar table td{
         text-align: center;
@@ -365,5 +212,6 @@
     }
 </style>
 </html>
+
 
 

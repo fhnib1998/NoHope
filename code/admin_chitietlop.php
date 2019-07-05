@@ -6,11 +6,11 @@
         $select = "select * from lop where tenlop='$tenlop'";
         $result = mysqli_query($conn,$select);
         $row = mysqli_fetch_row($result) or die("Lỗi truy vấn");
-        $selectHocvien = "select * from hocvien where lop='$tenlop'";
-        $resultHocvien = mysqli_query($conn,$selectHocvien)or die("Lỗi truy vấn");
+        $selectHocvien = "select * from hocvien where lop like '%$tenlop%'";
+        $resultHocvien = mysqli_query($conn,$selectHocvien)or die("Lỗi truy vấn HV");
         $selectGiaovien = "select hoten from giaovien";
         $resultGiaovien = mysqli_query($conn,$selectGiaovien)or die("Lỗi truy vấn");
-}
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -27,6 +27,7 @@
     <!--     Fonts and icons     -->
     <link href="../assets/css/all.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../assets/css/icon.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <!-- Style of me -->
     <link href="../assets/css/style.css" rel="stylesheet" />
 </head>
@@ -89,7 +90,10 @@
                     <div class="collapse in" id="quanlilophoc">
                         <ul class="nav">
                             <li class="active">
-                                <a href="admin_lop.php">Danh sách lớp học</a>
+                                <a href="admin_lop.php">Các lớp đang mở</a>
+                            </li>
+                            <li>
+                                <a href="admin_lopdong.php">Các lớp đang đóng</a>
                             </li>
                             <li>
                                 <a href="admin_addlop.php">Thêm lớp học</a>
@@ -111,6 +115,24 @@
                             </li>
                             <li>
                                 <a href="admin_addgiaovien.php">Thêm giáo viên</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a data-toggle="collapse" href="#quanlihocvien">
+                        <i class="material-icons">assignment</i>
+                        <p>Quản lí học viên
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="quanlihocvien">
+                        <ul class="nav">
+                            <li>
+                                <a href="admin_hocvien.php">Danh sách học viên</a>
+                            </li>
+                            <li>
+                                <a href="admin_baonghi.php">Báo nghỉ</a>
                             </li>
                         </ul>
                     </div>
@@ -212,11 +234,11 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Học phí</td>
-                                                            <td><?php echo $row[27]?>đ</td>
+                                                            <td><?php $hocphi = number_format($row[7]); echo $hocphi?>đ</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Lương giáo viên</td>
-                                                            <td><?php echo $row[28]?>đ</td>
+                                                            <td><?php $luong = number_format($row[8]); echo $luong?>đ</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Sĩ số</td>
@@ -225,7 +247,7 @@
                                                         <tr>
                                                             <td colspan="2">
                                                                 <button type="button" class="btn btn-rose pull-right" data-toggle="modal" data-target="#sualop">Chỉnh sửa</button>
-                                                                <button type="button" class="btn btn-primary" onclick="xoalop('<?php echo $row[0]?>')">Xóa lớp</button>
+                                                                <button type="button" class="btn btn-danger" onclick="donglop('<?php echo $row[0]?>')">Đóng lớp</button>
                                                             </td>
                                                         </tr>
                                                         </tbody>
@@ -238,6 +260,7 @@
                                                         <div id="fullCalendar"></div>
                                                     </div>
                                                 </div>
+                                                <button type="button" class="btn btn-rose pull-right" data-toggle="modal" data-target="#taolich">Tạo lịch</button>
                                             </div>
                                             <div class="tab-pane" id="thocvien">
                                                 <div class="table-responsive">
@@ -249,25 +272,24 @@
                                                             <th class="text-center">Nghỉ</th>
                                                             <th class="text-center">Đã đóng</th>
                                                             <th class="text-center">Chưa đóng</th>
-                                                            <th></th>
+                                                            <th class="text-right"></th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <?php while ($rowHocvien = mysqli_fetch_assoc($resultHocvien)){ ?>
+                                                        <?php while ($rowHocvien = mysqli_fetch_assoc($resultHocvien)){
+                                                            $tkHL = $rowHocvien["tk"];
+                                                            $sqlSelectHL = "select * from hocvienlop where lop='$tenlop' and tk='$tkHL'";
+                                                            $resultHL = mysqli_query($conn,$sqlSelectHL);
+                                                            $rowHL = mysqli_fetch_row($resultHL);
+                                                            ?>
                                                             <tr id="<?php echo $rowHocvien["tk"]?>">
                                                                 <td class="text-center"><?php echo $rowHocvien["hoten"]?></td>
-                                                                <td class="text-center"><?php echo $rowHocvien["hoc"]?> buổi</td>
-                                                                <td class="text-center"><?php echo $rowHocvien["nghi"]?> buổi</td>
-                                                                <td class="text-center"><?php $nop = number_format($rowHocvien["nop"]); echo $nop?> đ</td>
-                                                                <td class="text-center"><?php $chuanop = number_format($rowHocvien["chuanop"]); echo $chuanop?> đ</td>
-                                                                <td class="td-actions">
-                                                                    <button type="button" class="btn btn-info btn-round" data-toggle="modal" data-target="#suahocvien" onclick="loadhocvien('<?php echo $rowHocvien["tk"]?>','<?php echo $rowHocvien["mk"]?>','<?php echo $rowHocvien["hoten"]?>','<?php echo $rowHocvien["ngaysinh"]?>','<?php echo $rowHocvien["gioitinh"]?>','<?php echo $rowHocvien["sdt"]?>','<?php echo $rowHocvien["gmail"]?>','<?php echo $rowHocvien["giamgia"]?>')">
-                                                                        <i class="material-icons">edit</i>
-                                                                    </button>
-                                                                    <button type="button" class="btn btn-success btn-round" data-toggle="modal" data-target="#" onclick="thanhtoan('<?php echo $rowHocvien["tk"]?>')">
-                                                                        <i class="material-icons">add</i>
-                                                                    </button>
-                                                                    <button type="button" class="btn btn-warning btn-round" onclick="xacnhanxoa('<?php echo $rowHocvien["tk"]?>')">
+                                                                <td class="text-center"><?php if($rowHL[2] == null){echo "0";}else{echo $rowHL[2];}?> buổi</td>
+                                                                <td class="text-center"><?php if($rowHL[3] == null){echo "0";}else{echo $rowHL[3];}?> buổi</td>
+                                                                <td class="text-center"><?php $nop = number_format($rowHL[5]); echo $nop?> đ</td>
+                                                                <td class="text-center"><?php $chuanop = number_format($rowHL[4]); echo $chuanop?> đ</td>
+                                                                <td class="td-actions text-right">
+                                                                    <button type="button" class="btn btn-warning btn-round" onclick="xacnhanxoa('<?php echo $rowHocvien["tk"]?>','<?php echo $tenlop?>')">
                                                                         <i class="material-icons">close</i>
                                                                     </button>
                                                                 </td>
@@ -276,110 +298,13 @@
                                                         } ?>
                                                         </tbody>
                                                     </table>
-                                                    <button type="button" class="btn btn-primary pull-left" onclick="diemdanhgv('<?php echo $row[1]?>','<?php echo $row[28]?>')">Điểm danh giáo viên</button>
-                                                    <button type="button" class="btn btn-rose pull-right" data-toggle="modal" data-target="#themhocvien">Thêm học viên</button>
+                                                    <button type="button" class="btn btn-rose pull-right" onclick="themhocvien('<?php echo $tenlop?>')">Thêm học viên</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Form thêm học viên -->
-            <div class="modal fade" id="themhocvien" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" "><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <span class="modal-title" style="font-size: 18px;color: #e91e63" id="myModalLabel">Thêm học viên</span>
-                        </div>
-                        <div class="modal-body">
-                            <form id="formthemhocvien" method="post">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <div id="checktaikhoan" class="form-group label-floating">
-                                            <label class="control-label">Tài khoản</label>
-                                            <input type="text" class="form-control" id="taikhoan" name="taikhoan">
-                                            <code class="hidden" id="loitaikhoan"></code>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div id="checkmatkhau" class="form-group label-floating">
-                                            <label class="control-label">Mật khẩu</label>
-                                            <input type="password" class="form-control" id="matkhau" name="matkhau">
-                                            <code class="hidden" id="loimatkhau"></code>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div id="checkhoten" class="form-group label-floating">
-                                            <label class="control-label">Họ tên</label>
-                                            <input type="text" class="form-control" id="hoten" name="hoten">
-                                            <code class="hidden" id="loihoten"></code>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div id="checkngaysinh" class="form-group label-floating">
-                                            <label class="control-label">Ngày sinh</label>
-                                            <input type="text" class="form-control" id="ngaysinh" name="ngaysinh">
-                                            <code class="hidden" id="loingaysinh"></code>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div id="checksodienthoai" class="form-group label-floating">
-                                            <label class="control-label">Số điện thoại</label>
-                                            <input type="text" class="form-control" id="sodienthoai" name="sodienthoai">
-                                            <code class="hidden" id="loisodienthoai"></code>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div id="checkgmail" class="form-group label-floating">
-                                            <label class="control-label">Gmail</label>
-                                            <input type="text" class="form-control" id="gmail" name="gmail">
-                                            <code class="hidden" id="loigmail"></code>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Giảm giá(%)</label>
-                                            <input type="text" class="form-control" id="giamgia">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="radio" >
-                                            <label>
-                                                <input type="radio" name="gioitinh" id="nam" value="Nam">
-                                                Nam
-                                            </label>
-                                        </div>
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="gioitinh" id="nu" value="Nữ">
-                                                Nữ
-                                            </label>
-                                        </div>
-                                        <code class="hidden" id="loigioitinh"></code>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Lớp</label>
-                                            <input type="text" class="form-control" id="lop" name="lop" value="<?php echo $row[0];?>" disabled>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-rose" onclick="themhocvien()">Thêm học viên</button>
                         </div>
                     </div>
                 </div>
@@ -425,13 +350,13 @@
                                     <div class="col-sm-4">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Học phí</label>
-                                            <input type="text" class="form-control" id="suahocphi" value="<?php echo $row[27]?>">
+                                            <input type="text" class="form-control" id="suahocphi" value="<?php echo $row[7]?>">
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Lương giáo viên</label>
-                                            <input type="text" class="form-control" id="sualuong" value="<?php echo $row[28]?>">
+                                            <input type="text" class="form-control" id="sualuong" value="<?php echo $row[8]?>">
                                         </div>
                                     </div>
                                 </div>
@@ -464,91 +389,50 @@
                     </div>
                 </div>
             </div>
-            <!-- Form sửa học viên -->
-            <div class="modal fade" id="suahocvien" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- Form tạo lịch học -->
+            <div class="modal fade" id="taolich" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <span class="modal-title" style="font-size: 18px;color: #e91e63" id="myModalLabel">Sửa thông tin học viên</span>
+                            <span class="modal-title" style="font-size: 18px;color: #e91e63" id="myModalLabel">Tạo lịch học lớp <?php echo $row[0]?></span>
                         </div>
                         <div class="modal-body">
-                            <form id="formsuahocvien" method="post">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Tài khoản</label>
-                                            <input type="text" class="form-control" id="suataikhoan" name="suataikhoan" value="tk" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Mật khẩu</label>
-                                            <input type="password" class="form-control" id="suamatkhau" name="suamatkhau" value="mk">
-                                        </div>
+                            <div class="row">
+                                <div class="col-md-5 col-md-offset-1">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Bắt đầu</label>
+                                        <input type="text" class="form-control datepicker" id="ngaybatdau" value=" ">
                                     </div>
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Họ tên</label>
-                                            <input type="text" class="form-control" id="suahoten" name="suahoten" value="ht">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Ngày sinh</label>
-                                            <input type="text" class="form-control" id="suangaysinh" name="suangaysinh" value="ns">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Số điện thoại</label>
-                                            <input type="text" class="form-control" id="suasodienthoai" name="suasodienthoai" value="sdt">
-                                        </div>
+                                <div class="col-md-5">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Kết thúc</label>
+                                        <input type="text" class="form-control datepicker" id="ngayketthuc" value=" ">
                                     </div>
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Gmail</label>
-                                            <input type="text" class="form-control" id="suagmail" name="suagmail" value="gmail">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Giảm giá(%)</label>
-                                            <input type="text" class="form-control" id="suagiamgia" value="giamgia">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="radio" >
-                                            <label>
-                                                <input type="radio" name="gioitinh" id="suanam" value="Nam">
-                                                Nam
-                                            </label>
-                                        </div>
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="gioitinh" id="suanu" value="Nữ">
-                                                Nữ
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Lớp</label>
-                                            <input type="text" class="form-control" id="sualop" name="sualop" value="<?php echo $row[0];?>" disabled>
-                                        </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-5 col-md-offset-1">
+                                    <div id="checkthu" class="form-group label-floating">
+                                        <label class="control-label">Thứ học (VD: 2,4,6)</label>
+                                        <input type="text" class="form-control" id="ngayhoc" value="">
+                                        <code class="hidden" id="loithu"></code>
                                     </div>
                                 </div>
-                            </form>
+                                <div class="col-md-5">
+                                    <div id="checkbuoi" class="form-group label-floating">
+                                        <label class="control-label">Buổi học (VD: 1)</label>
+                                        <input type="text" class="form-control" id="buoihoc" value="">
+                                        <code class="hidden" id="loibuoi"></code>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-rose" data-dismiss="modal" onclick="suahocvien()">Sửa học viên</button>
+                            <button type="button" class="btn btn-rose" data-dismiss="modal" onclick="taolich('<?php echo $row[0]?>')">Tạo lịch</button>
                         </div>
                     </div>
                 </div>
@@ -582,10 +466,90 @@
 <script src="../assets/js/fullcalendar.min.js"></script>
 <!--	Plugin for Fileupload -->
 <script src="../assets/js/jasny-bootstrap.min.js"></script>
+<!-- Auto format money -->
+<script src="../assets/js/simple.money.format.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
 
 <script type="text/javascript">
+    var check = 0;
+    $(document).ready(function () {
+        $('#suahocphi').simpleMoneyFormat();
+        $('#sualuong').simpleMoneyFormat();
+        $('.datepicker').datetimepicker({
+            format: 'MM/DD/YYYY',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+                inline: true
+            }
+        });
+        $('#ngayhoc').blur(function () {
+            var thu = $(this).val();
+            if(/^[2-8,]*$/.test(thu)==false||thu == ""){
+                document.getElementById("checkthu").setAttribute("class","form-group label-floating has-error");
+                document.getElementById("loithu").setAttribute("class","");
+                document.getElementById("loithu").innerHTML = "Thứ không hợp lệ";
+                check = 1;
+            }else {
+                document.getElementById("checkthu").setAttribute("class", "form-group label-floating");
+                document.getElementById("loithu").setAttribute("class", "hidden");
+                check = 0;
+            }
+        });
+        $('#buoihoc').blur(function () {
+            var buoi = $(this).val();
+            if(/^[0-9]*$/.test(buoi)==false||buoi ==""){
+                document.getElementById("checkbuoi").setAttribute("class","form-group label-floating has-error");
+                document.getElementById("loibuoi").setAttribute("class","");
+                document.getElementById("loibuoi").innerHTML = "Tên buổi học không hợp lệ";
+                check = 1;
+            }else {
+                document.getElementById("checkbuoi").setAttribute("class", "form-group label-floating");
+                document.getElementById("loibuoi").setAttribute("class", "hidden");
+                check = 0;
+            }
+        });
+    });
+    //Tạo lịch
+    function taolich(lop) {
+        var batdau = $('#ngaybatdau').val();
+        var ketthuc = $('#ngayketthuc').val();
+        var thu = $('#ngayhoc').val();
+        var buoi = $('#buoihoc').val();
+        if(/^[2-8,]*$/.test(thu)==false||thu == ""){
+            document.getElementById("checkthu").setAttribute("class","form-group label-floating has-error");
+            document.getElementById("loithu").setAttribute("class","");
+            document.getElementById("loithu").innerHTML = "Thứ không hợp lệ";
+            check = 1;
+        }
+        if(/^[0-9]*$/.test(buoi)==false||buoi ==""){
+            document.getElementById("checkbuoi").setAttribute("class","form-group label-floating has-error");
+            document.getElementById("loibuoi").setAttribute("class","");
+            document.getElementById("loibuoi").innerHTML = "Tên buổi học không hợp lệ";
+            check = 1;
+        }
+        if(check===0){
+            $.get("modules/lichhoc.php",{lop:lop,batdau:batdau,ketthuc:ketthuc,thu:thu,buoi:buoi},function () {
+                swal({
+                    title: 'Tạo lịch thành công!',
+                    text: 'Đã thêm lịch học',
+                    type: 'success',
+                    confirmButtonClass: "btn btn-success",
+                    buttonsStyling: false
+                }).then(function () {
+                    location.reload();
+                })
+            })
+        }
+    }
     //Lịch
     $calendar = $('#fullCalendar');
 
@@ -616,35 +580,6 @@
         },
         editable: true,
         eventLimit: true, // allow "more" link when too many events
-        select: function(start, end) {
-            // on select we show the Sweet Alert modal with an input
-            var lop = "<?php echo $row[0]?>";
-            var lichhoc = start.format("MM/DD/YYYY");
-            swal({
-                title:lichhoc,
-                html: '<div class="form-group">' +
-                    '<input class="form-control text-center" placeholder="Nhập buổi học" id="input-field">' +
-                    '</div>',
-                showCancelButton: true,
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false
-            }).then(function(result) {
-                var eventData;
-                    title = $('#input-field').val();
-                    titlec = title.toUpperCase();
-                if (titlec==="BUỔI 1"||titlec==="BUỔI 2"||titlec==="BUỔI 3"||titlec==="BUỔI 4"||titlec==="BUỔI 5"||titlec==="BUỔI 6"||titlec==="BUỔI 7"||titlec==="BUỔI 8"||titlec==="BUỔI 9"||titlec==="BUỔI 10"||titlec==="BUỔI 11"||titlec==="BUỔI 12"||titlec==="BUỔI 13"||titlec==="BUỔI 14"||titlec==="BUỔI 15"||titlec==="BUỔI 16"||titlec==="BUỔI 17"||titlec==="BUỔI 18"||titlec==="BUỔI 19"||titlec==="BUỔI 20") {
-                    eventData = {
-                        title: title,
-                        start: start,
-                        end: end
-                    };
-                    $calendar.fullCalendar('renderEvent', eventData, true); // stick? = true
-                    $.get("modules/lichhoc.php?title="+title.toUpperCase()+"&start="+lichhoc+"&lop="+lop);
-                }
-                $calendar.fullCalendar('unselect');
-            });
-        },
         eventResize:function(event){
             var start = event.start;
             var lichhoc = start.format("MM/DD/YYYY");
@@ -662,199 +597,24 @@
         // color classes: [ event-blue | event-azure | event-green | event-orange | event-red ]
         events: [
             <?php
-                if($row[7]==null){?>
-            {
-                title: 'Khai giảng',
-                start: '<?php echo $row[3]?>',
-                className: 'event-azure',
-                allDay: true
-            },
+                $sqlSelectLH = "select * from lichhoc where lop = '$row[0]'";
+                $resultLH = mysqli_query($conn,$sqlSelectLH);
+                while ($rowLH = mysqli_fetch_assoc($resultLH)){
+                    ?>
+                    {
+                        title: '<?php echo "Buổi ".$rowLH["buoi"]?>',
+                        start: '<?php echo $rowLH["ngay"]?>',
+                        className: 'event-azure',
+                        allDay: true,
+                        url: 'admin_diemdanh.php?lop=<?php echo $row[0]?>&b=<?php echo $rowLH["buoi"]?>'
+                    },
             <?php
                 }
-                else{
-            for($i = 1;$i <= 20;$i++){
-                if($row[$i+6]==null){
-                    $row[$i+6]="03/12/1998";
-                }?>
-            {
-                title: '<?php echo "Buổi $i"?>',
-                start: '<?php echo $row[$i + 6]?>',
-                className: 'event-azure',
-                allDay: true
-            },
-            <?php
-            }
-            }
             ?>
         ]
     });
-    //Thêm học viên
-    var checktk = 0;
-    $(document).ready(function () {
-        $('.datepicker').datetimepicker({
-            format: 'MM/DD/YYYY',
-            icons: {
-                time: "fa fa-clock-o",
-                date: "fa fa-calendar",
-                up: "fa fa-chevron-up",
-                down: "fa fa-chevron-down",
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right',
-                today: 'fa fa-screenshot',
-                clear: 'fa fa-trash',
-                close: 'fa fa-remove',
-                inline: true
-            }
-        });
-        $("#taikhoan").blur(function () {
-            var tk = $(this).val();
-            if(tk==="") {
-                document.getElementById("checktaikhoan").setAttribute("class","form-group label-floating has-error");
-                document.getElementById("loitaikhoan").setAttribute("class","");
-                document.getElementById("loitaikhoan").innerHTML = "Tài khoản không được để trống";
-                checktk=1;
-            }
-            else {
-                $.get("modules/checktk.php",{tk:tk},function (data) {
-                    if(data==1){
-                        document.getElementById("checktaikhoan").setAttribute("class","form-group label-floating has-error");
-                        document.getElementById("loitaikhoan").setAttribute("class","");
-                        document.getElementById("loitaikhoan").innerHTML = "Tài khoản đã tồn tại";
-                        checktk=1;
-                    }
-                    else {
-                        document.getElementById("checktaikhoan").setAttribute("class","form-group label-floating");
-                        document.getElementById("loitaikhoan").setAttribute("class","hidden");
-                        checktk=0;
-                    }
-                });
-            }
-        });
-        $("#matkhau").blur(function () {
-            var mk = $(this).val();
-            if(mk===""){
-                document.getElementById("checkmatkhau").setAttribute("class","form-group label-floating has-error");
-                document.getElementById("loimatkhau").setAttribute("class","");
-                document.getElementById("loimatkhau").innerHTML = "Mật khẩu không được để trống";
-            }
-            else {
-                document.getElementById("checkmatkhau").setAttribute("class", "form-group label-floating");
-                document.getElementById("loimatkhau").setAttribute("class", "hidden");
-            }
-        });
-        $("#hoten").blur(function () {
-            var hoten = $(this).val();
-            if(hoten===""){
-                document.getElementById("checkhoten").setAttribute("class","form-group label-floating has-error");
-                document.getElementById("loihoten").setAttribute("class","");
-                document.getElementById("loihoten").innerHTML = "Họ tên không được để trống";
-            }
-            else {
-                document.getElementById("checkhoten").setAttribute("class", "form-group label-floating");
-                document.getElementById("loihoten").setAttribute("class", "hidden");
-            }
-        });
-    });
-    function themhocvien() {
-        var tk = $("#taikhoan").val();
-        var mk = $("#matkhau").val();
-        var hoten = $("#hoten").val();
-        var ngaysinh = $("#ngaysinh").val();
-        var sodienthoai = $("#sodienthoai").val();
-        var gmail = $("#gmail").val();
-        var lop = $("#lop").val();
-        var hocphi = <?php echo $row[27]?>;
-        var giamgia = $('#giamgia').val();
-        var gioitinh;
-        if(document.getElementById("nam").checked){
-            gioitinh = "Nam";
-        }
-        else if(document.getElementById("nu").checked){
-            gioitinh = "Nữ";
-        }
-        else {
-            gioitinh = "BD";
-        }
-        if(tk==="")
-        {
-            document.getElementById("checktaikhoan").setAttribute("class","form-group label-floating has-error");
-            document.getElementById("loitaikhoan").setAttribute("class","");
-            document.getElementById("loitaikhoan").innerHTML = "Tài khoản không được để trống";
-        }
-        if(mk==="")
-        {
-            document.getElementById("checkmatkhau").setAttribute("class","form-group label-floating has-error");
-            document.getElementById("loimatkhau").setAttribute("class","");
-            document.getElementById("loimatkhau").innerHTML = "Mật khẩu không được để trống";
-        }
-        if(hoten==="")
-        {
-            document.getElementById("checkhoten").setAttribute("class","form-group label-floating has-error");
-            document.getElementById("loihoten").setAttribute("class","");
-            document.getElementById("loihoten").innerHTML = "Họ tên không được để trống";
-        }
-        if(tk!==""&&mk!==""&&hoten!==""&&checktk===0){
-            $.get("modules/adddatabase.php",{taikhoanhv:tk,matkhau:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,gmail:gmail,gioitinh:gioitinh,lop:lop,hocphi:hocphi,giamgia:giamgia},function () {
-                swal({
-                    title: 'Đã thêm!',
-                    text: 'Thêm thành công học viên',
-                    type: 'success',
-                    confirmButtonClass: "btn btn-success",
-                    buttonsStyling: false
-                }).then(function () {
-                    var tkhv="'"+tk+"'";
-                    var thongtin = "'"+tk+"',"+"'"+mk+"',"+"'"+hoten+"',"+"'"+ngaysinh+"',"+"'"+gioitinh+"',"+"'"+sodienthoai+"',"+"'"+gmail+"'";
-                    var row = '<tr id="'+tk+'"><td class="text-center">'+hoten+'</td><td class="text-center">0 buổi</td><td class="text-center">0 buổi</td><td class="text-center">0đ</td><td class="text-center">0đ</td><td class="td-actions"><button type="button" class="btn btn-info btn-round" data-toggle="modal" data-target="#suahocvien" onclick="loadhocvien('+thongtin+')"><i class="material-icons">edit</i></button><button type="button" rel="tooltip" class="btn btn-success btn-round" onclick="xacnhanxoa('+tkhv+')"><i class="material-icons">close</i></button></td></tr>';
-                    $("#tablehocvien").append(row);
-                    $("#formthemhocvien")[0].reset();
-                })
-            });
-        }
-    }
-    function loadhocvien(tk,mk,hoten,ngaysinh,gioitinh,sdt,gmail,giamgia) {
-        document.getElementById("suataikhoan").setAttribute("value",tk);
-        document.getElementById("suamatkhau").setAttribute("value",mk);
-        document.getElementById("suahoten").setAttribute("value",hoten);
-        document.getElementById("suangaysinh").setAttribute("value",ngaysinh);
-        document.getElementById("suasodienthoai").setAttribute("value",sdt);
-        document.getElementById("suagmail").setAttribute("value",gmail);
-        document.getElementById("suagiamgia").setAttribute("value",giamgia);
-        if(gioitinh==="Nam"){
-            document.getElementById("suanam").checked = true;
-        }
-        else{
-            document.getElementById("suanu").checked = true;
-        }
-    }
-    function suahocvien() {
-        var tk = $("#suataikhoan").val();
-        var mk = $("#suamatkhau").val();
-        var hoten = $("#suahoten").val();
-        var ngaysinh = $("#suangaysinh").val();
-        var sodienthoai = $("#suasodienthoai").val();
-        var gmail = $("#suagmail").val();
-        var giamgia = $("#suagiamgia").val();
-        var gioitinh;
-        if(document.getElementById("suanam").checked){
-            gioitinh = "Nam";
-        }
-        else if(document.getElementById("suanu").checked){
-            gioitinh = "Nữ";
-        }
-        else {
-            gioitinh = "BD";
-        }
-        $.get("modules/updatedatabase.php",{tkhvad:tk,mk:mk,hoten:hoten,ngaysinh:ngaysinh,gioitinh:gioitinh,sdt:sodienthoai,gmail:gmail,giamgia:giamgia},function () {
-            swal({
-                title: 'Đã sửa!',
-                text: 'Sửa thành công học viên',
-                type: 'success',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
-            }).then(function () {
-                location.reload();
-            })
-        })
+    function themhocvien(lop) {
+       window.location.href = "admin_hocvienlop.php?lop="+lop;
     }
     function sualop() {
         var tenlop = $("#suatenlop").val();
@@ -864,11 +624,11 @@
         var cahoc = $("#suacahoc").val();
         var giaovien = $("#suagiaovien").val();
         var hocphi = $("#suahocphi").val();
-        var luong = $("#luong").val();
+        var luong = $("#sualuong").val();
         $.get("modules/updatedatabase.php",{tenlop:tenlop,khaigiang:khaigiang,doituong:doituong,phonghoc:phonghoc,cahoc:cahoc,giaovien:giaovien,hocphi:hocphi,luong:luong},function () {
             swal({
-                title: 'Đã sửa!',
-                text: 'Sửa thành công lớp học',
+                title: 'Sửa lớp thành công!',
+                text: 'Đã sửa thông tin lớp học',
                 type: 'success',
                 confirmButtonClass: "btn btn-success",
                 buttonsStyling: false
@@ -877,7 +637,7 @@
             })
         })
     }
-    function xacnhanxoa(tk) {
+    function xacnhanxoa(tk,lop) {
         swal({
             title: 'Xóa thật không?',
             text: 'Có không giữ mất đừng tìm nhé!',
@@ -896,77 +656,37 @@
                 confirmButtonClass: "btn btn-success",
                 buttonsStyling: false
             }).then(function () {
-                $.get("modules/deldatabase.php?tkhv="+tk,function () {
+                $.get("modules/deldatabase.php?tkhv="+tk+"&lop="+lop,function () {
                     var child = document.getElementById(tk);
                     child.parentNode.removeChild(child);
                 });
             })
         })
     }
-    function xoalop(tenlop) {
+    function donglop(tenlop) {
         swal({
-            title: 'Xóa thật không?',
-            text: 'Có không giữ mất đừng tìm nhé!',
+            title: 'Đóng thật không?',
+            text: 'Bạn chắc chắn muốn đóng lớp?',
             type: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Hỏi làm gì.Xóa đi',
+            confirmButtonText: 'Hỏi làm gì.Đóng đi',
             cancelButtonText: 'Không',
             confirmButtonClass: "btn btn-success",
             cancelButtonClass: "btn btn-danger",
             buttonsStyling: false
         }).then(function() {
             swal({
-                title: 'Đã xóa!',
+                title: 'Đã đóng lớp!',
                 text: 'Mất tiêu luôn.',
                 type: 'success',
                 confirmButtonClass: "btn btn-success",
                 buttonsStyling: false
             }).then(function () {
-                $.get("modules/deldatabase.php?tenlop="+tenlop,function () {
+                $.get("modules/updatedatabase.php?dongtenlop="+tenlop,function () {
                     window.location.href = "admin_lop.php";
                 });
             })
         })
-    }
-    function diemdanhgv(giaovien,luong) {
-        $.get("modules/updatedatabase.php",{giaovien:giaovien,luong:luong},function () {
-            swal({
-                title: 'Điểm danh thành công!',
-                text: 'Đã điểm danh giáo viên',
-                type: 'success',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
-            }).then(function () {
-                window.location.href = "admin_lop.php?tk=admin";
-            })
-        })
-    }
-    //Thanh toán
-    function thanhtoan(tk){
-        swal({
-            title: 'Nhập tiền nộp',
-            html: '<div class="form-group">' +
-                '<input id="tien" type="text" class="form-control text-center" />' +
-                '</div>',
-            showCancelButton: true,
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false
-        }).then(function() {
-            var tien = $("#tien").val();
-            if(tien !== ""){
-                $.get("modules/doanhthu.php",{tkhv:tk,tien:tien});
-                swal({
-                    title: 'Thanh toán thành công!',
-                    text: 'Đã nộp học phí',
-                    type: 'success',
-                    confirmButtonClass: "btn btn-success",
-                    buttonsStyling: false
-                }).then(function () {
-                    location.reload();
-                })
-            }
-        });
     }
 </script>
 <style type="text/css">

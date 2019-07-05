@@ -19,6 +19,7 @@
     <!--     Fonts and icons     -->
     <link href="../assets/css/all.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../assets/css/icon.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <!-- Style of me -->
     <link href="../assets/css/style.css" rel="stylesheet" />
 </head>
@@ -130,7 +131,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Ngày sinh</label>
-                                                <input type="text" class="form-control" value="<?php echo $_SESSION['ngaysinh']?>" id="ngaysinh" ">
+                                                <input type="text" class="form-control datepicker" value="<?php echo $_SESSION['ngaysinh']?>" id="ngaysinh" ">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -267,6 +268,21 @@
 
 <script>
     $(document).ready(function () {
+        $('.datepicker').datetimepicker({
+            format: 'MM/DD/YYYY',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+                inline: true
+            }
+        });
         $("#matkhaucu").blur(function () {
             var mk = $(this).val();
             var matkhau = <?php echo $_SESSION['mk']?>;

@@ -2,14 +2,15 @@
     include ("kndatabase.php");
     include ("../../assets/PHPMailer/PHPMailerAutoload.php");
     if(isset($_GET["tkhv"])){
+        $lop = $_GET["lop"];
         $tk = $_GET["tkhv"];
-        $tien = $_GET["tien"];
-        $sqlSelectHV = "select hoten,lop,gmail,hoc,nop,chuanop from hocvien where tk='$tk'";
+        $tienf = $_GET["tien"];
+        $tien = str_replace(",","","$tienf");
+        $sqlSelectHV = "select hoten,gmail,nop,chuanop from hocvien where tk='$tk'";
         $rowHV = mysqli_fetch_row(mysqli_query($conn,$sqlSelectHV));
         $hocvien = $rowHV[0];
-        $lop = $rowHV[1];
-        $nop = $rowHV[4] + $tien;
-        $chuanop = $rowHV[5] - $tien;
+        $nop = $rowHV[2] + $tien;
+        $chuanop = $rowHV[3] - $tien;
         $sqlUpdateHV = "update hocvien set nop = $nop,chuanop = $chuanop where tk = '$tk'";
         mysqli_query($conn,$sqlUpdateHV);
         $ngay = date("m/d/Y");
@@ -20,17 +21,23 @@
             $thu = $row[0] + $tien;
             $sqlUpdate = "update doanhthu set thu = $thu where thang = '$thang'";
             mysqli_query($conn,$sqlUpdate);
-            $noidung = "Học viên ".$hocvien." lớp ".$lop." nộp";
-            $sqlInsert = "insert into thongke(thang,ngay,noidung,tien,trangthai) values('$thang','$ngay','$noidung',$tien,'Thu')";
+            $noidung = "Học viên ".$hocvien." nộp";
+            $sqlInsert = "insert into thongke(thang,ngay,noidung,lop,tien,trangthai) values('$thang','$ngay','$noidung','$lop',$tien,'Thu')";
             mysqli_query($conn,$sqlInsert);
         }
         else{
             $sqlInsert = "insert into doanhthu(thang,thu) values('$thang',$tien)";
             mysqli_query($conn,$sqlInsert);
-            $noidung = "Học viên ".$hocvien." lớp ".$lop." nộp";
-            $sqlInsert = "insert into thongke(thang,ngay,noidung,tien,trangthai) values('$thang','$ngay','$noidung',$tien,'Thu')";
+            $noidung = "Học viên ".$hocvien." nộp";
+            $sqlInsert = "insert into thongke(thang,ngay,noidung,lop,tien,trangthai) values('$thang','$ngay','$noidung','$lop',$tien,'Thu')";
             mysqli_query($conn,$sqlInsert);
         }
+        $sqlSelectHL = "select nop,chuanop from hocvienlop where tk='$tk' and lop='$lop'";
+        $rowHL = mysqli_fetch_row(mysqli_query($conn,$sqlSelectHL));
+        $nopHL = $rowHL[0] + $tien;
+        $chuanopHL = $rowHL[1] - $tien;
+        $sqlUpdateHL = "update hocvienlop set nop = $nopHL,chuanop = $chuanopHL where tk = '$tk' and lop='$lop'";
+        mysqli_query($conn,$sqlUpdateHL);
         $mail = new PHPMailer();
         $mail->isSMTP();
         $mail->SMTPAuth = true;
@@ -43,18 +50,19 @@
         $mail->isHTML(true);
         $mail->CharSet = "utf-8";
         $mail->Subject = "Thông báo thanh toán online";
-        $mail->Body = "No Hope Center xin thông báo:<br>Học viên $rowHV[0] đã nộp cho trung tâm: $tien đ.Số tiền chưa đóng là $chuanop đ<br>Trân trọng thông báo,<br><b>No Hope Center</b>";
-        $mail->addAddress($rowHV[2]);
+        $mail->Body = "No Hope Center xin thông báo:<br>Học viên $rowHV[0] đã nộp cho trung tâm lớp $lop: $tien đ.Số tiền chưa đóng là $chuanop đ<br>Trân trọng thông báo,<br><b>No Hope Center</b>";
+        $mail->addAddress($rowHV[1]);
         $mail->send();
     }
     if(isset($_GET["tkgv"])){
         $tk = $_GET["tkgv"];
         $tien = $_GET["tien"];
-        $sqlSelectHV = "select hoten from giaovien where tk='$tk'";
-        $rowGV = mysqli_fetch_row(mysqli_query($conn,$sqlSelectHV));
+        $sqlSelectGV = "select hoten,datra from giaovien where tk='$tk'";
+        $rowGV = mysqli_fetch_row(mysqli_query($conn,$sqlSelectGV));
         $giaovien = $rowGV[0];
         $chuatra = 0;
-        $sqlUpdateGV = "update giaovien set chuatra = $chuatra where tk = '$tk'";
+        $datra = $rowGV[1] + $tien;
+        $sqlUpdateGV = "update giaovien set chuatra = $chuatra,datra = $datra where tk = '$tk'";
         mysqli_query($conn,$sqlUpdateGV);
         $ngay = date("m/d/Y");
         $thang = date("m/Y");

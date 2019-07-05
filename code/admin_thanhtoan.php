@@ -21,6 +21,7 @@
     <!--     Fonts and icons     -->
     <link href="../assets/css/all.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../assets/css/icon.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <!-- Style of me -->
     <link href="../assets/css/style.css" rel="stylesheet" />
 </head>
@@ -83,7 +84,10 @@
                     <div class="collapse" id="quanlilophoc">
                         <ul class="nav">
                             <li>
-                                <a href="admin_lop.php">Danh sách lớp học</a>
+                                <a href="admin_lop.php">Các lớp đang mở</a>
+                            </li>
+                            <li>
+                                <a href="admin_lopdong.php">Các lớp đang đóng</a>
                             </li>
                             <li>
                                 <a href="admin_addlop.php">Thêm lớp học</a>
@@ -105,6 +109,24 @@
                             </li>
                             <li>
                                 <a href="admin_addgiaovien.php">Thêm giáo viên</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a data-toggle="collapse" href="#quanlihocvien">
+                        <i class="material-icons">assignment</i>
+                        <p>Quản lí học viên
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="quanlihocvien">
+                        <ul class="nav">
+                            <li>
+                                <a href="admin_hocvien.php">Danh sách học viên</a>
+                            </li>
+                            <li>
+                                <a href="admin_baonghi.php">Báo nghỉ</a>
                             </li>
                         </ul>
                     </div>

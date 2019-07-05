@@ -33,6 +33,7 @@
     <!--     Fonts and icons     -->
     <link href="../assets/css/all.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../assets/css/icon.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <!-- Style of me -->
     <link href="../assets/css/style.css" rel="stylesheet" />
 </head>
@@ -126,7 +127,7 @@
                 <div class="row">
                     <?php
                     $hoten = $_SESSION['hoten'];
-                    $sqlSelect = "select * from lop where giaovien = '$hoten'";
+                    $sqlSelect = "select * from lop where giaovien = '$hoten' and dong=0";
                     $result = mysqli_query($conn,$sqlSelect) or die("Lỗi câu truy vấn");
                     while ($row = mysqli_fetch_assoc($result)) {
                         ?>

@@ -1,18 +1,13 @@
 <?php
-    ob_start();
-    session_start();
-    include("modules/kndatabase.php");
-    if(isset($_GET['tk'])){
-        $_SESSION['tk'] = $_GET['tk'];
-        $_SESSION['quyen'] = "admin";
-}
+ob_start();
+include("modules/kndatabase.php");
 ?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Quảng cáo khóa học</title>
+    <title>Quản lí giáo viên</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <!-- Bootstrap core CSS     -->
@@ -25,8 +20,8 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <!-- Style of me -->
     <link href="../assets/css/style.css" rel="stylesheet" />
+    <script src="https://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script>
 </head>
-
 <body>
 <div class="wrapper">
     <div class="sidebar" data-active-color="blue" data-background-color="black" data-image="../assets/img/30904.jpg">
@@ -85,10 +80,7 @@
                     <div class="collapse" id="quanlilophoc">
                         <ul class="nav">
                             <li>
-                                <a href="admin_lop.php">Các lớp đang mở</a>
-                            </li>
-                            <li>
-                                <a href="admin_lopdong.php">Các lớp đang đóng</a>
+                                <a href="admin_lop.php">Danh sách lớp học</a>
                             </li>
                             <li>
                                 <a href="admin_addlop.php">Thêm lớp học</a>
@@ -96,19 +88,19 @@
                         </ul>
                     </div>
                 </li>
-                <li>
+                <li class="active">
                     <a data-toggle="collapse" href="#quanligiaovien">
                         <i class="material-icons">school</i>
                         <p>Quản lí giáo viên
                             <b class="caret"></b>
                         </p>
                     </a>
-                    <div class="collapse" id="quanligiaovien">
+                    <div class="collapse in" id="quanligiaovien">
                         <ul class="nav">
                             <li>
                                 <a href="admin_giaovien.php">Danh sách giáo viên</a>
                             </li>
-                            <li>
+                            <li class="active">
                                 <a href="admin_addgiaovien.php">Thêm giáo viên</a>
                             </li>
                         </ul>
@@ -132,7 +124,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="active">
+                <li>
                     <a href="admin_editweb.php">
                         <i class="material-icons">dashboard</i>
                         <p>Quảng cáo khóa học</p>
@@ -163,51 +155,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand">Quảng cáo khóa học</a>
+                    <a class="navbar-brand">Thêm giáo viên</a>
                 </div>
             </div>
         </nav>
-
         <!-- Nội Dung -->
         <div class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <?php
-                        $sqlSelect = "select * from khoahoc";
-                        $result = mysqli_query($conn,$sqlSelect);
-                        while ($row = mysqli_fetch_assoc($result)){ ?>
-                            <div class="col-md-4 col-sm-4">
-                                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                                    <div class="fileinput-new thumbnail">
-                                        <img class="img-rounded" src="<?php echo $row["image"]?>">
-                                    </div>
-                                    <div>
-                                        <button type="button" class="btn btn-danger btn-round fileinput-new" onclick="xoaanh('<?php echo $row["image"]?>')">Xóa</button>
-                                    </div>
-                                </div>
-                            </div>
-                    <?php
-                        }
-                    ?>
-                    <div class="col-md-4 col-sm-4">
-                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                            <div class="fileinput-new thumbnail">
-                                <img class="img-rounded" src="../assets/img/image_placeholder.jpg">
-                            </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                            <br>
-                            <span>
-                                <span class="btn btn-rose btn-round btn-file">
-                                    <span class="fileinput-new">Thêm ảnh</span>
-                                    <span class="fileinput-exists">Thay đổi</span>
-                                    <input type="file" id="anhmoi"/>
-                                </span>
-                                <button type="button" class="btn btn-success btn-round fileinput-exists" onclick="uploadQC()">Cập nhật</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
+                <textarea id="editor" name="editor" cols="80" rows="10">
+                    <p>Hello <strong>CKEditor</strong></p>
+                </textarea>
             </div>
         </div> <!-- /Nội Dung -->
 
@@ -243,53 +200,6 @@
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
 <script>
-    function uploadQC() {
-        var file = document.getElementById("anhmoi").files[0];
-        var image = file['name'];
-        var fd = new FormData();
-        fd.append('file',file);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'upfile.php', true);
-        xhr.send(fd);
-        $.get("modules/adddatabase.php",{anh:image},function () {
-            swal({
-                title: 'Thêm thành công!',
-                text: 'Đã thêm khóa học vào danh sách quảng cáo',
-                type: 'success',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
-            }).then(function () {
-                location.reload();
-            })
-        });
-    }
-    function xoaanh(anh) {
-        swal({
-            title: 'Xóa thật không?',
-            text: 'Có không giữ mất đừng tìm nhé!',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Hỏi làm gì.Xóa đi',
-            cancelButtonText: 'Không',
-            confirmButtonClass: "btn btn-success",
-            cancelButtonClass: "btn btn-danger",
-            buttonsStyling: false
-        }).then(function() {
-            $.get("modules/deldatabase.php",{anh:anh},function () {
-                swal({
-                    title: 'Đã xóa!',
-                    text: 'Mất tiêu luôn.',
-                    type: 'success',
-                    confirmButtonClass: "btn btn-success",
-                    buttonsStyling: false
-                }).then(function () {
-                    location.reload();
-                })
-            });
-        })
-    }
-
+    CKEDITOR.replace('editor');
 </script>
 </html>
-
-

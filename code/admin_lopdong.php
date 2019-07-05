@@ -1,10 +1,13 @@
 <?php
-    ob_start();
-    session_start();
-    include("modules/kndatabase.php");
-    if(isset($_GET['tk'])){
-        $_SESSION['tk'] = $_GET['tk'];
-        $_SESSION['quyen'] = "admin";
+ob_start();
+session_start();
+include("modules/kndatabase.php");
+if(isset($_GET['tk'])){
+    $_SESSION['tk'] = $_GET['tk'];
+    $_SESSION['quyen'] = "admin";
+}
+if(isset($_POST["tenlop"])){
+    header("Location: admin_lopdong.php?tenlop=".$_POST["tenlop"]);
 }
 ?>
 <!doctype html>
@@ -12,7 +15,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Quảng cáo khóa học</title>
+    <title>Quản lí lớp</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <!-- Bootstrap core CSS     -->
@@ -75,19 +78,19 @@
                         <p>Trang chủ</p>
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a data-toggle="collapse" href="#quanlilophoc">
                         <i class="material-icons">class</i>
                         <p>Quản lí lớp học
                             <b class="caret"></b>
                         </p>
                     </a>
-                    <div class="collapse" id="quanlilophoc">
+                    <div class="collapse in" id="quanlilophoc">
                         <ul class="nav">
                             <li>
                                 <a href="admin_lop.php">Các lớp đang mở</a>
                             </li>
-                            <li>
+                            <li class="active">
                                 <a href="admin_lopdong.php">Các lớp đang đóng</a>
                             </li>
                             <li>
@@ -132,7 +135,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="active">
+                <li>
                     <a href="admin_editweb.php">
                         <i class="material-icons">dashboard</i>
                         <p>Quảng cáo khóa học</p>
@@ -163,8 +166,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand">Quảng cáo khóa học</a>
+                    <a class="navbar-brand">Danh sách lớp học</a>
                 </div>
+                <form class="navbar-form navbar-right" style="margin-right: 100px">
+                    <div class="form-group form-search is-empty">
+                        <input name="tenlop" type="text" class="form-control" placeholder="Nhập tên lớp">
+                    </div>
+                    <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                    </button>
+                </form>
             </div>
         </nav>
 
@@ -173,41 +184,53 @@
             <div class="container-fluid">
                 <div class="row">
                     <?php
-                        $sqlSelect = "select * from khoahoc";
+                    if(isset($_GET["tenlop"])){
+                        $tenlop = $_GET["tenlop"];
+                        $sqlSelect = "select * from lop where tenlop like '%$tenlop%' and dong = 1";
                         $result = mysqli_query($conn,$sqlSelect);
-                        while ($row = mysqli_fetch_assoc($result)){ ?>
-                            <div class="col-md-4 col-sm-4">
-                                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                                    <div class="fileinput-new thumbnail">
-                                        <img class="img-rounded" src="<?php echo $row["image"]?>">
-                                    </div>
-                                    <div>
-                                        <button type="button" class="btn btn-danger btn-round fileinput-new" onclick="xoaanh('<?php echo $row["image"]?>')">Xóa</button>
+                    }else{
+                        $sqlSelect = "select * from lop where dong = 1";
+                        $result = mysqli_query($conn,$sqlSelect);
+                    }
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        ?>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header card-header-icon" data-background-color="rose">
+                                    <b class="material-icons">class</b>
+                                    <h4 class="card-title"><?php echo $row["tenlop"];?></h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead class="text-primary">
+                                            <th>Lớp</th>
+                                            <th><?php echo $row["tenlop"];?></th>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>Khai giảng</td>
+                                                <td><?php echo $row["khaigiang"];?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Đối tượng</td>
+                                                <td><?php echo $row["doituong"];?></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <button type="button" class="btn btn-success pull-right" onclick="molop('<?php echo $row["tenlop"]?>')">Mở lớp</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                    <?php
-                        }
-                    ?>
-                    <div class="col-md-4 col-sm-4">
-                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                            <div class="fileinput-new thumbnail">
-                                <img class="img-rounded" src="../assets/img/image_placeholder.jpg">
-                            </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                            <br>
-                            <span>
-                                <span class="btn btn-rose btn-round btn-file">
-                                    <span class="fileinput-new">Thêm ảnh</span>
-                                    <span class="fileinput-exists">Thay đổi</span>
-                                    <input type="file" id="anhmoi"/>
-                                </span>
-                                <button type="button" class="btn btn-success btn-round fileinput-exists" onclick="uploadQC()">Cập nhật</button>
-                            </span>
                         </div>
-                    </div>
+                        <?php
+                    }
+                    ?>
                 </div>
-
             </div>
         </div> <!-- /Nội Dung -->
 
@@ -243,53 +266,32 @@
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
 <script>
-    function uploadQC() {
-        var file = document.getElementById("anhmoi").files[0];
-        var image = file['name'];
-        var fd = new FormData();
-        fd.append('file',file);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'upfile.php', true);
-        xhr.send(fd);
-        $.get("modules/adddatabase.php",{anh:image},function () {
-            swal({
-                title: 'Thêm thành công!',
-                text: 'Đã thêm khóa học vào danh sách quảng cáo',
-                type: 'success',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
-            }).then(function () {
-                location.reload();
-            })
-        });
-    }
-    function xoaanh(anh) {
+    function molop(tenlop) {
         swal({
-            title: 'Xóa thật không?',
-            text: 'Có không giữ mất đừng tìm nhé!',
+            title: 'Mở thật không?',
+            text: 'Bạn chắc chắn muốn mở lớp?',
             type: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Hỏi làm gì.Xóa đi',
+            confirmButtonText: 'Hỏi làm gì.Mở đi',
             cancelButtonText: 'Không',
             confirmButtonClass: "btn btn-success",
             cancelButtonClass: "btn btn-danger",
             buttonsStyling: false
         }).then(function() {
-            $.get("modules/deldatabase.php",{anh:anh},function () {
-                swal({
-                    title: 'Đã xóa!',
-                    text: 'Mất tiêu luôn.',
-                    type: 'success',
-                    confirmButtonClass: "btn btn-success",
-                    buttonsStyling: false
-                }).then(function () {
-                    location.reload();
-                })
-            });
+            swal({
+                title: 'Đã mở lớp!',
+                text: 'Mở lớp rồi nè',
+                type: 'success',
+                confirmButtonClass: "btn btn-success",
+                buttonsStyling: false
+            }).then(function () {
+                $.get("modules/updatedatabase.php?motenlop="+tenlop,function () {
+                    window.location.href = "admin_lopdong.php";
+                });
+            })
         })
     }
-
 </script>
-</html>
 
+</html>
 

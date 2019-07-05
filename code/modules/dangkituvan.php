@@ -4,6 +4,7 @@
     $hoten = $_GET["hoten"];
     $sdt = $_GET["sdt"];
     $email = $_GET["email"];
+    $lop = $_GET["lop"];
     $loinhan = $_GET["loinhan"];
     $mail = new PHPMailer();
     $mail->isSMTP();
@@ -17,7 +18,7 @@
     $mail->isHTML(true);
     $mail->CharSet = "utf-8";
     $mail->Subject = "Đăng kí tư vấn";
-    $mail->Body = "Khách hàng cần tư vấn:<br>- Họ tên: $hoten<br>- Số điện thoại: $sdt<br>- Email: $email<br>- Lời nhắn: $loinhan";
+    $mail->Body = "Khách hàng cần tư vấn:<br>- Họ tên: $hoten<br>- Số điện thoại: $sdt<br>- Email: $email<br>- Lớp đăng kí: $lop<br>- Lời nhắn: $loinhan";
     $mail->addAddress("fhnibkma@gmail.com");
     $mail->send();
 ?>

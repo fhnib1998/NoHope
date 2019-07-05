@@ -2,19 +2,19 @@
     ob_start();
     session_start();
     include("modules/kndatabase.php");
-    if(isset($_GET["tenlop"])) {
-        $lop = $_GET["tenlop"];
-        $select = "select * from lop where tenlop='$lop'";
-        $result = mysqli_query($conn,$select);
-        $row = mysqli_fetch_row($result) or die("Lỗi truy vấn");
-    }
+    $taikhoan = $_SESSION['tk'];
+    $lop = $_GET["lop"];
+    $selectTK = "select * from hocvienlop where tk = '$taikhoan' and lop='$lop'";
+    $rowHV = mysqli_fetch_row(mysqli_query($conn,$selectTK));
+    $select = "select * from lop where tenlop='$lop'";
+    $row = mysqli_fetch_row(mysqli_query($conn,$select));
 ?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Quản lí lớp</title>
+    <title>Lớp học</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <!-- Bootstrap core CSS     -->
@@ -45,7 +45,7 @@
         <div class="sidebar-wrapper">
             <div class="user">
                 <div class="photo">
-                    <img src="<?php echo $_SESSION['avatar']?>" />
+                    <img src="<?php if($_SESSION['avatar']==null){echo "../assets/img/logo.png";}else{echo $_SESSION['avatar'];} ?>" />
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#quanlitk" class="collapsed">
@@ -55,7 +55,7 @@
                     <div class="collapse" id="quanlitk">
                         <ul class="nav">
                             <li>
-                                <a href="thongtinGV.php">
+                                <a href="thongtinHV.php">
                                     <b class="material-icons">account_box</b>
                                     Thông tin
                                 </a>
@@ -78,15 +78,9 @@
                     </a>
                 </li>
                 <li class="active">
-                    <a href="giaovien_lop.php">
+                    <a href="hocvien_lop.php">
                         <i class="material-icons">class</i>
-                        <p>Danh sách lớp dạy</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="giaovien_baonghi.php">
-                        <i class="material-icons">work_off</i>
-                        <p>Báo nghỉ</p>
+                        <p>Lớp học</p>
                     </a>
                 </li>
             </ul>
@@ -136,9 +130,9 @@
                                                     <i class="material-icons">event</i> Lịch học
                                                 </a>
                                             </li>
-                                            <li id="tabhocvien">
-                                                <a href="#hocvien" role="tab" data-toggle="tab">
-                                                    <i class="material-icons">person</i> Học viên
+                                            <li id="tabhocphi">
+                                                <a href="#hocphi" role="tab" data-toggle="tab">
+                                                    <i class="material-icons">toys</i> Học phí
                                                 </a>
                                             </li>
                                         </ul>
@@ -173,6 +167,10 @@
                                                             <td><?php echo $row[4]?></td>
                                                         </tr>
                                                         <tr>
+                                                            <td>Học phí</td>
+                                                            <td><?php echo $row[7]?>đ</td>
+                                                        </tr>
+                                                        <tr>
                                                             <td>Sĩ số</td>
                                                             <td><?php echo $row[5]?></td>
                                                         </tr>
@@ -187,34 +185,32 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane" id="hocvien">
+                                            <div class="tab-pane" id="hocphi">
                                                 <div class="table-responsive">
-                                                    <table id="tablehocvien" class="table">
+                                                    <table class="table">
                                                         <thead class="text-primary">
-                                                        <tr>
-                                                            <th class="text-center">Họ tên</th>
-                                                            <th class="text-center">Ngày sinh</th>
-                                                            <th class="text-center">Số điện thoại</th>
-                                                            <th class="text-center">Đã học</th>
-                                                            <th class="text-center">Nghỉ</th>
-                                                        </tr>
+                                                            <th class="text-center">Học viên</th>
+                                                            <th class="text-center"><?php echo $_SESSION["hoten"]?></th>
                                                         </thead>
                                                         <tbody>
-                                                        <?php
-                                                        $selectHocvien = "select * from hocvien where lop like '%$lop%'";
-                                                        $resultHocvien = mysqli_query($conn,$selectHocvien)or die("Lỗi truy vấn");
-                                                        while ($rowHocvien = mysqli_fetch_assoc($resultHocvien)){ ?>
-                                                            <tr id="<?php echo $rowHocvien["tk"]?>">
-                                                                <td class="text-center"><?php echo $rowHocvien["hoten"]?></td>
-                                                                <td class="text-center"><?php echo $rowHocvien["ngaysinh"]?></td>
-                                                                <td class="text-center"><?php echo $rowHocvien["sdt"]?></td>
-                                                                <td class="text-center"><?php echo $rowHocvien["hoc"]?></td>
-                                                                <td class="text-center"><?php echo $rowHocvien["nghi"]?></td>
+                                                            <tr>
+                                                                <td class="text-center">Đã học</td>
+                                                                <td class="text-center"><?php echo $rowHV[2]?> buổi</td>
                                                             </tr>
-                                                            <?php
-                                                        } ?>
+                                                            <tr>
+                                                                <td class="text-center">Nghỉ</td>
+                                                                <td class="text-center"><?php echo $rowHV[3]?> buổi</td>
+                                                            <tr>
+                                                                <td class="text-center">Đã nộp</td>
+                                                                <td class="text-center"><?php $nop = number_format($rowHV[5]); echo $nop?> đ</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">Chưa nộp</td>
+                                                                <td class="text-center"><?php $chuanop = number_format($rowHV[4]); echo $chuanop?>đ</td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
+                                                    <button type="button" class="btn btn-rose pull-right" onclick="thanhtoanlop('<?php echo $lop?>')">Thanh toán</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -255,7 +251,11 @@
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
 
+
 <script type="text/javascript">
+    function thanhtoanlop(lop){
+      window.location.href = "hocvien_thanhtoan.php?lop="+lop;
+    }
     //Lịch
     $calendar = $('#fullCalendar');
 
@@ -289,14 +289,14 @@
         // color classes: [ event-blue | event-azure | event-green | event-orange | event-red ]
         events: [
             <?php
-            $sqlSelectLH = "select * from lichhoc where lop = '$row[0]'";
+            $sqlSelectLH = "select * from lichhoc where lop = '$lop'";
             $resultLH = mysqli_query($conn,$sqlSelectLH);
             while ($rowLH = mysqli_fetch_assoc($resultLH)){
             ?>
             {
                 title: '<?php echo "Buổi ".$rowLH["buoi"]?>',
                 start: '<?php echo $rowLH["ngay"]?>',
-                className: 'event-azure',
+                className: '<?php $b = $rowLH["buoi"]; $sqlSelectD = "select dd from diemdanh where tk = '$taikhoan' and lop = '$lop' and buoi = $b";$resultD = mysqli_query($conn,$sqlSelectD); if($rowD = mysqli_fetch_row($resultD)){ if($rowD[0] == 1){echo "event-green";}else{echo "event-red";}}else{ echo "event-azure";}?> ?>',
                 allDay: true,
                 url: 'giaovien_diemdanh.php?lop=<?php echo $row[0]?>&b=<?php echo $rowLH["buoi"]?>&ngay=<?php echo $rowLH["ngay"]?>'
             },
@@ -306,6 +306,7 @@
         ]
     });
 </script>
+
 <style type="text/css">
     .card-calendar table td{
         text-align: center;

@@ -17,6 +17,7 @@
     <!--     Fonts and icons     -->
     <link href="../assets/css/all.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../assets/css/icon.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <!-- Style of me -->
     <link href="../assets/css/style.css" rel="stylesheet" />
 </head>
@@ -78,7 +79,10 @@
                     <div class="collapse" id="quanlilophoc">
                         <ul class="nav">
                             <li>
-                                <a href="admin_lop.php">Danh sách lớp học</a>
+                                <a href="admin_lop.php">Các lớp đang mở</a>
+                            </li>
+                            <li>
+                                <a href="admin_lopdong.php">Các lớp đang đóng</a>
                             </li>
                             <li>
                                 <a href="admin_addlop.php">Thêm lớp học</a>
@@ -100,6 +104,24 @@
                             </li>
                             <li class="active">
                                 <a href="admin_addgiaovien.php">Thêm giáo viên</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a data-toggle="collapse" href="#quanlihocvien">
+                        <i class="material-icons">assignment</i>
+                        <p>Quản lí học viên
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="quanlihocvien">
+                        <ul class="nav">
+                            <li>
+                                <a href="admin_hocvien.php">Danh sách học viên</a>
+                            </li>
+                            <li>
+                                <a href="admin_baonghi.php">Báo nghỉ</a>
                             </li>
                         </ul>
                     </div>
@@ -178,7 +200,7 @@
                                     <div class="col-md-4">
                                         <div id="checkngaysinh" class="form-group label-floating">
                                             <label class="control-label">Ngày sinh</label>
-                                            <input type="text" class="form-control" id="ngaysinh">
+                                            <input type="text" class="form-control datepicker" value=" " id="ngaysinh">
                                             <code class="hidden" id="loingaysinh"></code>
                                         </div>
                                     </div>
@@ -281,6 +303,21 @@
 <script>
     var checktk = 0;
     $(document).ready(function () {
+        $('.datepicker').datetimepicker({
+            format: 'MM/DD/YYYY',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+                inline: true
+            }
+        });
         $("#taikhoan").blur(function () {
             var tk = $(this).val();
             if(tk==="") {
@@ -368,20 +405,23 @@
             document.getElementById("checktaikhoan").setAttribute("class","form-group label-floating has-error");
             document.getElementById("loitaikhoan").setAttribute("class","");
             document.getElementById("loitaikhoan").innerHTML = "Tài khoản không được để trống";
+            checktk = 1;
         }
         if(mk==="")
         {
             document.getElementById("checkmatkhau").setAttribute("class","form-group label-floating has-error");
             document.getElementById("loimatkhau").setAttribute("class","");
             document.getElementById("loimatkhau").innerHTML = "Mật khẩu không được để trống";
+            checktk = 1;
         }
         if(hoten==="")
         {
             document.getElementById("checkhoten").setAttribute("class","form-group label-floating has-error");
             document.getElementById("loihoten").setAttribute("class","");
             document.getElementById("loihoten").innerHTML = "Họ tên không được để trống";
+            checktk = 1;
         }
-        if(tk!==""&&mk!==""&&hoten!==""&&checktk===0){
+        if(checktk===0){
             $.get("modules/adddatabase.php",{taikhoangv:tk,matkhau:mk,hoten:hoten,ngaysinh:ngaysinh,sodienthoai:sodienthoai,trinhdo:trinhdo,gioitinh:gioitinh,avatar:avatar,sotk:sotk},function () {
                 swal({
                     title: 'Thêm thành công!',

@@ -1,18 +1,14 @@
 <?php
     ob_start();
-    session_start();
     include("modules/kndatabase.php");
-    if(isset($_GET['tk'])){
-        $_SESSION['tk'] = $_GET['tk'];
-        $_SESSION['quyen'] = "admin";
-}
+    $lop = $_GET["lop"];
 ?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Quảng cáo khóa học</title>
+    <title>Quản lí lớp</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <!-- Bootstrap core CSS     -->
@@ -75,14 +71,14 @@
                         <p>Trang chủ</p>
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a data-toggle="collapse" href="#quanlilophoc">
                         <i class="material-icons">class</i>
                         <p>Quản lí lớp học
                             <b class="caret"></b>
                         </p>
                     </a>
-                    <div class="collapse" id="quanlilophoc">
+                    <div class="collapse in" id="quanlilophoc">
                         <ul class="nav">
                             <li>
                                 <a href="admin_lop.php">Các lớp đang mở</a>
@@ -132,7 +128,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="active">
+                <li>
                     <a href="admin_editweb.php">
                         <i class="material-icons">dashboard</i>
                         <p>Quảng cáo khóa học</p>
@@ -163,59 +159,68 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand">Quảng cáo khóa học</a>
+                    <a class="navbar-brand">Quản lí học viên</a>
                 </div>
             </div>
         </nav>
-
         <!-- Nội Dung -->
         <div class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <?php
-                        $sqlSelect = "select * from khoahoc";
-                        $result = mysqli_query($conn,$sqlSelect);
-                        while ($row = mysqli_fetch_assoc($result)){ ?>
-                            <div class="col-md-4 col-sm-4">
-                                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                                    <div class="fileinput-new thumbnail">
-                                        <img class="img-rounded" src="<?php echo $row["image"]?>">
-                                    </div>
-                                    <div>
-                                        <button type="button" class="btn btn-danger btn-round fileinput-new" onclick="xoaanh('<?php echo $row["image"]?>')">Xóa</button>
-                                    </div>
-                                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-icon" data-background-color="rose">
+                            <i class="material-icons">assignment</i>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="card-title">Thêm học viên vào lớp <?php echo $lop?></h4>
+                            <div class="toolbar">
+                                <button type="button" class="btn btn-primary btn-round" onclick="trolai('<?php echo $lop?>')">
+                                    <i class="material-icons">replay</i>
+                                    Trở lại lớp
+                                </button>
                             </div>
-                    <?php
-                        }
-                    ?>
-                    <div class="col-md-4 col-sm-4">
-                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                            <div class="fileinput-new thumbnail">
-                                <img class="img-rounded" src="../assets/img/image_placeholder.jpg">
+                            <div class="material-datatables">
+                                <table id="datatables" class="table table-striped table-no-bordered table-hover" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-primary">Họ tên</th>
+                                            <th class="text-primary">Ngày sinh</th>
+                                            <th class="text-primary">Giới tính</th>
+                                            <th class="text-primary">Số điện thoại</th>
+                                            <th class="text-primary">Lớp</th>
+                                            <th class="disabled-sorting text-right text-primary">Chức năng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    $select = "select * from hocvien where lop not like '%$lop%'";
+                                    $result = mysqli_query($conn,$select)or die("Lỗi truy vấn");
+                                    while ($row = mysqli_fetch_assoc($result)){ ?>
+                                        <tr>
+                                            <td><?php echo $row["hoten"]?></td>
+                                            <td><?php echo $row["ngaysinh"]?></td>
+                                            <td><?php echo $row["gioitinh"]?></td>
+                                            <td><?php echo $row["sdt"]?></td>
+                                            <td><?php echo $row["lop"]?></td>
+                                            <td class="td-actions text-right">
+                                                <button type="button" class="btn btn-success btn-round" onclick="themhv('<?php echo $row["tk"]?>','<?php echo $lop?>')">
+                                                    <i class="material-icons">add</i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                            <br>
-                            <span>
-                                <span class="btn btn-rose btn-round btn-file">
-                                    <span class="fileinput-new">Thêm ảnh</span>
-                                    <span class="fileinput-exists">Thay đổi</span>
-                                    <input type="file" id="anhmoi"/>
-                                </span>
-                                <button type="button" class="btn btn-success btn-round fileinput-exists" onclick="uploadQC()">Cập nhật</button>
-                            </span>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div> <!-- /Nội Dung -->
-
         <footer class="footer">
             <div class="container-fluid">
-                <nav class="pull-left">
-
-                </nav>
                 <p class="copyright pull-right">
                     &copy;2019 No Hope, Study and Succeed afterward
                 </p>
@@ -234,61 +239,48 @@
 <script src="../assets/js/moment.min.js"></script>
 <!-- DateTimePicker Plugin -->
 <script src="../assets/js/bootstrap-datetimepicker.js"></script>
+<!-- Select Plugin -->
+<script src="../assets/js/jquery.select-bootstrap.js"></script>
 <!-- Sweet Alert 2 plugin -->
 <script src="../assets/js/sweetalert2.js"></script>
-<!--  Full Calendar Plugin    -->
-<script src="../assets/js/fullcalendar.min.js"></script>
-<!--	Plugin for Fileupload -->
-<script src="../assets/js/jasny-bootstrap.min.js"></script>
+<!--  DataTables.net Plugin    -->
+<script src="../assets/js/jquery.datatables.js"></script>
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
-<script>
-    function uploadQC() {
-        var file = document.getElementById("anhmoi").files[0];
-        var image = file['name'];
-        var fd = new FormData();
-        fd.append('file',file);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'upfile.php', true);
-        xhr.send(fd);
-        $.get("modules/adddatabase.php",{anh:image},function () {
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#datatables').DataTable({
+            "pagingType": "full_numbers",
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            responsive: true,
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Tìm kiếm",
+            },
+
+        });
+        $('.card .material-datatables label').addClass('form-group');
+    });
+    function themhv(tk,lop){
+        $.get("modules/updatedatabase.php",{tkhvl:tk,lop:lop},function () {
             swal({
-                title: 'Thêm thành công!',
-                text: 'Đã thêm khóa học vào danh sách quảng cáo',
-                type: 'success',
+                title: "Thêm thành công!",
+                text: "Đã thêm học viên vào lớp.",
+                buttonsStyling: false,
                 confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
+                type: "success"
             }).then(function () {
                 location.reload();
             })
-        });
-    }
-    function xoaanh(anh) {
-        swal({
-            title: 'Xóa thật không?',
-            text: 'Có không giữ mất đừng tìm nhé!',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Hỏi làm gì.Xóa đi',
-            cancelButtonText: 'Không',
-            confirmButtonClass: "btn btn-success",
-            cancelButtonClass: "btn btn-danger",
-            buttonsStyling: false
-        }).then(function() {
-            $.get("modules/deldatabase.php",{anh:anh},function () {
-                swal({
-                    title: 'Đã xóa!',
-                    text: 'Mất tiêu luôn.',
-                    type: 'success',
-                    confirmButtonClass: "btn btn-success",
-                    buttonsStyling: false
-                }).then(function () {
-                    location.reload();
-                })
-            });
         })
     }
-
+    function trolai(lop) {
+        window.location.href = "admin_chitietlop.php?tenlop="+lop;
+    }
 </script>
 </html>
 
